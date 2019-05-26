@@ -5,15 +5,59 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Button" >
-          <Border x:Name="outerButtonBorder" CornerRadius="0" BorderBrush="DarkGray" BorderThickness="1 0 0 1" Background="{TemplateBinding Background}">
-            <Border x:Name="innerButtonBorder" CornerRadius="0" BorderBrush="Gray" BorderThickness="0 1 1 0" >
+          <Border x:Name="outerButtonBorder" CornerRadius="0" BorderBrush="DarkGray" BorderThickness="2 0 0 2" Background="{TemplateBinding Background}">
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup Name="CommonStates">
+                <VisualState Name="Normal"/>
+                <VisualState Name="MouseOver">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                      <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                          <LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+                            <GradientStop Color="#FF2EA0FF" Offset="0"/>
+                            <GradientStop Color="#FF101090" Offset="1"/>
+                          </LinearGradientBrush>
+                        </DiscreteObjectKeyFrame.Value>
+                      </DiscreteObjectKeyFrame>
+                    </ObjectAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+                <VisualState Name="Pressed">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                      <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                          <LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
+                            <GradientStop Color="#FF0E90FF" Offset="1"/>
+                            <GradientStop Color="#FF000080" Offset="0"/>
+                          </LinearGradientBrush>
+                        </DiscreteObjectKeyFrame.Value>
+                      </DiscreteObjectKeyFrame>
+                    </ObjectAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+                <VisualState Name="Disabled">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground)">
+                      <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                          <SolidColorBrush Color="DarkGray"/>
+                        </DiscreteObjectKeyFrame.Value>
+                      </DiscreteObjectKeyFrame>
+                    </ObjectAnimationUsingKeyFrames>
+                  </Storyboard>                  
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="innerButtonBorder" CornerRadius="0" BorderBrush="Gray" BorderThickness="0 2 2 0" >
               <ContentPresenter Margin="0 -3 0 0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </Border>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
-              <Setter TargetName="outerButtonBorder" Property="BorderThickness" Value="0 1 1 0" />
-              <Setter TargetName="innerButtonBorder" Property="BorderThickness" Value="1 0 0 1" />
+              <Setter TargetName="outerButtonBorder" Property="BorderThickness" Value="0 2 2 0" />
+              <Setter TargetName="innerButtonBorder" Property="BorderThickness" Value="2 0 0 2" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -22,8 +66,8 @@
     <Setter Property="Background">
       <Setter.Value>
         <LinearGradientBrush StartPoint="0.5, 0" EndPoint="0.5, 1">
-          <GradientStop Color="DodgerBlue" Offset="0"/>
-          <GradientStop Color="Navy" Offset="1"/>
+          <GradientStop Color="#FF1E90FF" Offset="0"/>
+          <GradientStop Color="#FF000080" Offset="1"/>
         </LinearGradientBrush>
       </Setter.Value>
     </Setter>

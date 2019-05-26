@@ -44,9 +44,6 @@ namespace FamilyFeud
 
       mAttachedKeys = new List<Key>() { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8 };
 
-      //mPreviousQuestion = new SingleQuestionControl();
-      //mPreviousQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
-
       mActiveQuestion = new SingleQuestionControl(game.Rounds.ElementAt(0));
       mActiveQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
       mActiveQuestion.PreviousEnabled = false;
@@ -57,9 +54,7 @@ namespace FamilyFeud
       ExistingQuestions[1] = mNextQuestion;
 
       currentQuestion = 0;
-      mActiveQuestion.PreviousEnabled = false;
 
-      //SetPrevTransform(mPreviousQuestion);
       SetActiveTransform(mActiveQuestion);
       SetNextTransform(mNextQuestion);
 
@@ -132,6 +127,8 @@ namespace FamilyFeud
       currentToPrev.DecelerationRatio = 0.5;
       nextToCurrent.DecelerationRatio = 0.5;
 
+      mNextQuestion.NextEnabled = currentQuestion + 1 < mGame.NumRounds - 1;
+
       nextToCurrent.Completed += (s, e) =>
       {
         mPreviousQuestion = mActiveQuestion;
@@ -159,7 +156,6 @@ namespace FamilyFeud
         }
         else
         {
-          mActiveQuestion.NextEnabled = false;
           mNextQuestion = null;
         }
 
@@ -185,6 +181,8 @@ namespace FamilyFeud
       prevToCurrent.AccelerationRatio = 0.5;
       currentToNext.DecelerationRatio = 0.5;
       prevToCurrent.DecelerationRatio = 0.5;
+
+      mPreviousQuestion.PreviousEnabled = currentQuestion - 1 > 0;
 
       prevToCurrent.Completed += (s, e) =>
       {
@@ -213,7 +211,6 @@ namespace FamilyFeud
         }
         else
         {
-          mActiveQuestion.PreviousEnabled = currentQuestion == 0;
           mPreviousQuestion = null;
         }
 

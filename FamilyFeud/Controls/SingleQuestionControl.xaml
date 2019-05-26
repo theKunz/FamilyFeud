@@ -36,13 +36,8 @@
       <local:AnswerBox x:Name="Answer7" Grid.Column="2" Grid.Row="3"/>
       <local:AnswerBox x:Name="Answer8" Grid.Column="2" Grid.Row="4"/>
 
-      <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled}" Click="ButtonPrev_Click">
-        <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Previous" FontSize="20" Background="Transparent"/>
-      </Button>
-
-      <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled}" Click="ButtonNext_Click">
-        <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Next" FontSize="20" Background="Transparent"/>
-      </Button>
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonPrev_Click" Content="Previous" FontSize="20"/>
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonNext_Click" Content="Next" FontSize="20"/>
     </Grid>
   </Border>
 </UserControl>

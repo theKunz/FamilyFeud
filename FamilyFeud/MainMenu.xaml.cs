@@ -35,30 +35,39 @@ namespace FamilyFeud
       {
         new Round("Who am I?", new ObservableCollection<Answer>()
         {
-          new Answer("I am one", 1),
-          new Answer("I am two", 2),
-          new Answer("I am three", 3),
-          new Answer("I am four", 4),
-          new Answer("I am five", 5),
-          new Answer("I am six", 6),
+          new Answer("I am one", 10),
+          new Answer("I am two", 20),
+          new Answer("I am three", 30),
+          new Answer("I am four", 40),
+          new Answer("I am five", 50),
+          new Answer("I am six", 60),
         }),
         new Round("Who are you?", new ObservableCollection<Answer>()
         {
-          new Answer("You are one", 1),
-          new Answer("You are two", 2),
-          new Answer("You are three", 3),
-          new Answer("You are four", 4),
-          new Answer("You are five", 5),
-          new Answer("You are six", 6),
+          new Answer("You are one", 10),
+          new Answer("You are two", 20),
+          new Answer("You are three", 30),
+          new Answer("You are four", 40),
+          new Answer("You are five", 50),
+          new Answer("You are six", 60),
         }),
         new Round("Who are they?", new ObservableCollection<Answer>()
         {
-          new Answer("They are one", 1),
-          new Answer("They are two", 2),
-          new Answer("They are three", 3),
-          new Answer("They are four", 4),
-          new Answer("They are five", 5),
-          new Answer("They are six", 6),
+          new Answer("They are one", 10),
+          new Answer("They are two", 20),
+          new Answer("They are three", 30),
+          new Answer("They are four", 40),
+          new Answer("They are five", 50),
+          new Answer("They are six", 60),
+        }),
+        new Round("Who are us?", new ObservableCollection<Answer>()
+        {
+          new Answer("Us are one", 10),
+          new Answer("Us are two", 20),
+          new Answer("Us are three", 30),
+          new Answer("Us are four", 40),
+          new Answer("Us are five", 50),
+          new Answer("Us are six", 60),
         })
       };
 
@@ -154,7 +163,7 @@ namespace FamilyFeud
                                       });
 
       // Ensures that the file exists
-      using(StreamWriter stream = new StreamWriter(filePathRound, true))
+      /*using(StreamWriter stream = new StreamWriter(filePathRound, true))
       {
         stream.Write("");
       }
@@ -197,7 +206,7 @@ namespace FamilyFeud
         
         popup.Content = returnStr;
         popup.Show();
-      }
+      }*/
     }
   }
 }

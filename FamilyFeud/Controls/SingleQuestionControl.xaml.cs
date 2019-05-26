@@ -41,6 +41,9 @@ namespace FamilyFeud.Controls
     {
       InitializeComponent();
 
+      PreviousEnabled = true;
+      NextEnabled = true;
+
       Loaded += (object sender, RoutedEventArgs args) =>
       {
         ItemSource = round;
@@ -108,13 +111,12 @@ namespace FamilyFeud.Controls
     {
       get
       {
-        return true;
-        //return mNextEnabled;
+        return mNextEnabled;
       }
       set
       {
         mNextEnabled = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NextEnabled"));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NextEnabled)));
       }
     }
 
@@ -122,13 +124,12 @@ namespace FamilyFeud.Controls
     {
       get
       {
-        return true;
-        //return mPreviousEnabled;
+        return mPreviousEnabled;
       }
       set
       {
         mPreviousEnabled = value;
-        PropertyChanged(this, new PropertyChangedEventArgs("PreviousEnabled"));
+        PropertyChanged(this, new PropertyChangedEventArgs(nameof(PreviousEnabled)));
       }
     }
 
