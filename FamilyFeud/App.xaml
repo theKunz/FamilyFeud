@@ -1,0 +1,13 @@
+﻿<Application x:Class="FamilyFeud.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:FamilyFeud"
+             StartupUri="MainMenu.xaml">
+    <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Controls/FamilyFeudStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </Application.Resources>
+</Application>

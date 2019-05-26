@@ -1,0 +1,133 @@
+﻿<Window x:Class="FamilyFeud.Controls.GameBuilder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:FamilyFeud.Controls"
+        ResizeMode="NoResize" Height="675" Width="800">
+  <Window.Resources>
+    <Style x:Key="ListViewStyle" TargetType="ListView">
+      <Setter Property="Background" Value="{StaticResource FF_Foreground}"/>
+      <Setter Property="Width" Value="320"/>
+      <Setter Property="Height" Value="200"/>
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="TitleBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FamilyFeudTextBoxStyle}">
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="FontSize" Value="25"/>
+      <Setter Property="Grid.ColumnSpan" Value="3"/>
+    </Style>
+    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+  </Window.Resources>
+
+  <Grid Background="Navy">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="45*"/>
+      <ColumnDefinition Width="10*"/>
+      <ColumnDefinition Width="45*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="45*"/>
+      <RowDefinition Height="55*"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Select Questions" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="25" Margin="8"/>
+    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Available" VerticalAlignment="Top" Margin="153,65,128,0" FontSize="12" Grid.Column="0" Grid.Row="0" Width="76"/>
+    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Selected" VerticalAlignment="Top" Margin="133,65,162,0" FontSize="12" Grid.Column="2" Grid.Row="0" Width="63"/>
+
+    <ListView x:Name="lvSelectableRounds" 
+              Style="{StaticResource ListViewStyle}"
+              Grid.Column="0"
+              Grid.Row="0"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              ItemsSource="{Binding AvailableRounds}"
+              DisplayMemberPath="Question"/>
+
+    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,133,0,51">
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Margin="0,0,0,10" Width="30" Height="30" FontSize="30" Click="ChooseRound_Click">
+        <Button.Content>
+          <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="→" HorizontalAlignment="Stretch" Height="37" Margin="0,-7,0,0"/>
+        </Button.Content>
+      </Button>
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Margin="0,10,0,0" Width="30" Height="30" FontSize="30" Click="UnChooseRound_Click">
+        <Button.Content>
+          <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="←" HorizontalAlignment="Stretch" Height="37" Margin="0,-7,0,0"/>
+        </Button.Content>
+      </Button>
+    </StackPanel>
+
+    <ListView x:Name="lvSelectedRounds" 
+              Style="{StaticResource ListViewStyle}"
+              Grid.Column="2"
+              Grid.Row="0"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Bottom"
+              ItemsSource="{Binding ChosenRounds}"
+              DisplayMemberPath="Question"/>
+
+    <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Grid.ColumnSpan="3">
+      <TextBlock x:Name="tbBonusSelectorHeader" Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Select Bonus Questions" FontSize="25" Margin="4"/>
+      <RadioButton x:Name="rbMiddle" GroupName="BonusRoundGroup" Style="{StaticResource RadioButtonStyle}" Margin="20,2,2,2" IsChecked="True" >
+        <RadioButton.Content>
+          <TextBlock Text="Bonus round in the middle" Style="{StaticResource FamilyFeudTextBlockStyle}"/>
+        </RadioButton.Content>
+      </RadioButton>
+      <RadioButton x:Name="rbEnd" GroupName="BonusRoundGroup" Style="{StaticResource RadioButtonStyle}" Margin="2,2,2,2">
+        <RadioButton.Content>
+          <TextBlock Text="Bonus round at the end" Style="{StaticResource FamilyFeudTextBlockStyle}"/>
+        </RadioButton.Content>
+      </RadioButton>
+      <RadioButton x:Name="rbNone" GroupName="BonusRoundGroup" Style="{StaticResource RadioButtonStyle}" Margin="-42,2,2,2">
+        <RadioButton.Content>
+          <TextBlock Text="No bonus round" Style="{StaticResource FamilyFeudTextBlockStyle}"/>
+        </RadioButton.Content>
+      </RadioButton>
+    </StackPanel>
+
+    <ListView x:Name="lvSelectableBonusQuestions" 
+              Style="{StaticResource ListViewStyle}"
+              Grid.Column="0"
+              Grid.Row="1"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              ItemsSource="{Binding AvailableBonusQuestions}"
+              DisplayMemberPath="Question" Margin="0,0,5,15"/>
+
+    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,197,0,53">
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Margin="0,0,0,10" Width="30" Height="30" FontSize="30" Click="ChooseBonusQuestion_Click">
+        <Button.Content>
+          <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="→" HorizontalAlignment="Stretch" Height="37" Margin="0,-7,0,0"/>
+        </Button.Content>
+      </Button>
+      <Button Style="{StaticResource FamilyFuedButtonStyle}" Margin="0,10,0,0" Width="30" Height="30" FontSize="30" Click="UnChooseBonusQuestion_Click">
+        <Button.Content>
+          <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="←" HorizontalAlignment="Stretch" Height="37" Margin="0,-7,0,0"/>
+        </Button.Content>
+      </Button>
+    </StackPanel>
+
+    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Available" VerticalAlignment="Top" Margin="153,119,128,0" FontSize="12" Grid.Column="0" Grid.Row="1" Width="76"/>
+    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Selected (Max 12)" VerticalAlignment="Top" Margin="98,116,134,0" FontSize="12" Grid.Column="2" Grid.Row="1" Width="126"/>
+
+    <ListView x:Name="lvSelectedBonusQuestions" 
+              Style="{StaticResource ListViewStyle}"
+              Grid.Column="2"
+              Grid.Row="1"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Bottom"
+              ItemsSource="{Binding ChosenBonusQuestions}"
+              DisplayMemberPath="Question" Margin="5,0,0,15"/>
+
+    <Button x:Name="btnDone" Style="{StaticResource FamilyFuedButtonStyle}" Content="Done" Grid.Row="1" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,78,10,0" Click="btnDone_Click"/>
+    <Button x:Name="btnCancel" Style="{StaticResource FamilyFuedButtonStyle}" Content="Cancel" Grid.Row="1" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,38,10,0" Click="btnCancel_Click"/>
+
+  </Grid>
+</Window>
+

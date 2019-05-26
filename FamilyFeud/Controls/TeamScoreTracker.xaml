@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="FamilyFeud.Controls.TeamScoreTracker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             x:Name="TeamPointRoot">
+  <UserControl.Resources>
+    <DropShadowEffect x:Key="ScoreColumnDropShadow" Color="Black" Direction="0" ShadowDepth="12" BlurRadius="40"/>
+    <Style TargetType="DataGridColumnHeader" x:Key="SpecialColumnHeaderStyle" BasedOn="{StaticResource FamilyFeudGridHeaderStyle}">
+      <Setter Property="Background" Value="{StaticResource FamilyFeudNavyToDodgerBrush}"/>
+      <Setter Property="Effect" Value="{StaticResource ScoreColumnDropShadow}"/>
+    </Style>
+    <Style x:Name="AlternationRowStyle" TargetType="DataGridRow">
+      <Style.Triggers>
+        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+          <Setter Property="Background" Value="Navy"/>
+        </Trigger>
+        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+          <Setter Property="Background" Value="Blue"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    <DataTemplate x:Key="StandardDataGridCellTemplate">
+      <TextBox x:Name="CommonCellTB"
+               HorizontalAlignment="Stretch" 
+               VerticalAlignment="Stretch" 
+               FontSize="25"
+               CaretBrush="White">
+        <TextBox.Style>
+          <Style TargetType="TextBox" BasedOn="{StaticResource FamilyFeudTextBoxStyle}">
+            <Setter Property="Background" Value="Transparent" />
+          </Style>
+        </TextBox.Style>
+      </TextBox>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="25"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="100"/>
+    </Grid.ColumnDefinitions>
+    <DataGrid x:Name="ScoreDataGrid" 
+                Grid.Row="0" 
+                FrozenColumnCount="2" 
+                RowHeight="50" 
+                AutoGenerateColumns="False" 
+                VerticalScrollBarVisibility="Auto" 
+                HorizontalScrollBarVisibility="Auto" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                MaxHeight="420"
+                AlternationCount="2"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                HeadersVisibility="Column"
+                LoadingRow="ScoreDataGrid_LoadingRow"
+                CanUserReorderColumns="False">
+      <DataGrid.Columns>
+        <DataGridTemplateColumn x:Name="NameColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="400" >
+          <DataGridTemplateColumn.Header>
+            <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Team Name" Background="Transparent"/>
+          </DataGridTemplateColumn.Header>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <Border Background="Navy" Width="400" Height="50" BorderBrush="Transparent" MouseUp="TeamNameBorder_MouseUp">
+                <Viewbox StretchDirection="DownOnly"  Stretch="Uniform" Width="400" Height="50">
+                  <TextBox x:Name="tbTeamName" 
+                           Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Height="50"
+                           FontWeight="ExtraBold"
+                           Foreground="White"
+                           Background="Transparent" 
+                           FontSize="25" 
+                           BorderBrush="Transparent"
+                           CaretBrush="White"/>
+                </Viewbox>
+              </Border>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn x:Name="ScoreColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="100" CanUserSort="True" SortMemberPath="{Binding ScoreTotal}">
+          <DataGridTemplateColumn.Header>
+            <Button Click="ScoreHeader_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Score" Background="Transparent"/>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </DataGridTemplateColumn.Header>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Background="DarkBlue" Text="{Binding ScoreTotal}" FontSize="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="{StaticResource ScoreColumnDropShadow}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+    <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Height="25" Width="60" Style="{StaticResource FamilyFuedButtonStyle}" Click="AddRow_Click">
+      <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Add Team" FontSize="10" Background="Transparent"/>
+    </Button>
+  </Grid>
+
+</UserControl>

@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="FamilyFeud.Controls.NumericUpDown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FamilyFeud.Controls"
+             mc:Ignorable="d" d:DesignWidth="30"
+             Height="50" Width="30"
+             x:Name="UpDownRoot">
+  <Border BorderBrush="Black" BorderThickness="1">
+    <StackPanel Orientation="Vertical">
+      <Button x:Name="btnUp" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnUp_Click" Height="14">
+        <Button.Content>
+          <TextBlock Text="+" Foreground="White" FontSize="16" FontWeight="ExtraBold" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-1 -1 0 0"/>
+        </Button.Content>
+      </Button>
+      <Border Background="Navy" Height="20">
+        <TextBlock x:Name="tbValue" Text="{Binding Value, ElementName=UpDownRoot, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="ExtraBold"/>
+      </Border>
+      <Button x:Name="btnDown" Style="{StaticResource FamilyFuedButtonStyle}" Height="14" Click="btnDown_Click">
+        <Button.Content>
+          <TextBlock Text="-" Foreground="White" FontSize="16" FontWeight="ExtraBold" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 -1 0 0"/>
+        </Button.Content>
+      </Button>
+    </StackPanel>
+  </Border>
+</UserControl>
