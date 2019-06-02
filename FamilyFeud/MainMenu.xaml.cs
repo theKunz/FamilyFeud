@@ -21,6 +21,9 @@ namespace FamilyFeud
     private XmlSerializer mSerializer;
     private ObservableCollection<IQuestioner> dummyDataQ;
     private ObservableCollection<IQuestioner> dummyDataB;
+    private const int MaxRandomGameSize = 10;
+    private const int MinRandomGameSize = 3;
+    private static Random Rand = new Random((int)DateTime.UtcNow.Ticks); // ew dirty conversion from long to int
 
     public MainWindow()
     {
@@ -35,39 +38,39 @@ namespace FamilyFeud
       {
         new Round("Who am I?", new ObservableCollection<Answer>()
         {
-          new Answer("I am one", 10),
-          new Answer("I am two", 20),
-          new Answer("I am three", 30),
-          new Answer("I am four", 40),
-          new Answer("I am five", 50),
-          new Answer("I am six", 60),
+          new Answer("(1) I am one", 10),
+          new Answer("(1) I am two", 20),
+          new Answer("(1) I am three", 30),
+          new Answer("(1) I am four", 40),
+          new Answer("(1) I am five", 50),
+          new Answer("(1) I am six", 60),
         }),
         new Round("Who are you?", new ObservableCollection<Answer>()
         {
-          new Answer("You are one", 10),
-          new Answer("You are two", 20),
-          new Answer("You are three", 30),
-          new Answer("You are four", 40),
-          new Answer("You are five", 50),
-          new Answer("You are six", 60),
+          new Answer("(2) You are one", 10),
+          new Answer("(2) You are two", 20),
+          new Answer("(2) You are three", 30),
+          new Answer("(2) You are four", 40),
+          new Answer("(2) You are five", 50),
+          new Answer("(2) You are six", 60),
         }),
         new Round("Who are they?", new ObservableCollection<Answer>()
         {
-          new Answer("They are one", 10),
-          new Answer("They are two", 20),
-          new Answer("They are three", 30),
-          new Answer("They are four", 40),
-          new Answer("They are five", 50),
-          new Answer("They are six", 60),
+          new Answer("(3) They are one", 10),
+          new Answer("(3) They are two", 20),
+          new Answer("(3) They are three", 30),
+          new Answer("(3) They are four", 40),
+          new Answer("(3) They are five", 50),
+          new Answer("(3) They are six", 60),
         }),
         new Round("Who are us?", new ObservableCollection<Answer>()
         {
-          new Answer("Us are one", 10),
-          new Answer("Us are two", 20),
-          new Answer("Us are three", 30),
-          new Answer("Us are four", 40),
-          new Answer("Us are five", 50),
-          new Answer("Us are six", 60),
+          new Answer("(4) Us are one", 10),
+          new Answer("(4) Us are two", 20),
+          new Answer("(4) Us are three", 30),
+          new Answer("(4) Us are four", 40),
+          new Answer("(4) Us are five", 50),
+          new Answer("(4) Us are six", 60),
         })
       };
 
@@ -99,16 +102,26 @@ namespace FamilyFeud
       App.Current.Shutdown();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
     private void btnBeginRandomGame_Click(object sender, RoutedEventArgs e)
     {
-      gameWindow?.Close();
-      gameWindow = new GameWindow();
-      gameWindow.Show();
+      ObservableCollection<Round> selectedRounds;
+      Round currRound;
+      int numRounds;
+
+      selectedRounds = new ObservableCollection<Round>();
+      numRounds = dummyDataQ.Count < MaxRandomGameSize ? dummyDataQ.Count : MaxRandomGameSize;
+
+      while(selectedRounds.Count < numRounds)
+      {
+        currRound = dummyDataQ[Rand.Next() % dummyDataQ.Count] as Round;
+
+        if(!selectedRounds.Any(r => currRound.Equals(r)))
+        {
+          selectedRounds.Add(currRound.Copy());
+        }
+      }
+
+      StartGame(selectedRounds, null, false, false);
     }
 
     private void btnBeginCustomGame_Click(object sender, RoutedEventArgs e)
@@ -120,7 +133,6 @@ namespace FamilyFeud
 
     private void GameBuildingCompleted(object sender, GameBuildingCompletedEventArgs args)
     {
-      Game game = new Game();
       ObservableCollection<Round> rounds = new ObservableCollection<Round>();
       BonusRound bonusRound = new BonusRound();
 
@@ -136,9 +148,13 @@ namespace FamilyFeud
         bonusRound.BonusQuestions.Add(bonusQuestion.Copy());
       }
 
-      gameWindow?.Close();
+      StartGame(rounds, bonusRound, args.HasBonusRound, args.BonusAtEnd);
+    }
 
-      gameWindow = new GameWindow(new Game(rounds, bonusRound));
+    private void StartGame(IEnumerable<Round> questions, BonusRound bonusRound, bool includeBonusRound, bool isBonusRoundAtEnd)
+    {
+      gameWindow?.Close();
+      gameWindow = new GameWindow(new Game(questions, bonusRound));
       gameWindow.Show();
     }
 
