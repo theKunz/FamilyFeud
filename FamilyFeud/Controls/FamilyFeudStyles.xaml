@@ -4,7 +4,7 @@
   <Style x:Key="FamilyFuedButtonStyle" TargetType="Button">
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="Button" >
+        <ControlTemplate TargetType="Button">
           <Border x:Name="outerButtonBorder" CornerRadius="0" BorderBrush="DarkGray" BorderThickness="2 0 0 2" Background="{TemplateBinding Background}">
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup Name="CommonStates">
@@ -39,19 +39,26 @@
                 </VisualState>
                 <VisualState Name="Disabled">
                   <Storyboard>
-                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground)">
-                      <DiscreteObjectKeyFrame KeyTime="0">
-                        <DiscreteObjectKeyFrame.Value>
-                          <SolidColorBrush Color="DarkGray"/>
-                        </DiscreteObjectKeyFrame.Value>
-                      </DiscreteObjectKeyFrame>
-                    </ObjectAnimationUsingKeyFrames>
-                  </Storyboard>                  
+                    <DoubleAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Opacity)" 
+                                     Storyboard.TargetName="DisabledStateElement"
+                                     From="0"
+                                     To="0.3"
+                                     Duration="0"/>
+                    <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.Opacity)" 
+                                     From="1"
+                                     To="0.7"
+                                     Duration="0"/>
+                  </Storyboard>
                 </VisualState>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <Border x:Name="innerButtonBorder" CornerRadius="0" BorderBrush="Gray" BorderThickness="0 2 2 0" >
-              <ContentPresenter Margin="0 -3 0 0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            <Border x:Name="DisabledStateElement" BorderThickness="0">
+              <Border.Background>
+                <SolidColorBrush Color="Black" Opacity="0"/>
+              </Border.Background>
+              <Border x:Name="innerButtonBorder" CornerRadius="0" BorderBrush="Gray" BorderThickness="0 2 2 0">
+                <ContentPresenter Margin="0 -3 0 0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+              </Border>
             </Border>
           </Border>
           <ControlTemplate.Triggers>

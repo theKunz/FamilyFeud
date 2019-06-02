@@ -125,7 +125,7 @@
               ItemsSource="{Binding ChosenBonusQuestions}"
               DisplayMemberPath="Question" Margin="5,0,0,15"/>
 
-    <Button x:Name="btnDone" Style="{StaticResource FamilyFuedButtonStyle}" Content="Done" Grid.Row="1" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,78,10,0" Click="btnDone_Click"/>
+    <Button x:Name="btnDone" Style="{StaticResource FamilyFuedButtonStyle}" Content="Done" Grid.Row="1" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,78,10,0" Click="btnDone_Click" IsEnabled="False"/>
     <Button x:Name="btnCancel" Style="{StaticResource FamilyFuedButtonStyle}" Content="Cancel" Grid.Row="1" Grid.Column="2" Height="25" Width="60" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,38,10,0" Click="btnCancel_Click"/>
 
   </Grid>

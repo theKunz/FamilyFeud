@@ -13,6 +13,8 @@ namespace FamilyFeud.Controls
   /// </summary>
   public partial class GameBuilder : Window, INotifyPropertyChanged
   {
+    private const int MinQuestions = 3;
+
     private ObservableCollection<Round> mAvailableRounds;
     private ObservableCollection<Round> mChosenRounds;
     private ObservableCollection<BonusQuestion> mAvailableBonusQuestions;
@@ -116,11 +118,13 @@ namespace FamilyFeud.Controls
     private void ChooseRound_Click(object sender, RoutedEventArgs e)
     {
       MoveItems<Round>(mAvailableRounds, mChosenRounds, lvSelectableRounds.SelectedItems);
+      btnDone.IsEnabled = mChosenRounds.Count >= MinQuestions;
     }
 
     private void UnChooseRound_Click(object sender, RoutedEventArgs e)
     {
       MoveItems<Round>(mChosenRounds, mAvailableRounds, lvSelectedRounds.SelectedItems);
+      btnDone.IsEnabled = mChosenRounds.Count >= MinQuestions;
     }
 
     private void ChooseBonusQuestion_Click(object sender, RoutedEventArgs e)
