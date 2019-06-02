@@ -9,17 +9,6 @@
         Title="MainWindow" Height="1080" Width="1920"
         Closed="MainMenu_Closed"
         x:Name="ElementRoot">
-  <Window.Resources>
-    <ResourceDictionary>
-      <LinearGradientBrush x:Key="TestBrushBackground" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStopCollection>
-          <GradientStop Color="Gold" Offset="0.25"/>
-          <GradientStop Color="Yellow" Offset="0.75"/>
-        </GradientStopCollection>
-      </LinearGradientBrush>
-      <SolidColorBrush x:Key="TestBrushBorder" Color="LightSkyBlue"/>
-    </ResourceDictionary>
-  </Window.Resources>
 
   <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Focusable="False">
     <Border Background="#000123" Width="1920" Height="{Binding ViewingAreaHeight, Source=ElementRoot}" x:Name="BackgroundRoot">
@@ -34,35 +23,6 @@
           <RowDefinition Height="47*" />
           <RowDefinition Height="6*" />
         </Grid.RowDefinitions>
-
-        <Border Grid.Column="0" 
-                Grid.Row="0" 
-                Width="200" 
-                Height="200"
-                BorderThickness="0"
-                Background="{StaticResource TestBrushBorder}"
-                ClipToBounds="True">
-          <Border.Clip>
-            <PathGeometry>
-              <PathFigure IsClosed="True" StartPoint="0,200">
-                <PolyLineSegment Points="200,200 163,0 37,0"/>
-              </PathFigure>
-            </PathGeometry>
-          </Border.Clip>
-          <Path Data="M15,0 L60,0 75,30 0,30 z" Stretch="Fill" 
-                Stroke="Black" StrokeDashArray="3" 
-                StrokeThickness="5" Fill="{StaticResource TestBrushBackground}"
-                Margin="10" RenderTransformOrigin="0.5,0.5">
-            <Path.RenderTransform>
-              <TransformGroup>
-                <ScaleTransform/>
-                <SkewTransform/>
-                <RotateTransform Angle="0.742"/>
-                <TranslateTransform/>
-              </TransformGroup>
-            </Path.RenderTransform>
-          </Path>
-        </Border>
 
         <Grid x:Name="QuestionListGrid" Grid.Column="2" Grid.Row="0" Margin="20">
           <Grid.ColumnDefinitions>

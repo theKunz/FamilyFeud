@@ -69,10 +69,20 @@ namespace FamilyFeud.Controls
     {
       if(!(showAnswerStory?.IsFrozen).Value)
       {
+        EventHandler mediaEndedHandler;
+
         showAnswerStory?.Begin();
         mMediaplayer.IsMuted = false;
         mMediaplayer.Position = new TimeSpan(0);
         mMediaplayer.Play();
+
+        mediaEndedHandler = null;
+        mediaEndedHandler = (s, e) => 
+        {
+          mMediaplayer.MediaEnded -= mediaEndedHandler;
+          mMediaplayer.Freeze();
+        };
+        mMediaplayer.MediaEnded += mediaEndedHandler;
       }
     }
 
