@@ -1,6 +1,30 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:FamilyFeud.Controls">
+  <Color x:Key="FF_Foreground_ExtraLightColor" A="255" R="11" G="94" B="240"/> <!--FF0b5ef0-->
+  <Color x:Key="FF_Foreground_LightColor"      A="255" R="11" G="62" B="208"/> <!--FF0b3ed0-->
+  <Color x:Key="FF_ForegroundColor"            A="255" R="11" G="30" B="176"/> <!--FF0b1eb0-->
+  <Color x:Key="FF_Foreground_DarkColor"       A="255" R="11" G="14" B="160"/> <!--FF0b0ea0-->
+  <Color x:Key="FF_Foreground_ExtraDarkColor"  A="255" R="11" G="0"  B="144"/> <!--FF0b0090-->
+  
+  <SolidColorBrush x:Key="FF_Foreground_ExtraLight" Color="{StaticResource FF_Foreground_ExtraLightColor}"/>
+  <SolidColorBrush x:Key="FF_Foreground_Light"      Color="{StaticResource FF_Foreground_LightColor}"/>
+  <SolidColorBrush x:Key="FF_Foreground"            Color="{StaticResource FF_ForegroundColor}"/>
+  <SolidColorBrush x:Key="FF_Foreground_Dark"       Color="{StaticResource FF_Foreground_DarkColor}"/>
+  <SolidColorBrush x:Key="FF_Foreground_ExtraDark"  Color="{StaticResource FF_Foreground_ExtraDarkColor}"/>
+
+  <Color x:Key="ScrollBarThumbDisabledColor" A="255" R="100" G="100" B="100"/>
+  <SolidColorBrush x:Key="ScrollBarThumDisabledBrush" Color="{StaticResource ScrollBarThumbDisabledColor}"/>
+
+  <LinearGradientBrush x:Key="FamilyFeudNavyToDodgerBrush" StartPoint="0.5, 0" EndPoint="0.5, 1">
+    <GradientStop Color="Navy" Offset="0"/>
+    <GradientStop Color="DodgerBlue" Offset="1"/>
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="FamilyFeudDodgerToNavyBrush" StartPoint="0.5, 0" EndPoint="0.5, 1">
+    <GradientStop Color="Navy" Offset="1"/>
+    <GradientStop Color="DodgerBlue" Offset="0"/>
+  </LinearGradientBrush>
+
   <Style x:Key="FamilyFuedButtonStyle" TargetType="Button">
     <Setter Property="Template">
       <Setter.Value>
@@ -82,8 +106,117 @@
     <Setter Property="FontWeight" Value="ExtraBold"/>
   </Style>
 
-  <SolidColorBrush x:Key="FF_Foreground" Color="#0b1eb0"/>
-  
+  <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <ControlTemplate.Triggers>
+          </ControlTemplate.Triggers>
+          <Grid>
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="MouseOver">
+                  <Storyboard>
+                    <ColorAnimation To="{StaticResource FF_Foreground_ExtraLightColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
+                    <!--<ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Duration="0"/>
+                          <ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Duration="0"/>-->
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                  <Storyboard>
+                    <ColorAnimation To="{StaticResource FF_Foreground_DarkColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
+                    <!--<ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="UpperRepeatButton" Duration="0"/>
+                          <ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="LowerRepeatButton" Duration="0"/>-->
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Disabled">
+                  <Storyboard>
+                    <ColorAnimation To="{StaticResource ScrollBarThumbDisabledColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
+                    <!--<ColorAnimation To="DarkGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="UpperRepeatButton" Duration="0"/>
+                          <ColorAnimation To="DarkGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="LowerRepeatButton" Duration="0"/>-->
+                  </Storyboard>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="ThumbBackground" BorderBrush="Gray" BorderThickness="1">
+              <Border.Background>
+                <SolidColorBrush Color="{StaticResource FF_Foreground_LightColor}"/>
+              </Border.Background>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <ControlTemplate TargetType="ScrollBar" x:Key="HorizontalScrollBar">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MaxWidth="18"/>
+        <ColumnDefinition Width="0.1*"/>
+        <ColumnDefinition MaxWidth="18"/>
+      </Grid.ColumnDefinitions>
+      <RepeatButton Grid.Column="0" Command="ScrollBar.LineLeftCommand" Content="←"/>
+      <Track Name="PART_Track" Grid.Column="1">
+        <Track.IncreaseRepeatButton>
+          <RepeatButton x:Name="UpperRepeatButton" Background="Gray" Command="ScrollBar.PageRightCommand"/>
+        </Track.IncreaseRepeatButton>
+        <Track.Thumb>
+          <Thumb Style="{StaticResource ScrollBarThumbStyle}" Height="18" Margin="1,0"/>
+        </Track.Thumb>
+        <Track.DecreaseRepeatButton>
+          <RepeatButton x:Name="LowerRepeatButton" Background="Gray" Command="ScrollBar.PageLeftCommand"/>
+        </Track.DecreaseRepeatButton>
+      </Track>
+      <RepeatButton Grid.Column="2" Command="ScrollBar.LineRightCommand" Content="→"/>
+    </Grid>
+  </ControlTemplate>
+
+  <ControlTemplate TargetType="ScrollBar" x:Key="VerticalScrollBar">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition MaxHeight="18"/>
+        <RowDefinition Height="0.1*"/>
+        <RowDefinition MaxHeight="18"/>
+      </Grid.RowDefinitions>
+      <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" Content="↑"/>
+      <Track Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
+        <Track.IncreaseRepeatButton>
+          <RepeatButton x:Name="UpperRepeatButton" Background="Gray" Command="ScrollBar.PageDownCommand"/>
+        </Track.IncreaseRepeatButton>
+        <Track.Thumb>
+          <Thumb Style="{StaticResource ScrollBarThumbStyle}" Width="18" Margin="0,1"/>
+        </Track.Thumb>
+        <Track.DecreaseRepeatButton>
+          <RepeatButton x:Name="LowerRepeatButton" Background="Gray" Command="ScrollBar.PageUpCommand"/>
+        </Track.DecreaseRepeatButton>
+      </Track>
+      <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand" Content="↓"/>
+    </Grid>
+  </ControlTemplate>
+
+  <Style TargetType="ScrollBar">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Template" Value="{StaticResource HorizontalScrollBar}" />
+      </Trigger>
+      <Trigger Property="Orientation" Value="Vertical">
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
   <Style x:Key="FamilyFeudTextBlockStyle" TargetType="TextBlock">
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -118,16 +251,5 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Height" Value="50"/>
   </Style>
-
-  <LinearGradientBrush x:Key="FamilyFeudNavyToDodgerBrush" StartPoint="0.5, 0" EndPoint="0.5, 1">
-    <GradientStop Color="Navy" Offset="0"/>
-    <GradientStop Color="DodgerBlue" Offset="1"/>
-  </LinearGradientBrush>
-
-  <LinearGradientBrush x:Key="FamilyFeudDodgerToNavyBrush" StartPoint="0.5, 0" EndPoint="0.5, 1">
-    <GradientStop Color="Navy" Offset="1"/>
-    <GradientStop Color="DodgerBlue" Offset="0"/>    
-  </LinearGradientBrush>
-
 
 </ResourceDictionary>

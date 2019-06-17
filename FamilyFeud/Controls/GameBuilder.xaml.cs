@@ -15,6 +15,8 @@ namespace FamilyFeud.Controls
   {
     private const int MinQuestions = 3;
 
+    private const int MaxBonusQuestions = 12;
+
     private ObservableCollection<Round> mAvailableRounds;
     private ObservableCollection<Round> mChosenRounds;
     private ObservableCollection<BonusQuestion> mAvailableBonusQuestions;
@@ -119,22 +121,26 @@ namespace FamilyFeud.Controls
     {
       MoveItems<Round>(mAvailableRounds, mChosenRounds, lvSelectableRounds.SelectedItems);
       btnDone.IsEnabled = mChosenRounds.Count >= MinQuestions;
+      lvSelectedRounds.Items.MoveCurrentToLast();
     }
 
     private void UnChooseRound_Click(object sender, RoutedEventArgs e)
     {
       MoveItems<Round>(mChosenRounds, mAvailableRounds, lvSelectedRounds.SelectedItems);
       btnDone.IsEnabled = mChosenRounds.Count >= MinQuestions;
+      lvSelectableRounds.Items.MoveCurrentToLast();
     }
 
     private void ChooseBonusQuestion_Click(object sender, RoutedEventArgs e)
     {
-      MoveItems<BonusQuestion>(mAvailableBonusQuestions, mChosenBonusQuestions, lvSelectableBonusQuestions.SelectedItems, 12);
+      MoveItems<BonusQuestion>(mAvailableBonusQuestions, mChosenBonusQuestions, lvSelectableBonusQuestions.SelectedItems, MaxBonusQuestions);
+      btnChooseBonus.IsEnabled = lvSelectedBonusQuestions.Items.Count < MaxBonusQuestions;
     }
 
     private void UnChooseBonusQuestion_Click(object sender, RoutedEventArgs e)
     {
       MoveItems<BonusQuestion>(mChosenBonusQuestions, mAvailableBonusQuestions, lvSelectedBonusQuestions.SelectedItems);
+      btnChooseBonus.IsEnabled = lvSelectedBonusQuestions.Items.Count < MaxBonusQuestions;
     }
 
     private void MoveItems<T>(ObservableCollection<T> colToRemoveFrom, ObservableCollection<T> colToAddTo, IList selectedItems, int addToMax = -1)
@@ -180,6 +186,35 @@ namespace FamilyFeud.Controls
     private void btnCancel_Click(object sender, RoutedEventArgs e)
     {
       Close();
+    }
+
+    private void rbNone_CheckedChanged(object sender, RoutedEventArgs e)
+    {
+      if(rbNone.IsChecked.HasValue && !rbNone.IsChecked.Value)
+      {
+        if(btnChooseBonus != null)
+        {
+          btnChooseBonus.IsEnabled = lvSelectableBonusQuestions?.Items == null ? true :
+                                     lvSelectedBonusQuestions.Items.Count < MaxBonusQuestions;
+        }
+
+        if(btnUnchooseBonus != null)
+        {
+          btnUnchooseBonus.IsEnabled = true;
+        }
+      }
+      else
+      {
+        if(btnChooseBonus != null)
+        {
+          btnChooseBonus.IsEnabled = false;
+        }
+
+        if(btnUnchooseBonus != null)
+        {
+          btnUnchooseBonus.IsEnabled = false;
+        }
+      }
     }
   }
 

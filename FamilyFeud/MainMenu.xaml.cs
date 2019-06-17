@@ -19,8 +19,8 @@ namespace FamilyFeud
   {
     private GameWindow gameWindow;
     private XmlSerializer mSerializer;
-    private ObservableCollection<IQuestioner> dummyDataQ;
-    private ObservableCollection<IQuestioner> dummyDataB;
+    private ObservableCollection<IQuestioner> mQuestions;
+    private ObservableCollection<IQuestioner> mBonusQuestions;
     private const int MaxRandomGameSize = 10;
     private const int MinRandomGameSize = 3;
     private static Random Rand = new Random((int)DateTime.UtcNow.Ticks); // ew dirty conversion from long to int
@@ -34,7 +34,7 @@ namespace FamilyFeud
         BackgroundRoot.Height = 1080.0 - SystemParameters.CaptionHeight * 3 + 3;
       };
 
-      dummyDataQ = new ObservableCollection<IQuestioner>()
+      mQuestions = new ObservableCollection<IQuestioner>()
       {
         new Round("Who am I?", new ObservableCollection<Answer>()
         {
@@ -74,7 +74,7 @@ namespace FamilyFeud
         })
       };
 
-      dummyDataB = new ObservableCollection<IQuestioner>()
+      mBonusQuestions = new ObservableCollection<IQuestioner>()
       {
         new BonusQuestion("BQ1", "BQA1", 10),
         new BonusQuestion("BQ2", "BQA2", 10),
@@ -82,7 +82,7 @@ namespace FamilyFeud
         new BonusQuestion("BQ4", "BQA4", 10),
         new BonusQuestion("BQ5", "BQA5", 10),
         new BonusQuestion("BQ6", "BQA6", 10),
-        new BonusQuestion("BQ7", "BQA7", 10),
+        new BonusQuestion("BQ7777777777777777777777777777777777777777777777777777", "BQA7", 10),
         new BonusQuestion("BQ8", "BQA8", 10),
         new BonusQuestion("BQ9", "BQA9", 10),
         new BonusQuestion("BQ10", "BQA10", 10),
@@ -92,8 +92,8 @@ namespace FamilyFeud
       };
 
       LoadSaveData();
-      QuestionList.ItemSource = dummyDataQ;
-      BonusQuestionList.ItemSource = dummyDataB;
+      QuestionList.ItemSource = mQuestions;
+      BonusQuestionList.ItemSource = mBonusQuestions;
     }
 
     private void MainMenu_Closed(object sender, EventArgs e)
@@ -109,11 +109,11 @@ namespace FamilyFeud
       int numRounds;
 
       selectedRounds = new ObservableCollection<Round>();
-      numRounds = dummyDataQ.Count < MaxRandomGameSize ? dummyDataQ.Count : MaxRandomGameSize;
+      numRounds = mQuestions.Count < MaxRandomGameSize ? mQuestions.Count : MaxRandomGameSize;
 
       while(selectedRounds.Count < numRounds)
       {
-        currRound = dummyDataQ[Rand.Next() % dummyDataQ.Count] as Round;
+        currRound = mQuestions[Rand.Next() % mQuestions.Count] as Round;
 
         if(!selectedRounds.Any(r => currRound.Equals(r)))
         {
@@ -126,7 +126,7 @@ namespace FamilyFeud
 
     private void btnBeginCustomGame_Click(object sender, RoutedEventArgs e)
     {
-      GameBuilder gb = new GameBuilder(dummyDataQ.Cast<Round>(), dummyDataB.Cast<BonusQuestion>());
+      GameBuilder gb = new GameBuilder(mQuestions.Cast<Round>(), mBonusQuestions.Cast<BonusQuestion>());
       gb.GameBuildingCompleted += GameBuildingCompleted;
       gb.Show();
     }

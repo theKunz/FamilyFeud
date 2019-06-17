@@ -90,7 +90,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn x:Name="ScoreColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="100" CanUserSort="True" SortMemberPath="{Binding ScoreTotal}">
+        <DataGridTemplateColumn x:Name="ScoreColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="100">
           <DataGridTemplateColumn.Header>
             <Button Click="ScoreHeader_Click">
               <Button.Template>
