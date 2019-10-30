@@ -122,23 +122,23 @@
                 <VisualState x:Name="Normal"/>
                 <VisualState x:Name="MouseOver">
                   <Storyboard>
-                    <ColorAnimation To="{StaticResource FF_Foreground_ExtraLightColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
-                    <!--<ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Duration="0"/>
-                          <ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Duration="0"/>-->
+                    <ColorAnimation To="{StaticResource FF_Foreground_ExtraLightColor}" 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    Storyboard.TargetName="ThumbBackground" Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Pressed">
                   <Storyboard>
-                    <ColorAnimation To="{StaticResource FF_Foreground_DarkColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
-                    <!--<ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="UpperRepeatButton" Duration="0"/>
-                          <ColorAnimation To="LightGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="LowerRepeatButton" Duration="0"/>-->
+                    <ColorAnimation To="{StaticResource FF_Foreground_DarkColor}" 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    Storyboard.TargetName="ThumbBackground" Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
-                    <ColorAnimation To="{StaticResource ScrollBarThumbDisabledColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThumbBackground" Duration="0"/>
-                    <!--<ColorAnimation To="DarkGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="UpperRepeatButton" Duration="0"/>
-                          <ColorAnimation To="DarkGray" Storyboard.TargetProperty="(RepeatButton.Background).(SolidColorBrush.Color)" Storyboard.TargetName="LowerRepeatButton" Duration="0"/>-->
+                    <ColorAnimation To="{StaticResource ScrollBarThumbDisabledColor}" 
+                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                    Storyboard.TargetName="ThumbBackground" Duration="0"/>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
@@ -161,7 +161,11 @@
         <ColumnDefinition Width="0.1*"/>
         <ColumnDefinition MaxWidth="18"/>
       </Grid.ColumnDefinitions>
-      <RepeatButton Grid.Column="0" Command="ScrollBar.LineLeftCommand" Content="←"/>
+      <RepeatButton Grid.Column="0" Command="ScrollBar.LineLeftCommand">
+        <RepeatButton.Content>
+          <Path Stroke="Black" Fill="Transparent" Data="M 3 0 L 0 4 L 3 8" />
+        </RepeatButton.Content>
+      </RepeatButton>
       <Track Name="PART_Track" Grid.Column="1">
         <Track.IncreaseRepeatButton>
           <RepeatButton x:Name="UpperRepeatButton" Background="Gray" Command="ScrollBar.PageRightCommand"/>
@@ -173,7 +177,11 @@
           <RepeatButton x:Name="LowerRepeatButton" Background="Gray" Command="ScrollBar.PageLeftCommand"/>
         </Track.DecreaseRepeatButton>
       </Track>
-      <RepeatButton Grid.Column="2" Command="ScrollBar.LineRightCommand" Content="→"/>
+      <RepeatButton Grid.Column="2" Command="ScrollBar.LineRightCommand">
+        <RepeatButton.Content>
+          <Path Stroke="Black" Fill="Transparent" Data="M 3 0 L 6 4 L 3 8" />
+        </RepeatButton.Content>
+      </RepeatButton>
     </Grid>
   </ControlTemplate>
 
@@ -184,7 +192,11 @@
         <RowDefinition Height="0.1*"/>
         <RowDefinition MaxHeight="18"/>
       </Grid.RowDefinitions>
-      <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" Content="↑"/>
+      <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" >
+        <RepeatButton.Content>
+          <Path Stroke="Black" Fill="Transparent" Data="M 0 5 L 4 2 L 8 5" />
+        </RepeatButton.Content>
+      </RepeatButton>
       <Track Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
         <Track.IncreaseRepeatButton>
           <RepeatButton x:Name="UpperRepeatButton" Background="Gray" Command="ScrollBar.PageDownCommand"/>
@@ -196,7 +208,11 @@
           <RepeatButton x:Name="LowerRepeatButton" Background="Gray" Command="ScrollBar.PageUpCommand"/>
         </Track.DecreaseRepeatButton>
       </Track>
-      <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand" Content="↓"/>
+      <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand">
+        <RepeatButton.Content>
+          <Path Stroke="Black" Fill="Transparent" Data="M 0 3 L 4 6 L 8 3" />
+        </RepeatButton.Content>
+      </RepeatButton>
     </Grid>
   </ControlTemplate>
 
