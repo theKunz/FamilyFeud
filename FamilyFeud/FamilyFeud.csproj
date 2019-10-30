@@ -74,6 +74,9 @@
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\QuestionBuilder.xaml.cs">
+      <DependentUpon>QuestionBuilder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\QuestionListView.xaml.cs">
       <DependentUpon>QuestionListView.xaml</DependentUpon>
     </Compile>
@@ -87,6 +90,7 @@
       <DependentUpon>TeamScoreTracker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomEventArgs\GameBuildingCompletedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\GenericObjectEventArgs.cs" />
     <Compile Include="DataObjects\BonusQuestion.cs" />
     <Compile Include="DataObjects\Game.cs" />
     <Compile Include="DataObjects\Interfaces\IEditable.cs" />
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\QuestionBuilder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
