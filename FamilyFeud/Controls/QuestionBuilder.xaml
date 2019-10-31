@@ -7,9 +7,27 @@
              mc:Ignorable="d"
              Width="Auto"
              Height="Auto">
+  <Window.Resources>
+    <Style x:Key="AnswerTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FamilyFeudTextBoxStyle}">
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Width" Value="225"/>
+      <Setter Property="Margin" Value="10"/>
+      <Setter Property="HorizontalAlignment" Value="Right"/>
+      <EventSetter Event="TextChanged" Handler="TextBox_TextChanged"/>
+    </Style>
+    <Style x:Key="PointsTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FamilyFeudTextBoxStyle}">
+      <Setter Property="Width" Value="60"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="FontSize" Value="12"/>
+      <EventSetter Event="PreviewTextInput" Handler="TextBox_PreviewTextInput"/>
+      <EventSetter Event="TextChanged" Handler="TextBox_TextChanged"/>
+    </Style>
+  </Window.Resources>
+  
   <StackPanel Background="{StaticResource FF_Foreground_Dark}" Width="500" Orientation="Vertical">
     <StackPanel x:Name="spQuestion" Orientation="Horizontal">
-      <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Question:" Margin="10" FontSize="23"/>
+      <TextBlock x:Name="tbQuestion" Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Question:" Margin="10" FontSize="23"/>
       <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
                Height="75"
                FontSize="12"
@@ -17,130 +35,59 @@
                Width="350"
                TextWrapping="Wrap"
                Margin="10,10,10,10"
-               HorizontalAlignment="Right"/>
+               HorizontalAlignment="Right"
+               TextChanged="TextBox_TextChanged"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer1" Orientation="Horizontal">
-      <TextBlock x:Name="tbAnswer1" Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 1:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBlock x:Name="labelAnswer1" Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 1:" Margin="10" FontSize="18"/>
+      <TextBox x:Name="tbAnswer1" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer1Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer2" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 2:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer2" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer2Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer3" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 3:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer3" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer3Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer4" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 4:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer4" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer4Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer5" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 5:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer5" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer5Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer6" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 6:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer6" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer6Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer7" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 7:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer7" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer7Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel x:Name="spAnswer8" Orientation="Horizontal" Visibility="{Binding IsNormalQuestion}">
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Answer 8:" Margin="10" FontSize="18"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}" 
-               Height="30"
-               FontSize="12"
-               AcceptsReturn="True"
-               Width="225"
-               Margin="10"
-               HorizontalAlignment="Right"/>
+      <TextBox x:Name="tbAnswer8" Style="{StaticResource AnswerTextBoxStyle}"/>
       <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Points:" Margin="10" FontSize="16"/>
-      <TextBox Style="{StaticResource FamilyFeudTextBoxStyle}"
-               Width="60"
-               Height="30"
-               PreviewTextInput="TextBox_PreviewTextInput"/>
+      <TextBox x:Name="tbAnswer8Points" Style="{StaticResource PointsTextBoxStyle}"/>
     </StackPanel>
     <StackPanel Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center">
-      <Button x:Name="btnSave" Style="{StaticResource FamilyFuedButtonStyle}" Height="25" Width="70" Content="Save" Margin="20,10" Click="btnSave_Click"/>
+      <Button x:Name="btnSave" Style="{StaticResource FamilyFuedButtonStyle}" Height="25" Width="70" Content="Save" Margin="20,10" Click="btnSave_Click" IsEnabled="{Binding CanSave}"/>
       <Button x:Name="btnCancel" Style="{StaticResource FamilyFuedButtonStyle}" Height="25" Width="70" Content="Cancel" Margin="20,10" Click="btnCancel_Click"/>
     </StackPanel>
   </StackPanel>
