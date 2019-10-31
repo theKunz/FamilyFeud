@@ -1,6 +1,7 @@
 ﻿using FamilyFeud.Controls;
 using FamilyFeud.DataObjects;
 using FamilyFeud.CustomEventArgs;
+using CommonLib.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -223,6 +224,72 @@ namespace FamilyFeud
         popup.Content = returnStr;
         popup.Show();
       }*/
+    }
+
+    private void btnAddBonusQuestion_Click(object sender, RoutedEventArgs e)
+    {
+      QuestionBuilder qb = new QuestionBuilder(true);
+      EventHandler<EventArgs<BonusQuestion>> bqComplete;
+      EventHandler bqClosed;
+
+      bqComplete = null;
+      bqComplete = (object s, EventArgs<BonusQuestion> args) =>
+      {
+        qb.BonusQuestionComplete -= bqComplete;
+
+        // TODO: Add duplicate warning popup
+        if(!mBonusQuestions.Any(b => args.Data.Equals(b)))
+        {
+          mBonusQuestions.Add(args.Data);
+        }
+
+      };
+
+      bqClosed = null;
+      bqClosed = (object s, EventArgs args) =>
+      {
+        qb.BonusQuestionComplete -= bqComplete;
+        qb.Closed -= bqClosed;
+      };
+
+      qb.Closed += bqClosed;
+      qb.BonusQuestionComplete += bqComplete;
+
+      qb.Title = "Add Bonus Question";
+      qb.ShowDialog();
+    }
+
+    private void btnAddQuestion_Click(object sender, RoutedEventArgs e)
+    {
+      QuestionBuilder qb = new QuestionBuilder(false);
+      EventHandler<EventArgs<Round>> qComplete;
+      EventHandler bqClosed;
+
+      qComplete = null;
+      qComplete = (object s, EventArgs<Round> args) =>
+      {
+        qb.QuestionComplete -= qComplete;
+
+        // TODO: Add duplicate warning popup
+        if (!mQuestions.Any(b => args.Data.Equals(b)))
+        {
+          mQuestions.Add(args.Data);
+        }
+
+      };
+
+      bqClosed = null;
+      bqClosed = (object s, EventArgs args) =>
+      {
+        qb.QuestionComplete -= qComplete;
+        qb.Closed -= bqClosed;
+      };
+
+      qb.Closed += bqClosed;
+      qb.QuestionComplete += qComplete;
+
+      qb.Title = "Add Question";
+      qb.ShowDialog();
     }
   }
 }

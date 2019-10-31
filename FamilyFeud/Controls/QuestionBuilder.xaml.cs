@@ -1,4 +1,4 @@
-﻿using FamilyFeud.CustomEventArgs;
+﻿using CommonLib.CustomEventArgs;
 using FamilyFeud.DataObjects;
 using System;
 using System.Collections.ObjectModel;
@@ -16,22 +16,38 @@ namespace FamilyFeud.Controls
   public partial class QuestionBuilder : Window, INotifyPropertyChanged
   {
     private bool mIsNormalQuestion;
+    private bool mCanSave;
     public event PropertyChangedEventHandler PropertyChanged;
     public event EventHandler<EventArgs<Round>> QuestionComplete;
     public event EventHandler<EventArgs<BonusQuestion>> BonusQuestionComplete;
   
+    // TODO: Add edit existing question
+
     public QuestionBuilder()
     {
-      PropertyChanged += PropertyChanged_RenameAnswerField;
-      InitializeComponent();
       mIsNormalQuestion = true;
+      mCanSave = false;
+      PropertyChanged += PropertyChanged_RenameAnswerField;
+      Loaded += OnLoaded;
+      DataContext = this;
+      InitializeComponent();
     }
   
-    public QuestionBuilder(bool isBonus)
+    public QuestionBuilder(bool isBonusQuestion)
     {
+      mIsNormalQuestion = !isBonusQuestion;
+      mCanSave = false;
       PropertyChanged += PropertyChanged_RenameAnswerField;
+      Loaded += OnLoaded;
+      DataContext = this;
       InitializeComponent();
-      mIsNormalQuestion = isBonus;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs args)
+    {
+      Loaded -= OnLoaded;
+
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNormalQuestion)));
     }
 
     private void PropertyChanged_RenameAnswerField(object sender, PropertyChangedEventArgs args)
@@ -85,8 +101,15 @@ namespace FamilyFeud.Controls
     {
       get
       {
-        return CheckNonEmptyStackPanelTextBoxes(spQuestion) &&
-               CheckNonEmptyStackPanelTextBoxes(spAnswer1);
+        return mCanSave;
+      }
+      private set
+      {
+        if (value != mCanSave)
+        {
+          mCanSave = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanSave)));
+        }
       }
     }
 
@@ -117,7 +140,7 @@ namespace FamilyFeud.Controls
         if (CheckNonEmptyStackPanelTextBoxes(spAnswer7)) { round.Answers.Add(new Answer(tbAnswer7.Text, uint.Parse(tbAnswer7Points.Text))); }
         if (CheckNonEmptyStackPanelTextBoxes(spAnswer8)) { round.Answers.Add(new Answer(tbAnswer8.Text, uint.Parse(tbAnswer8Points.Text))); }
 
-        round.Answers.OrderByDescending(a => a.PointValue);
+        round.Answers = new ObservableCollection<Answer>(round.Answers.OrderByDescending(a => a.PointValue));
 
         QuestionComplete?.Invoke(this, new EventArgs<Round>(round));
       }
@@ -137,7 +160,23 @@ namespace FamilyFeud.Controls
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs args)
     {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanSave)));
+      if (IsNormalQuestion)
+      {
+        CanSave = CheckNonEmptyStackPanelTextBoxes(spQuestion) &&
+                 (CheckNonEmptyStackPanelTextBoxes(spAnswer1) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer2) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer3) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer4) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer5) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer6) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer7) ||
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer8));
+      }
+      else
+      {
+        CanSave = CheckNonEmptyStackPanelTextBoxes(spQuestion) &&
+                  CheckNonEmptyStackPanelTextBoxes(spAnswer1);
+      }
     }
   }
 }

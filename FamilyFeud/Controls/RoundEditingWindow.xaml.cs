@@ -28,7 +28,7 @@ namespace FamilyFeud.Controls
     private bool mIgnoreDirty;
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public event EventHandler<GenericEventArgs<Round>> EditingComplete;
+    public event EventHandler<EventArgs<Round>> EditingComplete;
 
     public RoundEditingWindow()
     {

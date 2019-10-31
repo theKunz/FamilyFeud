@@ -90,7 +90,6 @@
       <DependentUpon>TeamScoreTracker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomEventArgs\GameBuildingCompletedEventArgs.cs" />
-    <Compile Include="CustomEventArgs\GenericObjectEventArgs.cs" />
     <Compile Include="DataObjects\BonusQuestion.cs" />
     <Compile Include="DataObjects\Game.cs" />
     <Compile Include="DataObjects\Interfaces\IEditable.cs" />

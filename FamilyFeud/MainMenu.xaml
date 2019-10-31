@@ -35,8 +35,8 @@
           </Grid.RowDefinitions>
           <LocalControls:QuestionListView x:Name="QuestionList" Header="Standard Questions" Grid.Column="0" Grid.Row="0"   Height="380"/>
           <LocalControls:QuestionListView x:Name="BonusQuestionList" Header="Bonus Questions" Grid.Column="1" Grid.Row="0" Height="380"/>
-          <Button Grid.Column="0" Grid.Row="1" Height="30" Width="175" Style="{StaticResource FamilyFuedButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Add Question" FontSize="14"/>
-          <Button Grid.Column="1" Grid.Row="1" Height="30" Width="175" Style="{StaticResource FamilyFuedButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Add Bonus Question" FontSize="14"/>
+          <Button x:Name="btnAddQuestion" Grid.Column="0" Grid.Row="1" Height="30" Width="175" Style="{StaticResource FamilyFuedButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Add Question" FontSize="14" Click="btnAddQuestion_Click"/>
+          <Button x:Name="btnAddBonusQuestion" Grid.Column="1" Grid.Row="1" Height="30" Width="175" Style="{StaticResource FamilyFuedButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Add Bonus Question" FontSize="14" Click="btnAddBonusQuestion_Click"/>
         </Grid>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
           <Border BorderBrush="Transparent" Width="500" Height="300" VerticalAlignment="Top" Margin="30">
