@@ -17,10 +17,12 @@ namespace FamilyFeud.Controls
   {
     private bool mIsNormalQuestion;
     private bool mCanSave;
+    private Round mRound;
+    private BonusQuestion mBonusQuestion;
     public event PropertyChangedEventHandler PropertyChanged;
     public event EventHandler<EventArgs<Round>> QuestionComplete;
     public event EventHandler<EventArgs<BonusQuestion>> BonusQuestionComplete;
-  
+
     // TODO: Add edit existing question
 
     public QuestionBuilder()
@@ -28,33 +30,95 @@ namespace FamilyFeud.Controls
       mIsNormalQuestion = true;
       mCanSave = false;
       PropertyChanged += PropertyChanged_RenameAnswerField;
-      Loaded += OnLoaded;
+      Loaded += OnLoaded_UpdateIsNormalQuestion;
       DataContext = this;
       InitializeComponent();
     }
-  
+
     public QuestionBuilder(bool isBonusQuestion)
     {
       mIsNormalQuestion = !isBonusQuestion;
       mCanSave = false;
       PropertyChanged += PropertyChanged_RenameAnswerField;
-      Loaded += OnLoaded;
+      Loaded += OnLoaded_UpdateIsNormalQuestion;
       DataContext = this;
       InitializeComponent();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs args)
+    public QuestionBuilder(Round round)
     {
-      Loaded -= OnLoaded;
+      mIsNormalQuestion = true;
+      mCanSave = true;
+      mRound = round.Copy();
+      PropertyChanged += PropertyChanged_RenameAnswerField;
+      Loaded += OnLoaded_UpdateIsNormalQuestion;
+      Loaded += OnLoaded_InitializeRound;
+      DataContext = this;
+      InitializeComponent();
+    }
+
+    public QuestionBuilder(BonusQuestion bonusQuestion)
+    {
+      mIsNormalQuestion = false;
+      mCanSave = true;
+      mBonusQuestion = bonusQuestion.Copy();
+      PropertyChanged += PropertyChanged_RenameAnswerField;
+      Loaded += OnLoaded_UpdateIsNormalQuestion;
+      Loaded += OnLoaded_InitializeBonus;
+      DataContext = this;
+      InitializeComponent();
+    }
+
+    private void OnLoaded_UpdateIsNormalQuestion(object sender, RoutedEventArgs args)
+    {
+      Loaded -= OnLoaded_UpdateIsNormalQuestion;
 
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNormalQuestion)));
     }
 
+    private void OnLoaded_InitializeRound(object sender, RoutedEventArgs args)
+    {
+      Loaded -= OnLoaded_InitializeRound;
+
+      if(mRound == null)
+      {
+        return;
+      }
+
+      tbQuestion.Text = mRound.Question.QuestionText;
+
+      TextBox answerTb;
+      TextBox pointTb;
+
+      for(int i = 0; i < mRound.Answers.Count; i++)
+      {
+        answerTb = FindName("tbAnswer" + (i + 1)) as TextBox;
+        pointTb = FindName("tbAnswer" + (i + 1) + "Points") as TextBox;
+
+        answerTb.Text = mRound.Answers.ElementAt(i).AnswerText;
+        pointTb.Text = mRound.Answers.ElementAt(i).PointValue.ToString();
+      }
+    }
+
+    private void OnLoaded_InitializeBonus(object sender, RoutedEventArgs args)
+    {
+      Loaded -= OnLoaded_InitializeBonus;
+
+      if(mBonusQuestion == null)
+      {
+        return;
+      }
+
+      tbQuestion.Text = mBonusQuestion.Question.QuestionText;
+      tbAnswer1.Text = mBonusQuestion.Answer.AnswerText;
+      tbAnswer1Points.Text = mBonusQuestion.Answer.PointValue.ToString();
+    }
+
     private void PropertyChanged_RenameAnswerField(object sender, PropertyChangedEventArgs args)
     {
-      if(args.PropertyName.Equals(nameof(IsNormalQuestion)))
+      if (args.PropertyName.Equals(nameof(IsNormalQuestion)))
       {
-        if(IsNormalQuestion)
+        if (IsNormalQuestion)
         {
           labelAnswer1.Text = "Answer 1:";
         }
@@ -69,10 +133,10 @@ namespace FamilyFeud.Controls
     {
       bool isNonEmpty = true;
 
-      foreach(object o in sp.Children)
+      foreach (object o in sp.Children)
       {
         TextBox tb = o as TextBox;
-        if(tb != null)
+        if (tb != null)
         {
           isNonEmpty &= !string.IsNullOrWhiteSpace(tb.Text);
         }
@@ -80,7 +144,7 @@ namespace FamilyFeud.Controls
 
       return isNonEmpty;
     }
-    
+
     public bool IsNormalQuestion
     {
       get
@@ -89,7 +153,7 @@ namespace FamilyFeud.Controls
       }
       set
       {
-        if(value != mIsNormalQuestion)
+        if (value != mIsNormalQuestion)
         {
           mIsNormalQuestion = value;
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNormalQuestion)));
@@ -125,12 +189,12 @@ namespace FamilyFeud.Controls
 
     private void btnSave_Click(object sender, RoutedEventArgs e)
     {
-      if(mIsNormalQuestion)
+      if (mIsNormalQuestion)
       {
         Round round = new Round();
         round.Question = new Question(tbQuestion.Text);
         round.Answers = new ObservableCollection<Answer>();
-        
+
         if (CheckNonEmptyStackPanelTextBoxes(spAnswer1)) { round.Answers.Add(new Answer(tbAnswer1.Text, uint.Parse(tbAnswer1Points.Text))); }
         if (CheckNonEmptyStackPanelTextBoxes(spAnswer2)) { round.Answers.Add(new Answer(tbAnswer2.Text, uint.Parse(tbAnswer2Points.Text))); }
         if (CheckNonEmptyStackPanelTextBoxes(spAnswer3)) { round.Answers.Add(new Answer(tbAnswer3.Text, uint.Parse(tbAnswer3Points.Text))); }

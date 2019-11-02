@@ -80,9 +80,6 @@
     <Compile Include="Controls\QuestionListView.xaml.cs">
       <DependentUpon>QuestionListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RoundEditingWindow.xaml.cs">
-      <DependentUpon>RoundEditingWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SingleQuestionControl.xaml.cs">
       <DependentUpon>SingleQuestionControl.xaml</DependentUpon>
     </Compile>
@@ -121,10 +118,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\QuestionListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\RoundEditingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

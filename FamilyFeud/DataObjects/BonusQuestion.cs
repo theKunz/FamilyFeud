@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommonLib.CustomEventArgs;
+using FamilyFeud.Controls;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 /// <summary>
@@ -54,7 +56,7 @@ namespace FamilyFeud.DataObjects
         if(!mQuestion.Equals(value))
         {
           mQuestion = value;
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Question"));
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Question)));
         }
       }
     }
@@ -70,7 +72,7 @@ namespace FamilyFeud.DataObjects
         if(!mAnswer.Equals(value))
         {
           mAnswer = value;
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Answer"));
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Answer)));
         }
       }
     }
@@ -80,7 +82,35 @@ namespace FamilyFeud.DataObjects
     {
       get
       {
-        return null;
+        return (object obj) =>
+        {
+          QuestionBuilder qb = new QuestionBuilder(this);
+          EventHandler<EventArgs<BonusQuestion>> bqComplete;
+          EventHandler bqClosed;
+
+          bqComplete = null;
+          bqComplete = (object s, EventArgs<BonusQuestion> args) =>
+          {
+            qb.BonusQuestionComplete -= bqComplete;
+
+            this.Answer = args.Data.Answer;
+            this.Question = args.Data.Question;
+
+          };
+
+          bqClosed = null;
+          bqClosed = (object s, EventArgs args) =>
+          {
+            qb.BonusQuestionComplete -= bqComplete;
+            qb.Closed -= bqClosed;
+          };
+
+          qb.Closed += bqClosed;
+          qb.BonusQuestionComplete += bqComplete;
+
+          qb.Title = "Edit Bonus Question";
+          qb.ShowDialog();
+        };
       }
       set
       {

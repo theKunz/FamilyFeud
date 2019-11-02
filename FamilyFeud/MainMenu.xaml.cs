@@ -39,39 +39,39 @@ namespace FamilyFeud
       {
         new Round("Who am I?", new ObservableCollection<Answer>()
         {
-          new Answer("(1) I am one", 10),
-          new Answer("(1) I am two", 20),
-          new Answer("(1) I am three", 30),
-          new Answer("(1) I am four", 40),
-          new Answer("(1) I am five", 50),
           new Answer("(1) I am six", 60),
+          new Answer("(1) I am five", 50),
+          new Answer("(1) I am four", 40),
+          new Answer("(1) I am three", 30),
+          new Answer("(1) I am two", 20),
+          new Answer("(1) I am one", 10),
         }),
         new Round("Who are you?", new ObservableCollection<Answer>()
         {
-          new Answer("(2) You are one", 10),
-          new Answer("(2) You are two", 20),
-          new Answer("(2) You are three", 30),
-          new Answer("(2) You are four", 40),
-          new Answer("(2) You are five", 50),
           new Answer("(2) You are six", 60),
+          new Answer("(2) You are five", 50),
+          new Answer("(2) You are four", 40),
+          new Answer("(2) You are three", 30),
+          new Answer("(2) You are two", 20),
+          new Answer("(2) You are one", 10),
         }),
         new Round("Who are they?", new ObservableCollection<Answer>()
         {
-          new Answer("(3) They are one", 10),
-          new Answer("(3) They are two", 20),
-          new Answer("(3) They are three", 30),
-          new Answer("(3) They are four", 40),
-          new Answer("(3) They are five", 50),
           new Answer("(3) They are six", 60),
+          new Answer("(3) They are five", 50),
+          new Answer("(3) They are four", 40),
+          new Answer("(3) They are three", 30),
+          new Answer("(3) They are two", 20),
+          new Answer("(3) They are one", 10)
         }),
         new Round("Who are us?", new ObservableCollection<Answer>()
         {
-          new Answer("(4) Us are one", 10),
-          new Answer("(4) Us are two", 20),
-          new Answer("(4) Us are three", 30),
-          new Answer("(4) Us are four", 40),
-          new Answer("(4) Us are five", 50),
           new Answer("(4) Us are six", 60),
+          new Answer("(4) Us are five", 50),
+          new Answer("(4) Us are four", 40),
+          new Answer("(4) Us are three", 30),
+          new Answer("(4) Us are two", 20),
+          new Answer("(4) Us are one", 10)
         })
       };
 
@@ -83,7 +83,7 @@ namespace FamilyFeud
         new BonusQuestion("BQ4", "BQA4", 10),
         new BonusQuestion("BQ5", "BQA5", 10),
         new BonusQuestion("BQ6", "BQA6", 10),
-        new BonusQuestion("BQ7777777777777777777777777777777777777777777777777777", "BQA7", 10),
+        new BonusQuestion("BQ7", "BQA7", 10),
         new BonusQuestion("BQ8", "BQA8", 10),
         new BonusQuestion("BQ9", "BQA9", 10),
         new BonusQuestion("BQ10", "BQA10", 10),

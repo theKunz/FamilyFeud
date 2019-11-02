@@ -17,6 +17,8 @@ using System.Xml.Serialization;
 using ExtensionMethods;
 using CommonLib.Constants;
 using System.ComponentModel;
+using CommonLib.CustomEventArgs;
+using FamilyFeud.Controls;
 
 namespace FamilyFeud.DataObjects
 {
@@ -291,7 +293,35 @@ namespace FamilyFeud.DataObjects
     {
       get
       {
-        return null;
+        return (object obj) =>
+        {
+          QuestionBuilder qb = new QuestionBuilder(this);
+          EventHandler<EventArgs<Round>> qComplete;
+          EventHandler bqClosed;
+
+          qComplete = null;
+          qComplete = (object s, EventArgs<Round> args) =>
+          {
+            qb.QuestionComplete -= qComplete;
+
+            this.Question = args.Data.Question;
+            this.Answers = args.Data.Answers;
+
+          };
+
+          bqClosed = null;
+          bqClosed = (object s, EventArgs args) =>
+          {
+            qb.QuestionComplete -= qComplete;
+            qb.Closed -= bqClosed;
+          };
+
+          qb.Closed += bqClosed;
+          qb.QuestionComplete += qComplete;
+
+          qb.Title = "Edit Question";
+          qb.ShowDialog();
+        };
       }
       set
       {
