@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace FamilyFeud.Controls
 {
@@ -22,6 +23,9 @@ namespace FamilyFeud.Controls
     private bool mNextEnabled;
     private bool mPreviousEnabled;
     private MediaPlayer mMediaPlayer;
+    private Storyboard showQuestionStory;
+    private bool mIsQuestionShown = false;
+    private bool mShowQuestionOnLoad;
 
     public event EventHandler NextClickEvent;
     public event EventHandler PreviousClickEvent;
@@ -32,31 +36,56 @@ namespace FamilyFeud.Controls
       // Blank for now, need a parameterless constructor to be used as a control
     }
 
-    public SingleQuestionControl(ObservableCollection<Answer> answers, string question) : this(new Round(question, answers))
+    public SingleQuestionControl(ObservableCollection<Answer> answers, string question, bool showQuestionOnLoad = false) : this(new Round(question, answers), showQuestionOnLoad)
     {
-      // Blank for now
+      // Blank for now.
     }
 
-    public SingleQuestionControl(Round round) 
+    public SingleQuestionControl(Round round, bool showQuestionOnLoad = false) 
     {
       InitializeComponent();
+
+      mShowQuestionOnLoad = showQuestionOnLoad;
 
       PreviousEnabled = true;
       NextEnabled = true;
 
-      Loaded += (object sender, RoutedEventArgs args) =>
-      {
-        ItemSource = round;
-      };
+      ItemSource = round;
+      
+      Loaded += SQC_Loaded;
 
       mNumAnswers = round.Answers.Count;
 
       KeyUp += KeyPressed;
 
       mMediaPlayer = new MediaPlayer();
+
+      DataContext = this;
     }
 
-    private void SetAnswerSources()
+    private void SQC_Loaded(object sender, RoutedEventArgs args)
+    {
+      Loaded -= SQC_Loaded;
+
+      showQuestionStory = Resources["sbQuestionOpacityStory"] as Storyboard;
+      showQuestionStory.Completed += (object storySender, EventArgs storyArgs) =>
+      {
+        mIsQuestionShown = !mIsQuestionShown;
+        if(!mIsQuestionShown)
+        {
+          bdrQuestionForeground.Visibility = Visibility.Collapsed;
+          bdrQuestionBackground.Visibility = Visibility.Collapsed;
+        }
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionShown)));
+      };
+
+      if(mShowQuestionOnLoad)
+      {
+        ShowQuestion();
+      }
+    }
+
+    private void SetQuestionInfo()
     {
       AnswerBox currAnswer;
 
@@ -75,6 +104,8 @@ namespace FamilyFeud.Controls
           currAnswer.AnswerIndex = null;
         }
       }
+
+      tbQuestion.Text = ItemSource.Question.QuestionText;
     }
 
     private void KeyPressed(object sender, KeyEventArgs args)
@@ -105,6 +136,40 @@ namespace FamilyFeud.Controls
       }
 
       (FindName("Answer" + answerIndex) as AnswerBox).ShowAnswer();
+    }
+
+    public void ShowQuestion()
+    {
+      if(!mIsQuestionShown)
+      {
+        bdrQuestionForeground.Visibility = Visibility.Visible;
+        bdrQuestionBackground.Visibility = Visibility.Visible;
+        (showQuestionStory.Children[0] as DoubleAnimation).From = 0.0;
+        (showQuestionStory.Children[0] as DoubleAnimation).To = 0.9;
+        (showQuestionStory.Children[1] as DoubleAnimation).From = 0.0;
+        (showQuestionStory.Children[1] as DoubleAnimation).To = 1.0;
+        showQuestionStory.Begin();
+      }
+    }
+
+    public void HideQuestion()
+    {
+      if(mIsQuestionShown)
+      {
+        (showQuestionStory.Children[0] as DoubleAnimation).From = 0.9;
+        (showQuestionStory.Children[0] as DoubleAnimation).To = 0.0;
+        (showQuestionStory.Children[1] as DoubleAnimation).From = 1.0;
+        (showQuestionStory.Children[1] as DoubleAnimation).To = 0.0;
+        showQuestionStory.Begin();
+      }
+    }
+
+    public bool IsQuestionShown
+    {
+      get
+      {
+        return mIsQuestionShown;
+      }
     }
 
     public bool NextEnabled
@@ -142,8 +207,13 @@ namespace FamilyFeud.Controls
       set
       {
         mRound = value;
-        SetAnswerSources();
+        SetQuestionInfo();
       }
+    }
+
+    private void bdrQuestion_MouseUp(object sender, MouseButtonEventArgs args)
+    {
+      HideQuestion();
     }
   }
 }

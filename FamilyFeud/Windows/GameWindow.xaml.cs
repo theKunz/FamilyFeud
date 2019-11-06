@@ -44,7 +44,7 @@ namespace FamilyFeud
 
       mAttachedKeys = new List<Key>() { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8 };
 
-      mActiveQuestion = new SingleQuestionControl(game.Rounds.ElementAt(0));
+      mActiveQuestion = new SingleQuestionControl(game.Rounds.ElementAt(0), true);
       mActiveQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
       mActiveQuestion.PreviousEnabled = false;
       ExistingQuestions[0] = mActiveQuestion;
@@ -64,11 +64,13 @@ namespace FamilyFeud
 
       gParentGrid.Children.Add(mActiveQuestion);
       gParentGrid.Children.Add(mNextQuestion);
+
     }
 
     // Because controls need a parameterless constructor
     public GameWindow() : this(new Game())
-    { 
+    {
+
     }
 
     /// <summary>
@@ -162,6 +164,8 @@ namespace FamilyFeud
         SetActiveTransform(mActiveQuestion);
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
+
+        mActiveQuestion.ShowQuestion();
       };
 
       mNextQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
@@ -217,6 +221,8 @@ namespace FamilyFeud
         SetActiveTransform(mActiveQuestion);
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
+
+        mActiveQuestion.ShowQuestion();
       };
 
       mPreviousQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, prevToCurrent);

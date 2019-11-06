@@ -7,6 +7,16 @@
              mc:Ignorable="d" 
              Height="Auto" Width="Auto"
              x:Name="ElementRoot">
+  <UserControl.Resources>
+    <Storyboard x:Key="sbQuestionOpacityStory">
+      <DoubleAnimation BeginTime="00:00:00" Duration="00:00:1.0"
+                       Storyboard.TargetName="bdrQuestionBackground" Storyboard.TargetProperty="Opacity" 
+                       From="0" To="0.9"/>
+      <DoubleAnimation BeginTime="00:00:00" Duration="00:00:1.0"
+                       Storyboard.TargetName="bdrQuestionForeground" Storyboard.TargetProperty="Opacity" 
+                       From="0" To="0.9"/>
+    </Storyboard>
+  </UserControl.Resources>
   <Border Width="1920" Height="1080" BorderBrush="Black">
     <Border.Background>
       <ImageBrush ImageSource="/FamilyFeud;component/Images/QuestionBackground.png"/>
@@ -27,6 +37,7 @@
         <RowDefinition />
       </Grid.RowDefinitions>
 
+
       <local:AnswerBox x:Name="Answer1" Grid.Column="1" Grid.Row="1"/>
       <local:AnswerBox x:Name="Answer2" Grid.Column="1" Grid.Row="2"/>
       <local:AnswerBox x:Name="Answer3" Grid.Column="1" Grid.Row="3"/>
@@ -38,6 +49,26 @@
 
       <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonPrev_Click" Content="Previous" FontSize="20"/>
       <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonNext_Click" Content="Next" FontSize="20"/>
+
+      <Border x:Name="bdrQuestionBackground" Grid.ColumnSpan="4" Grid.RowSpan="6" Opacity="0.0" Visibility="Collapsed">
+        <Border.Background>
+          <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.66,1">
+            <GradientStop Color="Gray" Offset="0"/>
+            <GradientStop Color="White" Offset="0.5"/>
+            <GradientStop Color="Gray" Offset="1"/>
+          </LinearGradientBrush>
+        </Border.Background>
+      </Border>
+      <Border x:Name="bdrQuestionForeground" Grid.ColumnSpan="4" Grid.RowSpan="6" Background="Transparent" Opacity="0.0" Visibility="Collapsed" Mouse.MouseDown="bdrQuestion_MouseUp">
+        <TextBlock x:Name="tbQuestion"
+                   FontSize="90"
+                   FontWeight="ExtraBold"
+                   Margin="100"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"
+                   MaxWidth="1720"/>
+      </Border>
     </Grid>
   </Border>
 </UserControl>
