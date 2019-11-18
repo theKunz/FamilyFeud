@@ -22,6 +22,7 @@ namespace FamilyFeud
     private Size originalNonMaximizedSize;
     private List<Key> mAttachedKeys;
     private int currentQuestion;
+    private MediaPlayer mMediaPlayer;
 
     private Game mGame;
 
@@ -65,6 +66,15 @@ namespace FamilyFeud
       gParentGrid.Children.Add(mActiveQuestion);
       gParentGrid.Children.Add(mNextQuestion);
 
+      mMediaPlayer = new MediaPlayer();
+      mMediaPlayer.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
+      mMediaPlayer.IsMuted = true;
+      mMediaPlayer.MediaEnded += (s, e) =>
+      {
+        mMediaPlayer.IsMuted = true;
+        mMediaPlayer.Pause();
+        mMediaPlayer.Position = new TimeSpan(0, 0, 0);
+      };
     }
 
     // Because controls need a parameterless constructor
@@ -170,6 +180,10 @@ namespace FamilyFeud
 
       mNextQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
       mActiveQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
+
+      mMediaPlayer.Position = new TimeSpan(0, 0, 0);
+      mMediaPlayer.IsMuted = false;
+      mMediaPlayer.Play();
     }
 
     private void TransformToPreviousQuestion()

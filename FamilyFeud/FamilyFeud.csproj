@@ -68,6 +68,9 @@
     <Compile Include="Controls\AnswerBox.xaml.cs">
       <DependentUpon>AnswerBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BonusRoundControl.xaml.cs">
+      <DependentUpon>BonusRoundControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameBuilder.xaml.cs">
       <DependentUpon>GameBuilder.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
     <Page Include="Controls\AnswerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BonusRoundControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FamilyFeudStyles.xaml">
       <SubType>Designer</SubType>
@@ -215,6 +222,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sounds\Bing-sound.mp3" />
+    <Content Include="Sounds\Correct_Ding.wav" />
+    <Content Include="Sounds\Crowd_Cheer.wav" />
+    <Content Include="Sounds\Crow_Boo.wav" />
+    <Content Include="Sounds\Next_Question.wav" />
+    <Content Include="Sounds\Opening_Theme.wav" />
+    <Content Include="Sounds\Sad_Trombone.wav" />
+    <Content Include="Sounds\Wrong_Buzzer.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
