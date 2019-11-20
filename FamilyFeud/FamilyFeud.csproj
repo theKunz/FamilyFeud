@@ -221,6 +221,7 @@
     <Resource Include="Images\family-feud-X.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\BonusQuestionBackground.png" />
     <Content Include="Sounds\Bing-sound.mp3" />
     <Content Include="Sounds\Correct_Ding.wav" />
     <Content Include="Sounds\Crowd_Cheer.wav" />

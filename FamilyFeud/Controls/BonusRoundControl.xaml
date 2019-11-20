@@ -5,6 +5,102 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FamilyFeud.Controls"
              mc:Ignorable="d">
-  <Border Width="1920" Height="1080" BorderBrush="Black" Background="White">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Viewbox">
+        <Setter Property="StretchDirection" Value="DownOnly"/>
+        <Setter Property="Width" Value="610"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Height" Value="73"/>
+      </Style>
+      <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="60"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Height" Value="85"/>
+        <Setter Property="Width" Value="710"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  
+  <Border Width="1920" Height="1080" BorderBrush="Black">
+    <Border.Background>
+      <ImageBrush ImageSource="/FamilyFeud;component/Images/BonusQuestionBackground.png"/>
+    </Border.Background>
+    <Grid x:Name="RootGrid">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="2*"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+      
+      <Grid x:Name="TimerGrid" Grid.Row="0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="tbTimer" 
+                   Grid.Column="1" 
+                   Text="1:00" 
+                   FontSize="100" 
+                   FontFamily="Broadway" 
+                   FontWeight="ExtraBold" 
+                   Foreground="Black"
+                   Width="250" 
+                   Height="125" 
+                   Margin="450,45,260,100"
+                   />
+      </Grid>
+
+      <Grid x:Name="QuestionsGrid" Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+          <Viewbox Margin="137,25,0,6">
+            <TextBlock x:Name="tbQA0" Text="one"/>
+          </Viewbox>
+          <Viewbox Margin="137,25,0,6">
+            <TextBlock x:Name="tbQA1" Text="two"/>
+          </Viewbox>
+          <Viewbox Margin="137,25,0,6">
+            <TextBlock x:Name="tbQA2" Text="three"/>
+          </Viewbox>
+          <Viewbox Margin="137,25,0,6">
+            <TextBlock x:Name="tbQA3" Text="four"/>
+          </Viewbox>
+          <Viewbox Margin="137,25,0,6">
+            <TextBlock x:Name="tbQA4" Text="five"/>
+          </Viewbox>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+          <Viewbox Margin="-300,25,0,6">
+            <TextBlock x:Name="tbQA5" Text="six"/>
+          </Viewbox>
+          <Viewbox Margin="-300,25,0,6">
+            <TextBlock x:Name="tbQA6" Text="seven"/>
+          </Viewbox>
+          <Viewbox Margin="-300,25,0,6">
+            <TextBlock x:Name="tbQA7" Text="eight"/>
+          </Viewbox>
+          <Viewbox Margin="-300,25,0,6">
+            <TextBlock x:Name="tbQA8" Text="nine"/>
+          </Viewbox>
+          <Viewbox Margin="-300,25,0,6">
+            <TextBlock x:Name="tbQA9" Text="ten"/>
+          </Viewbox>
+        </StackPanel>
+      </Grid>
+
+      <Grid x:Name="ButtonGrid" Grid.Row="2">
+        
+      </Grid>
+      
+    </Grid>
   </Border>
 </UserControl>
