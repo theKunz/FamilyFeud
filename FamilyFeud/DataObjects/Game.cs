@@ -11,6 +11,13 @@ using System.Xml.Serialization;
 
 namespace FamilyFeud.DataObjects
 {
+  public enum BonusRoundLocation
+  {
+    None = 0,
+    Middle = 1,
+    End = 2
+  }
+
   [Serializable]
   #pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
   public class Game : INotifyPropertyChanged
@@ -43,6 +50,7 @@ namespace FamilyFeud.DataObjects
 
     private BonusRound mBonusRound;
     private ObservableCollection<Round> mRounds;
+    private BonusRoundLocation mBonusRoundLocation;
 
     #endregion
 
@@ -184,9 +192,12 @@ namespace FamilyFeud.DataObjects
       }
       set
       {
-        mRounds = value ?? new ObservableCollection<Round>();
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Rounds"));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NumRounds"));
+        if(value != mRounds)
+        {
+          mRounds = value ?? new ObservableCollection<Round>();
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rounds)));
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NumRounds)));
+        }
       }
     }
 
@@ -213,8 +224,28 @@ namespace FamilyFeud.DataObjects
       }
       set
       {
-        mBonusRound = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BonusRound"));
+        if(value != mBonusRound)
+        {
+          mBonusRound = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BonusRound)));
+        }
+      }
+    }
+
+    public BonusRoundLocation BonusRoundLocation
+    {
+      get
+      {
+        return mBonusRoundLocation;
+      }
+      set
+      {
+        if(value != mBonusRoundLocation)
+        {
+          mBonusRoundLocation = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BonusRoundLocation)));
+        }
+
       }
     }
 

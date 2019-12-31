@@ -1,6 +1,7 @@
 ﻿using FamilyFeud.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -21,14 +22,20 @@ namespace FamilyFeud.Controls
   /// <summary>
   /// Interaction logic for BonusRoundControl.xaml
   /// </summary>
-  public partial class BonusRoundControl : UserControl, IDisposable
+  public partial class BonusRoundControl : UserControl, IDisposable, INotifyPropertyChanged, IRoundControl
   {
+    public event EventHandler NextClickEvent;
+    public event EventHandler PreviousClickEvent;
     public event EventHandler OnTimerFinished;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     private Timer countDownTimer;
     private const int TimerSeconds = 60;
     private int currTick;
+    private BonusRound mBonusData;
 
+    private bool mNextEnabled;
+    private bool mPrevEnabled;
 
     public BonusRoundControl() :
       this(null)
@@ -37,14 +44,57 @@ namespace FamilyFeud.Controls
 
     public BonusRoundControl(BonusRound bRound)
     {
+      mNextEnabled = true;
+      mPrevEnabled = true;
+
       InitializeComponent();
+
+      mBonusData = bRound != null ? bRound : new BonusRound();
+
+      DataContext = this;
 
       currTick = 0;
       countDownTimer = InitNewTimer();
-      Loaded += (s, e) =>
+
+      RoutedEventHandler loadedEvent = null;
+      loadedEvent = (s, e) =>
       {
-        StartTimer();
+        Loaded -= loadedEvent;
+        int numQuestions = BonusData.BonusQuestions.Count;
+        for(int i = 1; i <= numQuestions; i++)
+        {
+          (FindName("tbQ" + i) as TextBlock).Text = BonusData.BonusQuestions[i - 1].Question.QuestionText;
+        }
       };
+      Loaded += loadedEvent;
+    }
+
+    public void RevealAnswer(int answerIndex)
+    {
+      int numQuestions = BonusData.BonusQuestions.Count;
+      if(answerIndex < 0 || answerIndex > numQuestions || answerIndex >= 10)
+      {
+        return;
+      }
+
+      // 0 is treated as 10, to avoid a potential out of bound exception
+      // we return if there is no 10th question
+      if(answerIndex == 0 && numQuestions < 10)
+      {
+        return;
+      }
+
+      int controlIndex = answerIndex == 0 ? 10 : answerIndex;
+      int dataIndex = answerIndex == 0 ? 9 : answerIndex - 1;
+
+      TextBlock answerTb = (FindName("tbQ" + controlIndex) as TextBlock);
+      TextBlock valueTb = (FindName("tbA" + controlIndex) as TextBlock);
+
+      answerTb.Text = BonusData.BonusQuestions[dataIndex].Answer.AnswerText;
+      answerTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 214, 7));
+
+      valueTb.Text = BonusData.BonusQuestions[dataIndex].Answer.PointValue.ToString();
+      valueTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 214, 7));
     }
 
     public void StartTimer()
@@ -90,18 +140,83 @@ namespace FamilyFeud.Controls
 
     private void TimerTick(object sender, ElapsedEventArgs args)
     {
-      Dispatcher.Invoke(new Action(() => { tbTimer.Text = (TimerSeconds - ++currTick).ToString("0:##"); }));
+      Dispatcher.Invoke(() => { tbTimer.Text = (TimerSeconds - ++currTick).ToString("0:##"); });
       if(currTick == TimerSeconds)
       {
         OnTimerFinished?.Invoke(this, new EventArgs());
         countDownTimer.Stop();
+        Dispatcher.Invoke(() =>
+        {
+          for(int i = 0; i < BonusData.BonusQuestions.Count; i++)
+          {
+            RevealAnswer(i);
+          }
+        });
       }
+    }
+
+    private void ButtonNext_Click(object sender, RoutedEventArgs e)
+    {
+      NextClickEvent?.Invoke(sender, e);
+    }
+
+    private void ButtonPrev_Click(object sender, RoutedEventArgs e)
+    {
+      PreviousClickEvent?.Invoke(sender, e);
     }
 
     public void Dispose()
     {
       countDownTimer.Stop();
       countDownTimer.Dispose();
+    }
+
+    public BonusRound BonusData
+    {
+      get
+      {
+        return mBonusData;
+      }
+      set
+      {
+        if(value != mBonusData)
+        {
+          mBonusData = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BonusData)));
+        }
+      }
+    }
+
+    public bool NextEnabled 
+    {
+      get
+      {
+        return mNextEnabled;
+      }
+      set 
+      { 
+        if(value != mNextEnabled)
+        {
+          mNextEnabled = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NextEnabled)));
+        }
+      } 
+    }
+
+    public bool PreviousEnabled
+    {
+      get
+      {
+        return mPrevEnabled;
+      }
+      set
+      {
+        if(value != mPrevEnabled)
+        {
+          mPrevEnabled = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PreviousEnabled)));
+        }
+      }
     }
   }
 }

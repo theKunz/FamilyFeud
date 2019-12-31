@@ -74,6 +74,7 @@
     <Compile Include="Controls\GameBuilder.xaml.cs">
       <DependentUpon>GameBuilder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Interfaces\IRoundControl.cs" />
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>

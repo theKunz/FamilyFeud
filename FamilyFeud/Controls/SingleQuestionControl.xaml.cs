@@ -16,7 +16,7 @@ namespace FamilyFeud.Controls
   /// <summary>
   /// Interaction logic for SingleQuestionControl.xaml
   /// </summary>
-  public partial class SingleQuestionControl : UserControl, INotifyPropertyChanged
+  public partial class SingleQuestionControl : UserControl, INotifyPropertyChanged, IRoundControl
   {
     private int mNumAnswers;
     private Round mRound;

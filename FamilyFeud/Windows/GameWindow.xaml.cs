@@ -23,12 +23,13 @@ namespace FamilyFeud
     private List<Key> mAttachedKeys;
     private int currentQuestion;
     private MediaPlayer mMediaPlayer;
+    private int mBonusRoundIndex;
 
     private Game mGame;
 
-    private SingleQuestionControl mPreviousQuestion;
-    private SingleQuestionControl mActiveQuestion;
-    private SingleQuestionControl mNextQuestion;
+    private IRoundControl mPreviousQuestion;
+    private IRoundControl mActiveQuestion;
+    private IRoundControl mNextQuestion;
 
     public GameWindow(Game game)
     {
@@ -40,20 +41,44 @@ namespace FamilyFeud
       }
 
       mGame = game;
+      
+      mAttachedKeys = new List<Key>() { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
 
-      ExistingQuestions = new SingleQuestionControl[mGame.NumRounds];
+      switch(mGame.BonusRoundLocation)
+      {
+        case BonusRoundLocation.Middle:
+          mBonusRoundIndex = (int)(game.NumRounds / 2);
+          ExistingQuestions = new IRoundControl[mGame.NumRounds + 1];
+          break;
+        case BonusRoundLocation.End:
+          mBonusRoundIndex = (int)game.NumRounds;
+          ExistingQuestions = new IRoundControl[mGame.NumRounds + 1];
+          break;
+        case BonusRoundLocation.None:
+        default:
+          mBonusRoundIndex = int.MaxValue;
+          ExistingQuestions = new IRoundControl[mGame.NumRounds];
+          break;
+      }
 
-      mAttachedKeys = new List<Key>() { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8 };
+      for(int i = 0; i < ExistingQuestions.Length; i++)
+      {
+        if(i == mBonusRoundIndex)
+        {
+          ExistingQuestions[i] = new BonusRoundControl(game.BonusRound);
+        }
+        else
+        {
+          int normalQuestionIndex = i <= mBonusRoundIndex ? i : i - 1;
+          ExistingQuestions[i] = new SingleQuestionControl(mGame.Rounds.ElementAt(normalQuestionIndex));
+        }
 
-      mActiveQuestion = new SingleQuestionControl(game.Rounds.ElementAt(0), true);
-      mActiveQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
+        (ExistingQuestions[i] as UIElement).CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
+      }
+
+      mActiveQuestion = ExistingQuestions[0];
+      mNextQuestion = ExistingQuestions[1];
       mActiveQuestion.PreviousEnabled = false;
-      ExistingQuestions[0] = mActiveQuestion;
-
-      mNextQuestion = new SingleQuestionControl(game.Rounds.ElementAt(1));
-      mNextQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
-      ExistingQuestions[1] = mNextQuestion;
-
       currentQuestion = 0;
 
       SetActiveTransform(mActiveQuestion);
@@ -63,8 +88,8 @@ namespace FamilyFeud
 
       this.KeyUp += KeyPressed;
 
-      gParentGrid.Children.Add(mActiveQuestion);
-      gParentGrid.Children.Add(mNextQuestion);
+      gParentGrid.Children.Add(mActiveQuestion as Control);
+      gParentGrid.Children.Add(mNextQuestion as Control);
 
       mMediaPlayer = new MediaPlayer();
       mMediaPlayer.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
@@ -101,33 +126,33 @@ namespace FamilyFeud
 
     #region RenderTransform for next/prev ---------------------------------------------
 
-    private void SetNextTransform(SingleQuestionControl question)
+    private void SetNextTransform(IRoundControl question)
     {
       if(question != null)
       {
-        question.RenderTransform = new TranslateTransform(TRANSFORM_DISTANCE, 0); 
+        (question as Control).RenderTransform = new TranslateTransform(TRANSFORM_DISTANCE, 0); 
       }
     }
 
-    private void SetPrevTransform(SingleQuestionControl question)
+    private void SetPrevTransform(IRoundControl question)
     {
       if(question != null)
       {
-        question.RenderTransform = new TranslateTransform(TRANSFORM_DISTANCE * -1, 0); 
+        (question as Control).RenderTransform = new TranslateTransform(TRANSFORM_DISTANCE * -1, 0); 
       }
     }
 
-    private void SetActiveTransform(SingleQuestionControl question)
+    private void SetActiveTransform(IRoundControl question)
     {
       if(question != null)
       {
-        question.RenderTransform = new TranslateTransform(0, 0);
+        (question as Control).RenderTransform = new TranslateTransform(0, 0);
       }
     }
 
     private void TransformToNextQuestion()
     {
-      gParentGrid.Children.Remove(mPreviousQuestion);
+      gParentGrid.Children.Remove(mPreviousQuestion as Control);
       mPreviousQuestion = null;
 
       Duration duration = new Duration(new TimeSpan(0, 0, 1));
@@ -139,7 +164,7 @@ namespace FamilyFeud
       currentToPrev.DecelerationRatio = 0.5;
       nextToCurrent.DecelerationRatio = 0.5;
 
-      mNextQuestion.NextEnabled = currentQuestion + 1 < mGame.NumRounds - 1;
+      mNextQuestion.NextEnabled = currentQuestion + 1 < ExistingQuestions.Length - 1;
 
       nextToCurrent.Completed += (s, e) =>
       {
@@ -150,21 +175,12 @@ namespace FamilyFeud
 
         AttachNextPrevClickEvents();
 
-        if(currentQuestion < mGame.NumRounds - 1)
+        if(currentQuestion < ExistingQuestions.Length - 1)
         {
-          if(ExistingQuestions[currentQuestion + 1] == null)
-          {
-            mNextQuestion = new SingleQuestionControl(mGame.Rounds.ElementAt(currentQuestion + 1));
-            mNextQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
-            ExistingQuestions[currentQuestion + 1] = mNextQuestion;
-          }
-          else
-          {
-            mNextQuestion = ExistingQuestions[currentQuestion + 1];
-          }
+          mNextQuestion = ExistingQuestions[currentQuestion + 1];
 
           SetNextTransform(mNextQuestion);
-          gParentGrid.Children.Add(mNextQuestion);
+          gParentGrid.Children.Add(mNextQuestion as Control);
         }
         else
         {
@@ -175,11 +191,11 @@ namespace FamilyFeud
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
 
-        mActiveQuestion.ShowQuestion();
+        (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
 
-      mNextQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
-      mActiveQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
+      (mNextQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
+      (mActiveQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
 
       mMediaPlayer.Position = new TimeSpan(0, 0, 0);
       mMediaPlayer.IsMuted = false;
@@ -188,7 +204,7 @@ namespace FamilyFeud
 
     private void TransformToPreviousQuestion()
     {
-      gParentGrid.Children.Remove(mNextQuestion);
+      gParentGrid.Children.Remove(mNextQuestion as Control);
       mNextQuestion = null;
 
       Duration duration = new Duration(new TimeSpan(0, 0, 1));
@@ -213,19 +229,9 @@ namespace FamilyFeud
 
         if(currentQuestion > 0)
         {
-          if(ExistingQuestions[currentQuestion - 1] == null)
-          {
-            mPreviousQuestion = new SingleQuestionControl(mGame.Rounds.ElementAt(currentQuestion - 1));
-            mPreviousQuestion.CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
-            ExistingQuestions[currentQuestion - 1] = mPreviousQuestion;
-          }
-          else
-          {
-            mPreviousQuestion = ExistingQuestions[currentQuestion - 1];
-          }
-
+          mPreviousQuestion = ExistingQuestions[currentQuestion - 1];
           SetNextTransform(mPreviousQuestion);
-          gParentGrid.Children.Add(mPreviousQuestion);
+          gParentGrid.Children.Add(mPreviousQuestion as Control);
         }
         else
         {
@@ -236,11 +242,12 @@ namespace FamilyFeud
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
 
-        mActiveQuestion.ShowQuestion();
+
+        (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
 
-      mPreviousQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, prevToCurrent);
-      mActiveQuestion.RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToNext);
+      (mPreviousQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, prevToCurrent);
+      (mActiveQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToNext);
     }
 
     private void AttachNextPrevClickEvents()
@@ -255,7 +262,7 @@ namespace FamilyFeud
 
     private void NextClick(object sender, EventArgs args)
     {
-      if(currentQuestion < mGame.NumRounds - 1)
+      if(currentQuestion < ExistingQuestions.Length - 1)
       {
         TransformToNextQuestion();
       }
@@ -344,7 +351,7 @@ namespace FamilyFeud
 
     #region Properties ------------------------------------------------------------
 
-    private SingleQuestionControl[] ExistingQuestions { get; set; }
+    private IRoundControl[] ExistingQuestions { get; set; }
 
     #endregion
   }

@@ -11,15 +11,26 @@
         <Setter Property="StretchDirection" Value="DownOnly"/>
         <Setter Property="Width" Value="610"/>
         <Setter Property="Stretch" Value="Uniform"/>
-        <Setter Property="Height" Value="73"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Margin" Value="0 0 17 0"/>
       </Style>
-      <Style TargetType="TextBlock">
+      <Style TargetType="TextBlock" x:Key="tbQuestionStyle">
         <Setter Property="FontSize" Value="60"/>
-        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontFamily" Value="Martin"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Height" Value="85"/>
-        <Setter Property="Width" Value="710"/>
+        <Setter Property="Height" Value="70"/>
+        <Setter Property="MinWidth" Value="710"/>
         <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style>
+      <Style TargetType="TextBlock" BasedOn="{StaticResource tbQuestionStyle}" x:Key="tbAnswerStyle">
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="FontSize" Value="50"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0 10 0 0"/>
       </Style>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -61,44 +72,92 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Orientation="Vertical" Grid.Column="0">
-          <Viewbox Margin="137,25,0,6">
-            <TextBlock x:Name="tbQA0" Text="one"/>
-          </Viewbox>
-          <Viewbox Margin="137,25,0,6">
-            <TextBlock x:Name="tbQA1" Text="two"/>
-          </Viewbox>
-          <Viewbox Margin="137,25,0,6">
-            <TextBlock x:Name="tbQA2" Text="three"/>
-          </Viewbox>
-          <Viewbox Margin="137,25,0,6">
-            <TextBlock x:Name="tbQA3" Text="four"/>
-          </Viewbox>
-          <Viewbox Margin="137,25,0,6">
-            <TextBlock x:Name="tbQA4" Text="five"/>
-          </Viewbox>
+          
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,20,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ1" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA1" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,19,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ2" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA2" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+          
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,18,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ3" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA3" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+          
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,17,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ4" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA4" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+          
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,16,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ5" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA5" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+          
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Column="1">
-          <Viewbox Margin="-300,25,0,6">
-            <TextBlock x:Name="tbQA5" Text="six"/>
-          </Viewbox>
-          <Viewbox Margin="-300,25,0,6">
-            <TextBlock x:Name="tbQA6" Text="seven"/>
-          </Viewbox>
-          <Viewbox Margin="-300,25,0,6">
-            <TextBlock x:Name="tbQA7" Text="eight"/>
-          </Viewbox>
-          <Viewbox Margin="-300,25,0,6">
-            <TextBlock x:Name="tbQA8" Text="nine"/>
-          </Viewbox>
-          <Viewbox Margin="-300,25,0,6">
-            <TextBlock x:Name="tbQA9" Text="ten"/>
-          </Viewbox>
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="-215,20,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ6" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA6" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="-215,19,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ7" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA7" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="-215,18,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ8" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA8" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="-215,17,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ9" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA9" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="-215,16,0,6">
+            <Viewbox>
+              <TextBlock x:Name="tbQ10" Style="{StaticResource tbQuestionStyle}"/>
+            </Viewbox>
+            <TextBlock x:Name="tbA10" Style="{StaticResource tbAnswerStyle}"/>
+          </StackPanel>
         </StackPanel>
       </Grid>
 
       <Grid x:Name="ButtonGrid" Grid.Row="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="205"/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition Width="205"/>
+        </Grid.ColumnDefinitions>
         
+        <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonPrev_Click" Content="Previous" FontSize="20"/>
+        <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonNext_Click" Content="Next" FontSize="20"/>
       </Grid>
       
     </Grid>

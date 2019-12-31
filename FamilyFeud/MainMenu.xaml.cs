@@ -126,7 +126,7 @@ namespace FamilyFeud
 
       // Temporary, undo after BonusRoundControl development is complete
       Window window = new Window();
-      window.Content = new BonusRoundControl(null);
+      window.Content = new BonusRoundControl(new BonusRound(mBonusQuestions.Take(10).Cast<BonusQuestion>()));
       window.Show();
     }
 
@@ -160,7 +160,17 @@ namespace FamilyFeud
     private void StartGame(IEnumerable<Round> questions, BonusRound bonusRound, bool includeBonusRound, bool isBonusRoundAtEnd)
     {
       gameWindow?.Close();
-      gameWindow = new GameWindow(new Game(questions, bonusRound));
+
+      Game game = new Game(questions, bonusRound)
+      {
+        BonusRoundLocation = !includeBonusRound || bonusRound == null || bonusRound.BonusQuestions.Count == 0 ? 
+                              BonusRoundLocation.None :
+                             isBonusRoundAtEnd ?                                                                
+                              BonusRoundLocation.End :
+                             BonusRoundLocation.Middle    
+      };
+
+      gameWindow = new GameWindow(game);
       gameWindow.Show();
     }
 

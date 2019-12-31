@@ -15,7 +15,7 @@ namespace FamilyFeud.Controls
   {
     private const int MinQuestions = 3;
 
-    private const int MaxBonusQuestions = 12;
+    private const int MaxBonusQuestions = 10;
 
     private ObservableCollection<Round> mAvailableRounds;
     private ObservableCollection<Round> mChosenRounds;
