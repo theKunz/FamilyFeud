@@ -113,6 +113,8 @@
       </Button>
     </StackPanel>
 
+    <Button x:Name="btnNewQuestion" Style="{StaticResource FamilyFuedButtonStyle}" Content="New" FontSize="14" Margin="28,58,249,205" Click="btnNewQuestion_Click"/>
+    <Button x:Name="btnNewBonus"    Style="{StaticResource FamilyFuedButtonStyle}" Content="New" Grid.Row="1" FontSize="14" Margin="28,112,249,215" Click="btnNewBonus_Click"/>
     <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Available" VerticalAlignment="Top" Margin="153,119,128,0" FontSize="12" Grid.Column="0" Grid.Row="1" Width="76"/>
     <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Selected (0-10)" VerticalAlignment="Top" Margin="98,116,134,0" FontSize="12" Grid.Column="2" Grid.Row="1" Width="126"/>
 

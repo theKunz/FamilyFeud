@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using FamilyFeud.CustomEventArgs;
+using System;
+using CommonLib.CustomEventArgs;
 
 namespace FamilyFeud.Controls
 {
@@ -21,7 +23,11 @@ namespace FamilyFeud.Controls
     private ObservableCollection<Round> mChosenRounds;
     private ObservableCollection<BonusQuestion> mAvailableBonusQuestions;
     private ObservableCollection<BonusQuestion> mChosenBonusQuestions;
-    
+    private List<Round> mNewRounds;
+    private List<BonusQuestion> mNewBonusQuestions;
+
+    private QuestionBuilder mQuickQuestion;
+
     public event PropertyChangedEventHandler PropertyChanged;
     public event GameBuildingCompletedEventHandler GameBuildingCompleted;
 
@@ -37,6 +43,9 @@ namespace FamilyFeud.Controls
                                                    new ObservableCollection<Round>(availableRounds);
       mAvailableBonusQuestions = availableBonusQuestions == null ? new ObservableCollection<BonusQuestion>() : 
                                                                    new ObservableCollection<BonusQuestion>(availableBonusQuestions);
+
+      mNewRounds = new List<Round>();
+      mNewBonusQuestions = new List<BonusQuestion>();
 
       DataContext = this;
     }
@@ -179,7 +188,12 @@ namespace FamilyFeud.Controls
 
     private void btnDone_Click(object sender, RoutedEventArgs e)
     {
-      GameBuildingCompleted?.Invoke(this, new GameBuildingCompletedEventArgs(ChosenRounds, ChosenBonusQuestions, !rbNone.IsChecked.Value, rbEnd.IsChecked.Value));
+      GameBuildingCompleted?.Invoke(this, new GameBuildingCompletedEventArgs(ChosenRounds, 
+                                                                             ChosenBonusQuestions,
+                                                                             mNewRounds,
+                                                                             mNewBonusQuestions,
+                                                                             !rbNone.IsChecked.Value, 
+                                                                             rbEnd.IsChecked.Value));
       Close();
     }
 
@@ -215,6 +229,76 @@ namespace FamilyFeud.Controls
           btnUnchooseBonus.IsEnabled = false;
         }
       }
+    }
+
+    private void btnNewQuestion_Click(object sender, RoutedEventArgs args)
+    {
+      if(mQuickQuestion != null)
+      {
+        return;
+      }
+
+      EventHandler<EventArgs<Round>> questionComplete;
+      EventHandler closed;
+
+      mQuickQuestion = new QuestionBuilder(false);
+
+      questionComplete = null;
+      questionComplete = (s, e) =>
+      {
+        mQuickQuestion.QuestionComplete -= questionComplete;
+
+        mNewRounds.Insert(0, e.Data.Copy());
+        AvailableRounds.Insert(0, e.Data.Copy());
+      };
+
+      closed = null;
+      closed += (s, e) =>
+      {
+        mQuickQuestion.Closed -= closed;
+
+        mQuickQuestion = null;
+      };
+
+      mQuickQuestion.QuestionComplete += questionComplete;
+      mQuickQuestion.Closed += closed;
+
+      mQuickQuestion.ShowDialog();
+    }
+
+    private void btnNewBonus_Click(object sender, RoutedEventArgs args)
+    {
+      if(mQuickQuestion != null)
+      {
+        return;
+      }
+
+      EventHandler<EventArgs<BonusQuestion>> bonusQuestionComplete;
+      EventHandler closed;
+
+      mQuickQuestion = new QuestionBuilder(true);
+
+      bonusQuestionComplete = null;
+      bonusQuestionComplete = (s, e) =>
+      {
+        mQuickQuestion.BonusQuestionComplete -= bonusQuestionComplete;
+
+        mNewBonusQuestions.Insert(0, e.Data.Copy());
+        AvailableBonusQuestions.Insert(0, e.Data.Copy());
+      };
+
+      closed = null;
+      closed += (s, e) =>
+      {
+        mQuickQuestion.Closed -= closed;
+
+        mQuickQuestion = null;
+      };
+
+      mQuickQuestion.BonusQuestionComplete += bonusQuestionComplete;
+      mQuickQuestion.Closed += closed;
+
+      mQuickQuestion.ShowDialog();
     }
   }
 

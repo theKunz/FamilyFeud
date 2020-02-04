@@ -154,6 +154,16 @@ namespace FamilyFeud
         bonusRound.BonusQuestions.Add(bonusQuestion.Copy());
       }
 
+      foreach(Round round in args.NewRounds)
+      {
+        mQuestions.Insert(0, round.Copy());
+      }
+
+      foreach(BonusQuestion bonusQuestion in args.NewBonusQuestions)
+      {
+        mBonusQuestions.Insert(0, bonusQuestion.Copy());
+      }
+
       StartGame(rounds, bonusRound, args.HasBonusRound, args.BonusAtEnd);
     }
 

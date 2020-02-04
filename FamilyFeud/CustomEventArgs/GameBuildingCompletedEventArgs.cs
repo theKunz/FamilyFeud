@@ -11,50 +11,47 @@ namespace FamilyFeud.CustomEventArgs
 
   public class GameBuildingCompletedEventArgs : EventArgs
   {
-    private IEnumerable<Round> mSelectedRounds;
-    private IEnumerable<BonusQuestion> mSelectedBonusQuestions;
-    private bool mHasBonusRound;
-    private bool mBonusAtEnd;
-
-    public GameBuildingCompletedEventArgs(IEnumerable<Round> selectedRounds, IEnumerable<BonusQuestion> selectedBonusQuestions, bool hasBonusRound, bool bonusAtEnd)
+    public GameBuildingCompletedEventArgs(
+      IEnumerable<Round> selectedRounds, 
+      IEnumerable<BonusQuestion> selectedBonusQuestions, 
+      bool hasBonusRound, 
+      bool bonusAtEnd)
     {
-      mSelectedRounds = selectedRounds;
-      mSelectedBonusQuestions = selectedBonusQuestions;
-      mHasBonusRound = hasBonusRound;
+      SelectedRounds = selectedRounds;
+      SelectedBonusQuestions = selectedBonusQuestions;
+      HasBonusRound = hasBonusRound;
 
-      mBonusAtEnd = hasBonusRound && bonusAtEnd;
+      BonusAtEnd = hasBonusRound && bonusAtEnd;
     }
 
-    public IEnumerable<Round> SelectedRounds
+    public GameBuildingCompletedEventArgs(
+      IEnumerable<Round> selectedRounds,
+      IEnumerable<BonusQuestion> selectedBonusQuestions,
+      IEnumerable<Round> newRounds,
+      IEnumerable<BonusQuestion> newBonusQuestions,
+      bool hasBonusRound,
+      bool bonusAtEnd)
     {
-      get
-      {
-        return mSelectedRounds;
-      }
+      SelectedRounds = selectedRounds;
+      SelectedBonusQuestions = selectedBonusQuestions;
+      HasBonusRound = hasBonusRound;
+
+      NewRounds = newRounds;
+      NewBonusQuestions = newBonusQuestions;
+
+      BonusAtEnd = hasBonusRound && bonusAtEnd;
     }
 
-    public IEnumerable<BonusQuestion> SelectedBonusQuestions
-    {
-      get
-      {
-        return mSelectedBonusQuestions;
-      }
-    }
+    public IEnumerable<Round> SelectedRounds { get; }
 
-    public bool HasBonusRound
-    {
-      get
-      {
-        return mHasBonusRound;
-      }
-    }
+    public IEnumerable<BonusQuestion> SelectedBonusQuestions { get; }
 
-    public bool BonusAtEnd
-    {
-      get
-      {
-        return mBonusAtEnd;
-      }
-    }
+    public IEnumerable<Round> NewRounds { get; }
+
+    public IEnumerable<BonusQuestion> NewBonusQuestions { get; }
+
+    public bool HasBonusRound { get; }
+
+    public bool BonusAtEnd { get; }
   }
 }
