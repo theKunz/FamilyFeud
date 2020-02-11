@@ -105,7 +105,7 @@ namespace FamilyFeud
 
     private void btnBeginRandomGame_Click(object sender, RoutedEventArgs e)
     {
-      /*ObservableCollection<Round> selectedRounds;
+      ObservableCollection<Round> selectedRounds;
       Round currRound;
       int numRounds;
 
@@ -122,11 +122,14 @@ namespace FamilyFeud
         }
       }
 
-      StartGame(selectedRounds, null, false, false);*/
+      StartGame(selectedRounds, null, false, false);
+    }
 
-      // Temporary, undo after BonusRoundControl development is complete
+    private void btnDebug_Click(object sender, RoutedEventArgs e)
+    {
       Window window = new Window();
-      window.Content = new BonusRoundControl(new BonusRound(mBonusQuestions.Take(10).Cast<BonusQuestion>()));
+      window.Content = new OldStyleCountdownControl();
+      window.WindowState = WindowState.Maximized;
       window.Show();
     }
 

@@ -78,6 +78,9 @@
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OldStyleCountdownControl.xaml.cs">
+      <DependentUpon>OldStyleCountdownControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\QuestionBuilder.xaml.cs">
       <DependentUpon>QuestionBuilder.xaml</DependentUpon>
     </Compile>
@@ -118,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OldStyleCountdownControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
