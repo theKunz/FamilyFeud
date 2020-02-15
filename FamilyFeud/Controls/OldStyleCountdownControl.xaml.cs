@@ -21,6 +21,8 @@ namespace FamilyFeud.Controls
   /// </summary>
   public partial class OldStyleCountdownControl : UserControl
   {
+    public event EventHandler OnCountdownCompleted;
+
     // This assumes a constant, immutable size for the control.
     // This will have to be made into this.ActualHeight/2, etc.
     private const int MidpointX = 960;
@@ -28,14 +30,11 @@ namespace FamilyFeud.Controls
     private const int MovingRadius = 1500;
     private int counter;
     private Timer timer;
+    private MediaPlayer mMediaPlayer;
 
     private const int startingCountdownSecs = 5;
     private const int timerIntervalMS = 20;
     private const int intervalsPerSec = 1000 / timerIntervalMS;
-    private const int zeroInterval = 0;
-    private const int quarterInterval = intervalsPerSec / 4;
-    private const int halfInterval = intervalsPerSec / 2;
-    private const int threeQuarterInterval = quarterInterval * 3;
     private const double anglePerInterval = 2 * Math.PI / intervalsPerSec;
     private const double angleOffset = Math.PI * -1.0 / 2.0;
 
@@ -46,6 +45,12 @@ namespace FamilyFeud.Controls
     public OldStyleCountdownControl()
     {
       InitializeComponent();
+
+      mMediaPlayer = new MediaPlayer();
+      mMediaPlayer.Open(new Uri(@"../../Sounds/Outtake_Blip.wav", UriKind.RelativeOrAbsolute));
+      mMediaPlayer.Volume = 0.25;
+      mMediaPlayer.IsMuted = true;
+      mMediaPlayer.Play();
 
       countdownValue = startingCountdownSecs;
 
@@ -58,7 +63,6 @@ namespace FamilyFeud.Controls
       timer.Start();
     }
 
-    public static object lockObj = new object();
     private void OnInterval(object obj, ElapsedEventArgs args)
     {
       counter++;
@@ -67,12 +71,15 @@ namespace FamilyFeud.Controls
       {
         counter = 0;
         tbCounter.Dispatcher.Invoke(() => { tbCounter.Text = (--countdownValue).ToString(); });
+
+        PlayBlip();
+
         if(countdownValue == 0)
         {
           timer.Stop();
           timer.Dispose();
           MovingPath.Dispatcher.Invoke(() => { MovingPath.Data = Geometry.Parse(PathMarkup + MidpointX + "," + (MidpointY - MovingRadius).ToString()); });
-
+          OnCountdownCompleted?.Invoke(this, new EventArgs());
           return;
         }
       }
@@ -81,6 +88,16 @@ namespace FamilyFeud.Controls
       int posY = (int)(Math.Sin((counter * anglePerInterval) + angleOffset) * MovingRadius) + MidpointY;
 
       MovingPath.Dispatcher.Invoke(() => { MovingPath.Data = Geometry.Parse(PathMarkup + posX.ToString() + "," + posY.ToString()); });
+    }
+
+    private void PlayBlip()
+    {
+      this.Dispatcher.Invoke(() => 
+      {
+        mMediaPlayer.IsMuted = false;
+        mMediaPlayer.Position = new TimeSpan(0);
+        mMediaPlayer.Play();
+      });
     }
   }
 }

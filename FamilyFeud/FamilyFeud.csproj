@@ -236,6 +236,7 @@
     <Content Include="Sounds\Crow_Boo.wav" />
     <Content Include="Sounds\Next_Question.wav" />
     <Content Include="Sounds\Opening_Theme.wav" />
+    <Content Include="Sounds\Outtake_Blip.wav" />
     <Content Include="Sounds\Sad_Trombone.wav" />
     <Content Include="Sounds\Wrong_Buzzer.wav" />
   </ItemGroup>
