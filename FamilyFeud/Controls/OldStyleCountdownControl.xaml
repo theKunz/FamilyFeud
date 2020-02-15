@@ -15,6 +15,12 @@
   <Border Background="Black">
     <Border Background="DarkGray" CornerRadius="200">
       <Grid>
+        <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine0"></Path>
+        <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine1"></Path>
+        <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine2"></Path>
+        <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine3"></Path>
+        <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine4"></Path>
+        
         <Path Stroke="Black" StrokeThickness="8" Data="M 960,0 L 960,1080"/>
         <Path Stroke="Black" StrokeThickness="8" Data="M 0,540 L 1920,540"/>
         <Path Stroke="Black" StrokeThickness="10" Data="M 960,540 L 960,-420" x:Name="MovingPath"/>
@@ -22,7 +28,6 @@
         <Ellipse Width="900" Height="900" Fill="Transparent" Stroke="LightGray" StrokeThickness="12"/>
         <TextBlock Text="0"  FontSize="800" Margin="745,-42,655,122" x:Name="tbCounter"/>
       </Grid>
-      <!--<Path Stroke="Black" Data="M 960,540 C 10,300 300,-200 300,100"/>-->
     </Border>
   </Border>
 </UserControl>

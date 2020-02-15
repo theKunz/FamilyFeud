@@ -31,6 +31,7 @@ namespace FamilyFeud.Controls
     private int counter;
     private Timer timer;
     private MediaPlayer mMediaPlayer;
+    Random rand;
 
     private const int startingCountdownSecs = 5;
     private const int timerIntervalMS = 20;
@@ -52,6 +53,8 @@ namespace FamilyFeud.Controls
       mMediaPlayer.IsMuted = true;
       mMediaPlayer.Play();
 
+      rand = new Random((int)DateTime.UtcNow.Ticks);
+
       countdownValue = startingCountdownSecs;
 
       tbCounter.Text = countdownValue.ToString();
@@ -66,6 +69,11 @@ namespace FamilyFeud.Controls
     private void OnInterval(object obj, ElapsedEventArgs args)
     {
       counter++;
+
+      if(counter % 2 == 0)
+      {
+        SetStainLines();
+      }
 
       if(counter == intervalsPerSec)
       {
@@ -97,6 +105,19 @@ namespace FamilyFeud.Controls
         mMediaPlayer.IsMuted = false;
         mMediaPlayer.Position = new TimeSpan(0);
         mMediaPlayer.Play();
+      });
+    }
+
+    private void SetStainLines()
+    {
+      int[] horizontals = Enumerable.Repeat(0, 5).Select(i => rand.Next(1, MidpointX * 2)).ToArray();
+      this.Dispatcher.Invoke(() =>
+      {
+        StainLine0.Data = Geometry.Parse($"M {horizontals[0]},-1 L {horizontals[0]},{MidpointY * 2 + 1}");
+        StainLine1.Data = Geometry.Parse($"M {horizontals[1]},-1 L {horizontals[1]},{MidpointY * 2 + 1}");
+        StainLine2.Data = Geometry.Parse($"M {horizontals[2]},-1 L {horizontals[2]},{MidpointY * 2 + 1}");
+        StainLine3.Data = Geometry.Parse($"M {horizontals[3]},-1 L {horizontals[3]},{MidpointY * 2 + 1}");
+        StainLine4.Data = Geometry.Parse($"M {horizontals[4]},-1 L {horizontals[4]},{MidpointY * 2 + 1}");
       });
     }
   }
