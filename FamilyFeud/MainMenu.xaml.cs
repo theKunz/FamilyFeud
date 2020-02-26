@@ -128,7 +128,7 @@ namespace FamilyFeud
     private void btnDebug_Click(object sender, RoutedEventArgs e)
     {
       Window window = new Window();
-      window.Content = new OldStyleCountdownControl();
+      window.Content = new TitleScreen();
       window.WindowState = WindowState.Maximized;
       window.Show();
     }

@@ -25,7 +25,7 @@ namespace FamilyFeud.Controls
   /// <summary>
   /// Interaction logic for TeamScoreTracker.xaml
   /// </summary>
-  public partial class TeamScoreTracker : UserControl
+  public partial class TeamScoreTracker : UserControl, INotifyPropertyChanged
   {
 
     #region Private Data Members & Constants ----------------------------------
@@ -33,6 +33,8 @@ namespace FamilyFeud.Controls
     private int numTotalQuestions;
     private const int RoundMaxScore = 999;
     private const int RoundMinScore = 0;
+    private ObservableCollection<ScoreRow> mItemsSource;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion
 
@@ -104,6 +106,12 @@ namespace FamilyFeud.Controls
         new ScoreRow(numTotalQuestions, CommonConst.EmptyString),
         new ScoreRow(numTotalQuestions, CommonConst.EmptyString)
       };
+
+      if(ScoreDataGrid != null)
+      {
+        ScoreDataGrid.ItemsSource = ItemsSource;
+        ScoreDataGrid.Height = (ItemsSource.Count * 50) + 100;
+      }
     }
 
     #endregion
@@ -154,6 +162,11 @@ namespace FamilyFeud.Controls
 
       ItemsSource.Add(newRow);
       ScoreDataGrid.Height = (ItemsSource.Count * 50) + 60;
+    }
+
+    private void Reset_Click(object sender, RoutedEventArgs e)
+    {
+      Reset();
     }
 
     private void TeamNameBorder_MouseUp(object sender, MouseButtonEventArgs e)
@@ -240,7 +253,18 @@ namespace FamilyFeud.Controls
 
     private ObservableCollection<ScoreRow> ItemsSource
     {
-      get;set;
+      get
+      {
+        return mItemsSource;
+      }
+      set
+      {
+        if(value != mItemsSource)
+        {
+          mItemsSource = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ItemsSource)));
+        }
+      }
     }
 
     #endregion

@@ -30,7 +30,6 @@ namespace FamilyFeud.Controls
     private const int MovingRadius = 1500;
     private int counter;
     private Timer timer;
-    private MediaPlayer mMediaPlayer;
     Random rand;
 
     private const int startingCountdownSecs = 5;
@@ -46,12 +45,6 @@ namespace FamilyFeud.Controls
     public OldStyleCountdownControl()
     {
       InitializeComponent();
-
-      mMediaPlayer = new MediaPlayer();
-      mMediaPlayer.Open(new Uri(@"../../Sounds/Outtake_Blip.wav", UriKind.RelativeOrAbsolute));
-      mMediaPlayer.Volume = 0.25;
-      mMediaPlayer.IsMuted = true;
-      mMediaPlayer.Play();
 
       rand = new Random((int)DateTime.UtcNow.Ticks);
 
@@ -80,8 +73,6 @@ namespace FamilyFeud.Controls
         counter = 0;
         tbCounter.Dispatcher.Invoke(() => { tbCounter.Text = (--countdownValue).ToString(); });
 
-        PlayBlip();
-
         if(countdownValue == 0)
         {
           timer.Stop();
@@ -96,16 +87,6 @@ namespace FamilyFeud.Controls
       int posY = (int)(Math.Sin((counter * anglePerInterval) + angleOffset) * MovingRadius) + MidpointY;
 
       MovingPath.Dispatcher.Invoke(() => { MovingPath.Data = Geometry.Parse(PathMarkup + posX.ToString() + "," + posY.ToString()); });
-    }
-
-    private void PlayBlip()
-    {
-      this.Dispatcher.Invoke(() => 
-      {
-        mMediaPlayer.IsMuted = false;
-        mMediaPlayer.Position = new TimeSpan(0);
-        mMediaPlayer.Play();
-      });
     }
 
     private void SetStainLines()

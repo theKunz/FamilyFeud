@@ -11,7 +11,7 @@
         x:Name="ElementRoot">
 
   <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Focusable="False">
-    <Border Background="#000123" Width="1920" Height="1080" x:Name="BackgroundRoot">
+    <Border Background="#000123" Width="1920" Height="1050" x:Name="BackgroundRoot">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="33*" />
@@ -19,9 +19,8 @@
           <ColumnDefinition Width="33*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-          <RowDefinition Height="47*" />
-          <RowDefinition Height="47*" />
-          <RowDefinition Height="6*" />
+          <RowDefinition Height="50*" />
+          <RowDefinition Height="50*" />
         </Grid.RowDefinitions>
 
         <Grid x:Name="QuestionListGrid" Grid.Column="2" Grid.Row="0" Margin="20">
@@ -52,7 +51,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
               <RowDefinition/>
-              <RowDefinition Height="30"/>
+              <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Button Grid.Column="0" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginCustomGame_Click" Content="Start Custom Game" FontSize="19"/>
             <Button Grid.Column="1" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginRandomGame_Click" Content="Start Random Game" FontSize="18"/>
@@ -60,7 +59,7 @@
           </Grid>
         </StackPanel>
 
-        <LocalControls:TeamScoreTracker x:Name="TeamScoreTracker" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="10 0" Width="1600"/>
+        <LocalControls:TeamScoreTracker x:Name="TeamScoreTracker" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5"/>
       </Grid>
     </Border>
   </ScrollViewer>

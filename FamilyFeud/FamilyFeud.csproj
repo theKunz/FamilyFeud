@@ -93,6 +93,9 @@
     <Compile Include="Controls\TeamScoreTracker.xaml.cs">
       <DependentUpon>TeamScoreTracker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TitleScreen.xaml.cs">
+      <DependentUpon>TitleScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomEventArgs\GameBuildingCompletedEventArgs.cs" />
     <Compile Include="DataObjects\BonusQuestion.cs" />
     <Compile Include="DataObjects\Game.cs" />
@@ -143,6 +146,10 @@
     <Page Include="Controls\TeamScoreTracker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TitleScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -3,6 +3,8 @@ using FamilyFeud.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,12 +19,14 @@ namespace FamilyFeud
   /// </summary>
   public partial class GameWindow : Window
   {
+    public static SoundPlayer mSoundPlayerIntro = new SoundPlayer(@"../../Sounds/Opening_Theme.wav");
+
     private const double TRANSFORM_DISTANCE = 1920.0;
 
     private Size originalNonMaximizedSize;
     private List<Key> mAttachedKeys;
     private int currentQuestion;
-    private MediaPlayer mMediaPlayer;
+    private MediaPlayer mMediaPlayerQuestion;
     private int mBonusRoundIndex;
 
     private Game mGame;
@@ -76,6 +80,43 @@ namespace FamilyFeud
         (ExistingQuestions[i] as UIElement).CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
       }
 
+      oldStyleCountdown = new OldStyleCountdownControl();
+      titleScreen = new TitleScreen();
+
+      gParentGrid.Children.Add(oldStyleCountdown);
+
+      oldStyleCountdown.OnCountdownCompleted += (obj, args) =>
+      {
+        this.Dispatcher.Invoke(() =>
+        {
+          gParentGrid.Children.Remove(oldStyleCountdown);
+          gParentGrid.Children.Add(titleScreen);
+        });
+      };
+      
+      mSoundPlayerIntro.Play();
+
+      mMediaPlayerQuestion = new MediaPlayer();
+      mMediaPlayerQuestion.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
+      mMediaPlayerQuestion.IsMuted = true;
+      mMediaPlayerQuestion.MediaEnded += (s, e) =>
+      {
+        mMediaPlayerQuestion.IsMuted = true;
+        mMediaPlayerQuestion.Pause();
+        mMediaPlayerQuestion.Position = new TimeSpan(0, 0, 0);
+      };
+
+      this.Closed += GameWindow_Closed;
+    }
+
+    // Because controls need a parameterless constructor
+    public GameWindow() : this(new Game())
+    {
+
+    }
+
+    private void SetFirstQuestions()
+    {
       mActiveQuestion = ExistingQuestions[0];
       mNextQuestion = ExistingQuestions[1];
       mActiveQuestion.PreviousEnabled = false;
@@ -90,22 +131,6 @@ namespace FamilyFeud
 
       gParentGrid.Children.Add(mActiveQuestion as Control);
       gParentGrid.Children.Add(mNextQuestion as Control);
-
-      mMediaPlayer = new MediaPlayer();
-      mMediaPlayer.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
-      mMediaPlayer.IsMuted = true;
-      mMediaPlayer.MediaEnded += (s, e) =>
-      {
-        mMediaPlayer.IsMuted = true;
-        mMediaPlayer.Pause();
-        mMediaPlayer.Position = new TimeSpan(0, 0, 0);
-      };
-    }
-
-    // Because controls need a parameterless constructor
-    public GameWindow() : this(new Game())
-    {
-
     }
 
     /// <summary>
@@ -197,9 +222,9 @@ namespace FamilyFeud
       (mNextQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
       (mActiveQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
 
-      mMediaPlayer.Position = new TimeSpan(0, 0, 0);
-      mMediaPlayer.IsMuted = false;
-      mMediaPlayer.Play();
+      mMediaPlayerQuestion.Position = new TimeSpan(0, 0, 0);
+      mMediaPlayerQuestion.IsMuted = false;
+      mMediaPlayerQuestion.Play();
     }
 
     private void TransformToPreviousQuestion()
@@ -343,8 +368,14 @@ namespace FamilyFeud
 
     private void GameWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      e.Cancel = true;
-      Hide();
+      //e.Cancel = true;
+      //Hide();
+      
+    }
+
+    private void GameWindow_Closed(object sender, EventArgs args)
+    {
+      mSoundPlayerIntro.Stop();
     }
 
     #endregion
@@ -352,6 +383,8 @@ namespace FamilyFeud
     #region Properties ------------------------------------------------------------
 
     private IRoundControl[] ExistingQuestions { get; set; }
+    private OldStyleCountdownControl oldStyleCountdown { get; set; }
+    private TitleScreen titleScreen { get; set; }
 
     #endregion
   }

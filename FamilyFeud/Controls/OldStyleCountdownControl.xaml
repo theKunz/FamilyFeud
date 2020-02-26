@@ -3,24 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FamilyFeud.Controls"
              mc:Ignorable="d"
              Width="1920" Height="1080">
-  <UserControl.Resources>
-    <ResourceDictionary>
-
-    </ResourceDictionary>
-  </UserControl.Resources>
-
-  <Border Background="Black">
-    <Border Background="DarkGray" CornerRadius="200">
+  <Grid>
+    <Border Background="DarkGray">
       <Grid>
         <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine0"></Path>
         <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine1"></Path>
         <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine2"></Path>
         <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine3"></Path>
         <Path Stroke="Gray" StrokeThickness="5" x:Name="StainLine4"></Path>
-        
+
         <Path Stroke="Black" StrokeThickness="8" Data="M 960,0 L 960,1080"/>
         <Path Stroke="Black" StrokeThickness="8" Data="M 0,540 L 1920,540"/>
         <Path Stroke="Black" StrokeThickness="10" Data="M 960,540 L 960,-420" x:Name="MovingPath"/>
@@ -29,5 +22,13 @@
         <TextBlock Text="0"  FontSize="800" Margin="745,-42,655,122" x:Name="tbCounter"/>
       </Grid>
     </Border>
-  </Border>
+    <Path Fill="Black" Stroke="Black" StrokeThickness="5">
+      <Path.Data>
+        <GeometryGroup FillRule="EvenOdd">
+          <RectangleGeometry Rect="-1,-1 1921,1081" RadiusX="200" RadiusY="300"/>
+          <RectangleGeometry Rect="-1,-1 1921,1081"/>
+        </GeometryGroup>
+      </Path.Data>
+    </Path>
+  </Grid>
 </UserControl>
