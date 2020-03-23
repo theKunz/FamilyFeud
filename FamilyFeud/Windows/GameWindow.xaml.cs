@@ -91,6 +91,11 @@ namespace FamilyFeud
         {
           gParentGrid.Children.Remove(oldStyleCountdown);
           gParentGrid.Children.Add(titleScreen);
+          mNextQuestion = ExistingQuestions[0];
+          SetNextTransform(mNextQuestion);
+          // Note, this needs to be added after the titleScreen in order for the first question to be visible
+          // when transitioning to it.
+          gParentGrid.Children.Add(mNextQuestion as Control);
         });
       };
       
@@ -115,22 +120,61 @@ namespace FamilyFeud
 
     }
 
-    private void SetFirstQuestions()
+    public void BeginQuestions()
     {
-      mActiveQuestion = ExistingQuestions[0];
-      mNextQuestion = ExistingQuestions[1];
-      mActiveQuestion.PreviousEnabled = false;
-      currentQuestion = 0;
+      Duration duration = new Duration(new TimeSpan(0, 0, 1));
+      DoubleAnimation nextToCurrent = new DoubleAnimation(TRANSFORM_DISTANCE, 0, duration);
+      DoubleAnimation currentToPrev = new DoubleAnimation(0, TRANSFORM_DISTANCE * -1, duration);
 
-      SetActiveTransform(mActiveQuestion);
-      SetNextTransform(mNextQuestion);
+      currentToPrev.AccelerationRatio = 0.5;
+      nextToCurrent.AccelerationRatio = 0.5;
+      currentToPrev.DecelerationRatio = 0.5;
+      nextToCurrent.DecelerationRatio = 0.5;
 
-      AttachNextPrevClickEvents();
+      mNextQuestion.NextEnabled = ExistingQuestions.Count() > 1;
+      mNextQuestion.PreviousEnabled = false;
+
+      nextToCurrent.Completed += (s, e) =>
+      {
+        mPreviousQuestion = null;
+        mActiveQuestion = mNextQuestion;
+        gParentGrid.Children.Remove(titleScreen);
+
+        currentQuestion = 0;
+
+        AttachNextPrevClickEvents();
+
+        if(currentQuestion < ExistingQuestions.Length - 1)
+        {
+          mNextQuestion = ExistingQuestions[currentQuestion + 1];
+
+          SetNextTransform(mNextQuestion);
+          gParentGrid.Children.Add(mNextQuestion as Control);
+        }
+        else
+        {
+          mNextQuestion = null;
+        }
+
+        SetActiveTransform(mActiveQuestion);
+        SetNextTransform(mNextQuestion);
+
+        (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
+      };
+
+      (mNextQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
+      //titleScreen.RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
+
+
+      // In case the opening theme is still playing.
+      mSoundPlayerIntro.Stop();
+
+      mMediaPlayerQuestion.Position = new TimeSpan(0, 0, 0);
+      mMediaPlayerQuestion.IsMuted = false;
+      mMediaPlayerQuestion.Volume = 0.75;
+      mMediaPlayerQuestion.Play();
 
       this.KeyUp += KeyPressed;
-
-      gParentGrid.Children.Add(mActiveQuestion as Control);
-      gParentGrid.Children.Add(mNextQuestion as Control);
     }
 
     /// <summary>
@@ -147,6 +191,11 @@ namespace FamilyFeud
       }
 
       mActiveQuestion.RevealAnswer(args.Key - Key.D0);
+    }
+
+    public void ShowAnswerOnActiveQuestion(int answerIndex)
+    {
+      mActiveQuestion.RevealAnswer(answerIndex);
     }
 
     #region RenderTransform for next/prev ---------------------------------------------
@@ -213,7 +262,6 @@ namespace FamilyFeud
         }
 
         SetActiveTransform(mActiveQuestion);
-        SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
 
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
@@ -282,7 +330,6 @@ namespace FamilyFeud
 
       mActiveQuestion.NextClickEvent -= NextClick;
       mActiveQuestion.NextClickEvent += NextClick;
-
     }
 
     private void NextClick(object sender, EventArgs args)

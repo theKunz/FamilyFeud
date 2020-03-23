@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace FamilyFeud
 {
@@ -25,6 +27,7 @@ namespace FamilyFeud
     private const int MaxRandomGameSize = 10;
     private const int MinRandomGameSize = 3;
     private static Random Rand = new Random((int)DateTime.UtcNow.Ticks); // ew dirty conversion from long to int
+    private Game currentGame;
 
     public MainWindow()
     {
@@ -34,6 +37,8 @@ namespace FamilyFeud
       {
         BackgroundRoot.Height = 1080.0 - SystemParameters.CaptionHeight * 3 + 3;
       };
+
+      this.KeyUp += KeyPressed;
 
       mQuestions = new ObservableCollection<IQuestioner>()
       {
@@ -172,9 +177,11 @@ namespace FamilyFeud
 
     private void StartGame(IEnumerable<Round> questions, BonusRound bonusRound, bool includeBonusRound, bool isBonusRoundAtEnd)
     {
+      EventHandler onClosed;
+      
       gameWindow?.Close();
 
-      Game game = new Game(questions, bonusRound)
+      currentGame = new Game(questions, bonusRound)
       {
         BonusRoundLocation = !includeBonusRound || bonusRound == null || bonusRound.BonusQuestions.Count == 0 ? 
                               BonusRoundLocation.None :
@@ -183,7 +190,16 @@ namespace FamilyFeud
                              BonusRoundLocation.Middle    
       };
 
-      gameWindow = new GameWindow(game);
+      onClosed = null;
+      onClosed = (object sender, EventArgs args) =>
+      {
+        gameWindow.Closed -= onClosed;
+
+        currentGame = null;
+      };
+      gameWindow = new GameWindow(currentGame);
+      gameWindow.Closed += onClosed;
+
       gameWindow.Show();
     }
 
@@ -318,6 +334,96 @@ namespace FamilyFeud
 
       qb.Title = "Add Question";
       qb.ShowDialog();
+    }
+
+    private void btnShowAnswer_Click(object sender, RoutedEventArgs e)
+    {
+      if(currentGame == null)
+      {
+        return;
+      }
+
+      Button clickedButton = sender as Button;
+
+      int answerToShow = int.Parse(clickedButton.Name.Substring(clickedButton.Name.Length - 1)) + 1;
+
+      ShowAnswer(answerToShow);
+    }
+
+    /// <summary>
+    /// Reveals the answer associatied with the respetive key. Accepts any key
+    /// specified in the attachedKeys list.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void KeyPressed(object sender, KeyEventArgs args)
+    {
+      Key[] numKeys = { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
+
+      if(numKeys.Contains(args.Key))
+      {
+        ShowAnswer(args.Key - Key.D0);
+      }
+      else if(args.Key == Key.X)
+      {
+        // show X on question
+      }
+      else if(args.Key == Key.Right)
+      {
+        TransitionNextQuestion();
+      }
+      else if(args.Key == Key.Left)
+      {
+        TransitionPreviousQuestion();
+      }
+    }
+
+    private void ShowAnswer(int answerIndex)
+    {
+      if(currentGame != null)
+      {
+        gameWindow.ShowAnswerOnActiveQuestion(answerIndex);
+      }
+    }
+
+    private void ShowX()
+    {
+
+    }
+
+    private void TransitionNextQuestion()
+    {
+
+    }
+
+    private void TransitionPreviousQuestion()
+    {
+
+    }
+
+    private void WrongAnswer_Click(object sender, RoutedEventArgs e)
+    {
+      ShowX();
+    }
+
+    private void GoToPreviousQuestion_Click(object sender, RoutedEventArgs e)
+    {
+      TransitionPreviousQuestion();
+    }
+
+    private void GoToNextQuestion_Click(object sender, RoutedEventArgs e)
+    {
+      TransitionNextQuestion();
+    }
+
+    private void GoToFirstQuestion_Click(object sender, RoutedEventArgs e)
+    {
+      gameWindow.BeginQuestions();
+    }
+
+    private void StartBonusTimer_Click(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 }

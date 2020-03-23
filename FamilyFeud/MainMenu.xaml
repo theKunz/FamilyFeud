@@ -19,11 +19,49 @@
           <ColumnDefinition Width="33*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-          <RowDefinition Height="50*" />
-          <RowDefinition Height="50*" />
+          <RowDefinition Height="55*" />
+          <RowDefinition Height="45*" />
         </Grid.RowDefinitions>
 
-        <Grid x:Name="QuestionListGrid" Grid.Column="2" Grid.Row="0" Margin="20">
+        <Grid x:Name="LiveControlGrid" Grid.Row="0" Grid.Column="0" Margin="10,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+
+          <Button x:Name="GoToFirstQuestion" Content="Go To First" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="0" Click="GoToFirstQuestion_Click"/>
+          <Button x:Name="StartBonusTimer" Content="Begin Countdown" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="1" Click="StartBonusTimer_Click"/>
+          <Button x:Name="btnShow0" Content="Show Answer 1"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="1"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow1" Content="Show Answer 2"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="2"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow2" Content="Show Answer 3"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="3"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow3" Content="Show Answer 4"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="4"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow4" Content="Show Answer 5"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="5"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow5" Content="Show Answer 6"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="6"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow6" Content="Show Answer 7"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="7"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow7" Content="Show Answer 8"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="8"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow8" Content="Show Answer 9"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="9"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="btnShow9" Content="Show Answer 10" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="10" Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
+          <Button x:Name="WrongAnswer" Content="Wrong Answer" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="11" Grid.ColumnSpan="2" Click="WrongAnswer_Click"/>
+          <Button x:Name="GoToPreviousQuestion" Content="Go To Previous" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="12" Grid.Column="0" Click="GoToPreviousQuestion_Click"/>
+          <Button x:Name="GoToNextQuestion" Content="Go To Next" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="12" Grid.Column="1" Click="GoToNextQuestion_Click"/>
+        </Grid>
+        
+        <Grid x:Name="QuestionListGrid" Grid.Column="2" Grid.Row="0" Margin="33">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="50*"/>
