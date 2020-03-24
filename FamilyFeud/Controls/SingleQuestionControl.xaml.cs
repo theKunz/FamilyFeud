@@ -22,10 +22,12 @@ namespace FamilyFeud.Controls
     private Round mRound;
     private bool mNextEnabled;
     private bool mPreviousEnabled;
-    private MediaPlayer mMediaPlayer;
+    private MediaPlayer mXMediaPlayer;
     private Storyboard showQuestionStory;
+    private Storyboard showXStory;
     private bool mIsQuestionShown = false;
     private bool mShowQuestionOnLoad;
+    private int XCount;
 
     public event EventHandler NextClickEvent;
     public event EventHandler PreviousClickEvent;
@@ -58,9 +60,25 @@ namespace FamilyFeud.Controls
 
       KeyUp += KeyPressed;
 
-      mMediaPlayer = new MediaPlayer();
+      mXMediaPlayer = new MediaPlayer();
 
       DataContext = this;
+
+      XCount = 0;
+
+      mXMediaPlayer = new MediaPlayer();
+      mXMediaPlayer.IsMuted = true;
+      mXMediaPlayer.Volume = 0;
+      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
+      mXMediaPlayer.MediaEnded += (s, e) =>
+      {
+        mXMediaPlayer.Position = new TimeSpan(0, 0, 0);
+        mXMediaPlayer.Pause();
+        mXMediaPlayer.IsMuted = false;
+        mXMediaPlayer.Volume = 1;
+      };
+      // Do a first play muted in order to pre-buffer it
+      mXMediaPlayer.Play();
     }
 
     private void SQC_Loaded(object sender, RoutedEventArgs args)
@@ -77,6 +95,12 @@ namespace FamilyFeud.Controls
           bdrQuestionBackground.Visibility = Visibility.Collapsed;
         }
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionShown)));
+      };
+
+      showXStory = Resources["sbShowX"] as Storyboard;
+      showXStory.Completed += (object storySender, EventArgs storyArgs) =>
+      {
+        XCount++;
       };
 
       if(mShowQuestionOnLoad)
@@ -110,7 +134,14 @@ namespace FamilyFeud.Controls
 
     private void KeyPressed(object sender, KeyEventArgs args)
     {
-      RevealAnswer(args.Key - Key.D0);
+      if(args.Key == Key.X)
+      {
+        ShowX();
+      }
+      else
+      {
+        RevealAnswer(args.Key - Key.D0);
+      }
     }
 
     private void ButtonNext_Click(object sender, RoutedEventArgs e)
@@ -121,6 +152,24 @@ namespace FamilyFeud.Controls
     private void ButtonPrev_Click(object sender, RoutedEventArgs e)
     {
       PreviousClickEvent?.Invoke(sender, e);
+    }
+
+    /// <summary>
+    ///  Function is not idempotent. It will show 1 X, then 2 X's, then perpetually 3 X's
+    /// </summary>
+    public void ShowX()
+    {
+      string targetName = XCount == 0 ? WrongAnswer1.Name :
+                          XCount == 1 ? WrongAnswer2.Name :
+                          WrongAnswer3.Name;
+
+      foreach(Timeline animation in showXStory.Children)
+      {
+        Storyboard.SetTargetName((DoubleAnimation)animation, targetName);
+      }
+
+      mXMediaPlayer.Play();
+      showXStory.Begin();
     }
 
     /// <summary>

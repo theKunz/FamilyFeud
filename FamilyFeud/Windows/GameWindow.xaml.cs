@@ -185,17 +185,27 @@ namespace FamilyFeud
     /// <param name="args"></param>
     private void KeyPressed(object sender, KeyEventArgs args)
     {
-      if(!mAttachedKeys.Contains(args.Key))
+      if(mAttachedKeys.Contains(args.Key))
       {
-        return;
+        mActiveQuestion.RevealAnswer(args.Key - Key.D0);
       }
-
-      mActiveQuestion.RevealAnswer(args.Key - Key.D0);
+      else if(args.Key == Key.X)
+      {
+        ShowXOnActiveQuestion();
+      }
     }
 
     public void ShowAnswerOnActiveQuestion(int answerIndex)
     {
       mActiveQuestion.RevealAnswer(answerIndex);
+    }
+
+    public void ShowXOnActiveQuestion()
+    {
+      if(mActiveQuestion is SingleQuestionControl)
+      {
+        ((SingleQuestionControl)mActiveQuestion).ShowX();
+      }
     }
 
     #region RenderTransform for next/prev ---------------------------------------------
@@ -334,13 +344,23 @@ namespace FamilyFeud
 
     private void NextClick(object sender, EventArgs args)
     {
+      GoToNext();
+    }
+
+    private void PreviousClick(object sender, EventArgs args)
+    {
+      GoToPrevious();
+    }
+
+    public void GoToNext()
+    {
       if(currentQuestion < ExistingQuestions.Length - 1)
       {
         TransformToNextQuestion();
       }
     }
 
-    private void PreviousClick(object sender, EventArgs args)
+    public void GoToPrevious()
     {
       if(currentQuestion > 0)
       {

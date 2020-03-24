@@ -16,6 +16,14 @@
                        Storyboard.TargetName="bdrQuestionForeground" Storyboard.TargetProperty="Opacity" 
                        From="0" To="0.9"/>
     </Storyboard>
+    <Storyboard x:Key="sbShowX">
+      <DoubleAnimation BeginTime="00:00:00" Duration="00:00:00"
+                       Storyboard.TargetProperty="Opacity"
+                       From="0" To="1"/>
+      <DoubleAnimation BeginTime="00:00:0.5" Duration="00:00:0.05"
+                       Storyboard.TargetProperty="Opacity"
+                       From="1" To="0"/>
+    </Storyboard>
   </UserControl.Resources>
   <Border Width="1920" Height="1080" BorderBrush="Black">
     <Border.Background>
@@ -36,7 +44,6 @@
         <RowDefinition Height="Auto" />
         <RowDefinition />
       </Grid.RowDefinitions>
-
 
       <local:AnswerBox x:Name="Answer1" Grid.Column="1" Grid.Row="1"/>
       <local:AnswerBox x:Name="Answer2" Grid.Column="1" Grid.Row="2"/>
@@ -68,6 +75,23 @@
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"
                    MaxWidth="1720"/>
+      </Border>
+
+
+      <Border x:Name="WrongAnswer1" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="4" Width="420" Height="420" Opacity="0" IsHitTestVisible="False">
+        <Border.Background>
+          <ImageBrush ImageSource="/FamilyFeud;component/Images/family-feud-X.png"/>
+        </Border.Background>
+      </Border>
+      <Border x:Name="WrongAnswer2" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="4" Width="780" Height="420" Opacity="0" IsHitTestVisible="False">
+        <Border.Background>
+          <ImageBrush ImageSource="/FamilyFeud;component/Images/family-feud-X2.png"/>
+        </Border.Background>
+      </Border>
+      <Border x:Name="WrongAnswer3" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="4" Width="1170" Height="420" Opacity="0" IsHitTestVisible="False">
+        <Border.Background>
+          <ImageBrush ImageSource="/FamilyFeud;component/Images/family-feud-X3.png"/>
+        </Border.Background>
       </Border>
     </Grid>
   </Border>

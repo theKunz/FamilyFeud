@@ -366,7 +366,7 @@ namespace FamilyFeud
       }
       else if(args.Key == Key.X)
       {
-        // show X on question
+        ShowX();
       }
       else if(args.Key == Key.Right)
       {
@@ -380,25 +380,22 @@ namespace FamilyFeud
 
     private void ShowAnswer(int answerIndex)
     {
-      if(currentGame != null)
-      {
-        gameWindow.ShowAnswerOnActiveQuestion(answerIndex);
-      }
+      gameWindow?.ShowAnswerOnActiveQuestion(answerIndex);
     }
 
     private void ShowX()
     {
-
+      gameWindow?.ShowXOnActiveQuestion();
     }
 
     private void TransitionNextQuestion()
     {
-
+      gameWindow?.GoToNext();
     }
 
     private void TransitionPreviousQuestion()
     {
-
+      gameWindow?.GoToPrevious();
     }
 
     private void WrongAnswer_Click(object sender, RoutedEventArgs e)
