@@ -17,6 +17,8 @@ namespace FamilyFeud.Controls
     private int? mAnswerIndex;
     private Answer mAnswerSource;
     MediaPlayer mMediaplayer;
+    private static object lockObj = new object();
+    private bool answerBoxShown = false;
 
     public AnswerBox()
     {
@@ -70,19 +72,26 @@ namespace FamilyFeud.Controls
       if(!(showAnswerStory?.IsFrozen).Value)
       {
         EventHandler mediaEndedHandler;
-
-        showAnswerStory?.Begin();
-        mMediaplayer.IsMuted = false;
-        mMediaplayer.Position = new TimeSpan(0);
-        mMediaplayer.Play();
-
-        mediaEndedHandler = null;
-        mediaEndedHandler = (s, e) => 
+        lock(lockObj)
         {
-          mMediaplayer.MediaEnded -= mediaEndedHandler;
-          mMediaplayer.Freeze();
-        };
-        mMediaplayer.MediaEnded += mediaEndedHandler;
+          if(!answerBoxShown)
+          {
+            answerBoxShown = true;
+
+            showAnswerStory?.Begin();
+            mMediaplayer.IsMuted = false;
+            mMediaplayer.Position = new TimeSpan(0);
+            mMediaplayer.Play();
+
+            mediaEndedHandler = null;
+            mediaEndedHandler = (s, e) =>
+            {
+              mMediaplayer.MediaEnded -= mediaEndedHandler;
+              mMediaplayer.Freeze();
+            };
+            mMediaplayer.MediaEnded += mediaEndedHandler;
+          }
+        }
       }
     }
 

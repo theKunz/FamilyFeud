@@ -422,5 +422,9 @@ namespace FamilyFeud
     {
 
     }
+    private void StartIntro_Click(object sender, RoutedEventArgs e)
+    {
+      gameWindow?.BeginIntro();
+    }
   }
 }

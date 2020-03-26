@@ -45,7 +45,8 @@
           </Grid.RowDefinitions>
 
           <Button x:Name="GoToFirstQuestion" Content="Go To First" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="0" Click="GoToFirstQuestion_Click"/>
-          <Button x:Name="StartBonusTimer" Content="Begin Countdown" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="1" Click="StartBonusTimer_Click"/>
+          <!--<Button x:Name="StartBonusTimer" Content="Begin Countdown" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="1" Click="StartBonusTimer_Click"/>-->
+          <Button x:Name="StartIntro" Content="Begin Introduction" Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="0" Grid.Column="1" Click="StartIntro_Click"/>
           <Button x:Name="btnShow0" Content="Show Answer 1"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="1"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
           <Button x:Name="btnShow1" Content="Show Answer 2"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="2"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>
           <Button x:Name="btnShow2" Content="Show Answer 3"  Style="{StaticResource FamilyFuedButtonStyle}" Grid.Row="3"  Grid.ColumnSpan="2" Click="btnShowAnswer_Click"/>

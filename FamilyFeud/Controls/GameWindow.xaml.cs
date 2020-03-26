@@ -23,6 +23,8 @@ namespace FamilyFeud
 
     private const double TRANSFORM_DISTANCE = 1920.0;
 
+    private Border introPlaceholderBorder;
+
     private Size originalNonMaximizedSize;
     private List<Key> mAttachedKeys;
     private int currentQuestion;
@@ -80,27 +82,10 @@ namespace FamilyFeud
         (ExistingQuestions[i] as UIElement).CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
       }
 
-      oldStyleCountdown = new OldStyleCountdownControl();
-      titleScreen = new TitleScreen();
+      introPlaceholderBorder = new Border() { Background = new SolidColorBrush(Color.FromRgb(0, 0, 0)) };
 
-      gParentGrid.Children.Add(oldStyleCountdown);
-
-      oldStyleCountdown.OnCountdownCompleted += (obj, args) =>
-      {
-        this.Dispatcher.Invoke(() =>
-        {
-          gParentGrid.Children.Remove(oldStyleCountdown);
-          gParentGrid.Children.Add(titleScreen);
-          mNextQuestion = ExistingQuestions[0];
-          SetNextTransform(mNextQuestion);
-          // Note, this needs to be added after the titleScreen in order for the first question to be visible
-          // when transitioning to it.
-          gParentGrid.Children.Add(mNextQuestion as Control);
-        });
-      };
+      gParentGrid.Children.Add(introPlaceholderBorder);
       
-      mSoundPlayerIntro.Play();
-
       mMediaPlayerQuestion = new MediaPlayer();
       mMediaPlayerQuestion.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
       mMediaPlayerQuestion.IsMuted = true;
@@ -118,6 +103,33 @@ namespace FamilyFeud
     public GameWindow() : this(new Game())
     {
 
+    }
+
+    public void BeginIntro()
+    {
+      oldStyleCountdown = new OldStyleCountdownControl();
+
+      oldStyleCountdown.OnCountdownCompleted += (obj, args) =>
+      {
+        this.Dispatcher.Invoke(() =>
+        {
+          titleScreen = new TitleScreen();
+          gParentGrid.Children.Remove(oldStyleCountdown);
+          gParentGrid.Children.Add(titleScreen);
+          mNextQuestion = ExistingQuestions[0];
+          SetNextTransform(mNextQuestion);
+          // Note, this needs to be added after the titleScreen in order for the first question to be visible
+          // when transitioning to it.
+          gParentGrid.Children.Add(mNextQuestion as Control);
+        });
+      };
+
+      this.Dispatcher.Invoke(() =>
+      {
+        gParentGrid.Children.Remove(introPlaceholderBorder);
+        gParentGrid.Children.Add(oldStyleCountdown);
+        mSoundPlayerIntro.Play();
+      });
     }
 
     public void BeginQuestions()
