@@ -350,12 +350,6 @@ namespace FamilyFeud
       ShowAnswer(answerToShow);
     }
 
-    /// <summary>
-    /// Reveals the answer associatied with the respetive key. Accepts any key
-    /// specified in the attachedKeys list.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     private void KeyPressed(object sender, KeyEventArgs args)
     {
       Key[] numKeys = { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
@@ -418,10 +412,23 @@ namespace FamilyFeud
       gameWindow.BeginQuestions();
     }
 
+    private bool bonusTimerCounting = false;
     private void StartBonusTimer_Click(object sender, RoutedEventArgs e)
     {
+      if(!bonusTimerCounting)
+      {
+        StartBonusTimer.Content = "Pause Countdown";
+        gameWindow?.BeginBonusRoundCountdown();
+      }
+      else
+      {
+        StartBonusTimer.Content = "Start Countdown";
+        gameWindow?.StopBonusRoundCountdown();
+      }
 
+      bonusTimerCounting = !bonusTimerCounting;
     }
+
     private void StartIntro_Click(object sender, RoutedEventArgs e)
     {
       gameWindow?.BeginIntro();

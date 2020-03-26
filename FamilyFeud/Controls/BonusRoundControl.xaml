@@ -54,7 +54,7 @@
 
         <TextBlock x:Name="tbTimer" 
                    Grid.Column="1" 
-                   Text="1:00" 
+                   Text="2:00" 
                    FontSize="100" 
                    FontFamily="Broadway" 
                    FontWeight="ExtraBold" 
@@ -156,8 +156,8 @@
           <ColumnDefinition Width="205"/>
         </Grid.ColumnDefinitions>
         
-        <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonPrev_Click" Content="Previous" FontSize="20"/>
-        <Button Style="{StaticResource FamilyFuedButtonStyle}" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonNext_Click" Content="Next" FontSize="20"/>
+        <Button Style="{StaticResource FamilyFuedButtonStyle}" Visibility="Hidden" Grid.Column="0" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding PreviousEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonPrev_Click" Content="Previous" FontSize="20"/>
+        <Button Style="{StaticResource FamilyFuedButtonStyle}" Visibility="Hidden" Grid.Column="3" Grid.Row="5" Height="30" Width="150" IsEnabled="{Binding NextEnabled, UpdateSourceTrigger=PropertyChanged}" Click="ButtonNext_Click" Content="Next" FontSize="20"/>
       </Grid>
       
     </Grid>

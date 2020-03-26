@@ -30,7 +30,7 @@ namespace FamilyFeud.Controls
     public event PropertyChangedEventHandler PropertyChanged;
 
     private Timer countDownTimer;
-    private const int TimerSeconds = 60;
+    private const int TimerSeconds = 120;
     private int currTick;
     private BonusRound mBonusData;
 
@@ -53,7 +53,7 @@ namespace FamilyFeud.Controls
 
       DataContext = this;
 
-      currTick = 0;
+      currTick = TimerSeconds;
       countDownTimer = InitNewTimer();
 
       RoutedEventHandler loadedEvent = null;
@@ -101,9 +101,9 @@ namespace FamilyFeud.Controls
     {
       EventHandler disp = null;
 
-      if(currTick == TimerSeconds || countDownTimer == null)
+      if(currTick == 0 || countDownTimer == null)
       {
-        currTick = 0;
+       currTick = TimerSeconds;
         disp = (s, e) =>
         {
           countDownTimer.Disposed -= disp;
@@ -140,8 +140,9 @@ namespace FamilyFeud.Controls
 
     private void TimerTick(object sender, ElapsedEventArgs args)
     {
-      Dispatcher.Invoke(() => { tbTimer.Text = (TimerSeconds - ++currTick).ToString("0:##"); });
-      if(currTick == TimerSeconds)
+      currTick--;
+      Dispatcher.Invoke(() => { tbTimer.Text = string.Format("{0}:{1}", (currTick / 60).ToString(), (currTick % 60).ToString("D2")); });
+      if(currTick == 0)
       {
         OnTimerFinished?.Invoke(this, new EventArgs());
         countDownTimer.Stop();

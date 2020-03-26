@@ -220,6 +220,22 @@ namespace FamilyFeud
       }
     }
 
+    public void BeginBonusRoundCountdown()
+    {
+      if(mActiveQuestion is BonusRoundControl)
+      {
+        (mActiveQuestion as BonusRoundControl).StartTimer();
+      }
+    }
+
+    public void StopBonusRoundCountdown()
+    {
+      if(mActiveQuestion is BonusRoundControl)
+      {
+        (mActiveQuestion as BonusRoundControl).StopTimer();
+      }
+    }
+
     #region RenderTransform for next/prev ---------------------------------------------
 
     private void SetNextTransform(IRoundControl question)
