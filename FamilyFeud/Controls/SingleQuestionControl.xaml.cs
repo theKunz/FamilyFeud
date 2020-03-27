@@ -60,7 +60,6 @@ namespace FamilyFeud.Controls
 
       KeyUp += KeyPressed;
 
-      mXMediaPlayer = new MediaPlayer();
 
       DataContext = this;
 
@@ -68,17 +67,12 @@ namespace FamilyFeud.Controls
 
       mXMediaPlayer = new MediaPlayer();
       mXMediaPlayer.IsMuted = true;
-      mXMediaPlayer.Volume = 0;
-      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
-      mXMediaPlayer.MediaEnded += (s, e) =>
+      mXMediaPlayer.MediaEnded += (sender, args) =>
       {
-        mXMediaPlayer.Position = new TimeSpan(0, 0, 0);
-        mXMediaPlayer.Pause();
-        mXMediaPlayer.IsMuted = false;
-        mXMediaPlayer.Volume = 1;
+        mXMediaPlayer.Stop();
+        mXMediaPlayer.Position = new TimeSpan(0);
       };
-      // Do a first play muted in order to pre-buffer it
-      mXMediaPlayer.Play();
+      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
     }
 
     private void SQC_Loaded(object sender, RoutedEventArgs args)
@@ -167,7 +161,8 @@ namespace FamilyFeud.Controls
       {
         Storyboard.SetTargetName((DoubleAnimation)animation, targetName);
       }
-
+      mXMediaPlayer.IsMuted = false;
+      mXMediaPlayer.Volume = 1;
       mXMediaPlayer.Play();
       showXStory.Begin();
     }

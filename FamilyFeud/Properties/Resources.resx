@@ -121,7 +121,31 @@
   <data name="AnswerBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\AnswerBackground.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Correct_Ding" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Correct_Ding.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Crowd_Cheer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Crowd_Cheer.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Crow_Boo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Crow_Boo.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="HiddenAnswer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\HiddenAnswer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Next_Question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Next_Question.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Opening_Theme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Opening_Theme.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Outtake_Blip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Outtake_Blip.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sad_Trombone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Sad_Trombone.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Wrong_Buzzer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Sounds\Wrong_Buzzer.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -29,9 +29,8 @@ namespace FamilyFeud.Controls
       DataContext = this;
       MouseLeftButtonUp += ShowAnswerMouse;
       mMediaplayer = new MediaPlayer();
-      mMediaplayer.Open(new Uri(@"../../Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
       mMediaplayer.IsMuted = true;
-      mMediaplayer.Play();
+      mMediaplayer.Open(new Uri(@"../../Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
     }
 
     private void ShowAnswerMouse(object sender, MouseButtonEventArgs args)
@@ -80,6 +79,7 @@ namespace FamilyFeud.Controls
 
             showAnswerStory?.Begin();
             mMediaplayer.IsMuted = false;
+            mMediaplayer.Volume = 1;
             mMediaplayer.Position = new TimeSpan(0);
             mMediaplayer.Play();
 

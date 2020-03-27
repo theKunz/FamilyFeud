@@ -433,5 +433,10 @@ namespace FamilyFeud
     {
       gameWindow?.BeginIntro();
     }
+
+    private void EndGame_Click(object sender, RoutedEventArgs e)
+    {
+      gameWindow?.Close();
+    }
   }
 }

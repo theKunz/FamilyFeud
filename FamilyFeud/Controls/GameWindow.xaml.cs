@@ -19,7 +19,7 @@ namespace FamilyFeud
   /// </summary>
   public partial class GameWindow : Window
   {
-    public static SoundPlayer mSoundPlayerIntro = new SoundPlayer(@"../../Sounds/Opening_Theme.wav");
+    public static SoundPlayer mSoundPlayerIntro = new SoundPlayer(Properties.Resources.Opening_Theme);
 
     private const double TRANSFORM_DISTANCE = 1920.0;
 
@@ -47,6 +47,8 @@ namespace FamilyFeud
       }
 
       mGame = game;
+
+      mSoundPlayerIntro.Load();
       
       mAttachedKeys = new List<Key>() { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
 
@@ -89,12 +91,6 @@ namespace FamilyFeud
       mMediaPlayerQuestion = new MediaPlayer();
       mMediaPlayerQuestion.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
       mMediaPlayerQuestion.IsMuted = true;
-      mMediaPlayerQuestion.MediaEnded += (s, e) =>
-      {
-        mMediaPlayerQuestion.IsMuted = true;
-        mMediaPlayerQuestion.Pause();
-        mMediaPlayerQuestion.Position = new TimeSpan(0, 0, 0);
-      };
 
       this.Closed += GameWindow_Closed;
     }
