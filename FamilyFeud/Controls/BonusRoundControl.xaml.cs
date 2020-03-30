@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -29,13 +30,18 @@ namespace FamilyFeud.Controls
     public event EventHandler OnTimerFinished;
     public event PropertyChangedEventHandler PropertyChanged;
 
+    private MediaPlayer mDingMediaPlayer;
+    private MediaPlayer mXMediaPlayer;
     private Timer countDownTimer;
     private const int TimerSeconds = 120;
     private int currTick;
     private BonusRound mBonusData;
+    private Storyboard showXStory;
 
     private bool mNextEnabled;
     private bool mPrevEnabled;
+
+    private bool[] ShownAnswers;
 
     public BonusRoundControl() :
       this(null)
@@ -51,7 +57,27 @@ namespace FamilyFeud.Controls
 
       mBonusData = bRound != null ? bRound : new BonusRound();
 
+      ShownAnswers = new bool[bRound.BonusQuestions.Count];
+
       DataContext = this;
+
+      mDingMediaPlayer = new MediaPlayer();
+      mDingMediaPlayer.IsMuted = true;
+      mDingMediaPlayer.Open(new Uri(@"../../Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
+      mDingMediaPlayer.MediaEnded += (obj, e) =>
+      {
+        mDingMediaPlayer.Position = new TimeSpan(0, 0, 0);
+        mDingMediaPlayer.Pause();
+      };
+
+      mXMediaPlayer = new MediaPlayer();
+      mXMediaPlayer.IsMuted = true;
+      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
+      mXMediaPlayer.MediaEnded += (obj, e) =>
+      {
+        mXMediaPlayer.Position = new TimeSpan(0, 0, 0);
+        mXMediaPlayer.Pause();
+      };
 
       currTick = TimerSeconds;
       countDownTimer = InitNewTimer();
@@ -65,6 +91,8 @@ namespace FamilyFeud.Controls
         {
           (FindName("tbQ" + i) as TextBlock).Text = BonusData.BonusQuestions[i - 1].Question.QuestionText;
         }
+
+        showXStory = Resources["sbShowX"] as Storyboard;
       };
       Loaded += loadedEvent;
     }
@@ -84,6 +112,13 @@ namespace FamilyFeud.Controls
         return;
       }
 
+      if(ShownAnswers[answerIndex])
+      {
+        return;
+      }
+
+      ShownAnswers[answerIndex] = true;
+
       int controlIndex = answerIndex == 0 ? 10 : answerIndex;
       int dataIndex = answerIndex == 0 ? 9 : answerIndex - 1;
 
@@ -95,6 +130,11 @@ namespace FamilyFeud.Controls
 
       valueTb.Text = BonusData.BonusQuestions[dataIndex].Answer.PointValue.ToString();
       valueTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 214, 7));
+
+      mDingMediaPlayer.Position = new TimeSpan(0, 0, 0); // In case the user is mashing reveal answer and one ding hasn't finished
+      mDingMediaPlayer.IsMuted = false;
+      mDingMediaPlayer.Volume = 1;
+      mDingMediaPlayer.Play();
     }
 
     public void StartTimer()
@@ -130,6 +170,15 @@ namespace FamilyFeud.Controls
       countDownTimer.Stop();
     }
 
+    public void ShowX()
+    {
+      showXStory.Begin();
+      mXMediaPlayer.IsMuted = false;
+      mXMediaPlayer.Volume = 1;
+      mXMediaPlayer.Play();
+      showXStory.Begin();
+    }
+
     private Timer InitNewTimer()
     {
       Timer newTimer = new Timer(1000);
@@ -146,13 +195,6 @@ namespace FamilyFeud.Controls
       {
         OnTimerFinished?.Invoke(this, new EventArgs());
         countDownTimer.Stop();
-        Dispatcher.Invoke(() =>
-        {
-          for(int i = 0; i < BonusData.BonusQuestions.Count; i++)
-          {
-            RevealAnswer(i);
-          }
-        });
       }
     }
 

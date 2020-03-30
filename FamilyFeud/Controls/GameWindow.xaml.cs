@@ -2,6 +2,7 @@
 using FamilyFeud.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Media;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace FamilyFeud
   /// <summary>
   /// Interaction logic for GameWindow.xaml
   /// </summary>
-  public partial class GameWindow : Window
+  public partial class GameWindow : Window, INotifyPropertyChanged
   {
     public static SoundPlayer mSoundPlayerIntro = new SoundPlayer(Properties.Resources.Opening_Theme);
 
@@ -36,6 +37,8 @@ namespace FamilyFeud
     private IRoundControl mPreviousQuestion;
     private IRoundControl mActiveQuestion;
     private IRoundControl mNextQuestion;
+
+    public event PropertyChangedEventHandler PropertyChanged;
 
     public GameWindow(Game game)
     {
@@ -146,6 +149,7 @@ namespace FamilyFeud
       {
         mPreviousQuestion = null;
         mActiveQuestion = mNextQuestion;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentRound)));
         gParentGrid.Children.Remove(titleScreen);
 
         currentQuestion = 0;
@@ -214,6 +218,10 @@ namespace FamilyFeud
       {
         ((SingleQuestionControl)mActiveQuestion).ShowX();
       }
+      else if(mActiveQuestion is BonusRoundControl)
+      {
+        ((BonusRoundControl)mActiveQuestion).ShowX();
+      }
     }
 
     public void BeginBonusRoundCountdown()
@@ -229,6 +237,22 @@ namespace FamilyFeud
       if(mActiveQuestion is BonusRoundControl)
       {
         (mActiveQuestion as BonusRoundControl).StopTimer();
+      }
+    }
+
+    public void ShowCurrentQuestionOverlay()
+    {
+      if(mActiveQuestion is SingleQuestionControl)
+      {
+        (mActiveQuestion as SingleQuestionControl).ShowQuestion();
+      }
+    }
+
+    public void HideCurrentQuestionOverlay()
+    {
+      if(mActiveQuestion is SingleQuestionControl)
+      {
+        (mActiveQuestion as SingleQuestionControl).HideQuestion();
       }
     }
 
@@ -278,7 +302,7 @@ namespace FamilyFeud
       {
         mPreviousQuestion = mActiveQuestion;
         mActiveQuestion = mNextQuestion;
-
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentRound)));
         currentQuestion++;
 
         AttachNextPrevClickEvents();
@@ -329,7 +353,7 @@ namespace FamilyFeud
       {
         mNextQuestion = mActiveQuestion;
         mActiveQuestion = mPreviousQuestion;
-
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentRound)));
         currentQuestion--;
 
         AttachNextPrevClickEvents();
@@ -348,7 +372,6 @@ namespace FamilyFeud
         SetActiveTransform(mActiveQuestion);
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
-
 
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
@@ -476,6 +499,8 @@ namespace FamilyFeud
     private IRoundControl[] ExistingQuestions { get; set; }
     private OldStyleCountdownControl oldStyleCountdown { get; set; }
     private TitleScreen titleScreen { get; set; }
+
+    public IRoundControl CurrentRound { get { return mActiveQuestion; } set { return; } }
 
     #endregion
   }

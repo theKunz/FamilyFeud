@@ -7,6 +7,14 @@
              mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
+      <Storyboard x:Key="sbShowX">
+        <DoubleAnimation BeginTime="00:00:00" Duration="00:00:00"
+                         Storyboard.TargetName="WrongAnswer1" Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"/>
+        <DoubleAnimation BeginTime="00:00:0.5" Duration="00:00:0.05"
+                         Storyboard.TargetName="WrongAnswer1" Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"/>
+      </Storyboard>
       <Style TargetType="Viewbox">
         <Setter Property="StretchDirection" Value="DownOnly"/>
         <Setter Property="Width" Value="610"/>
@@ -70,7 +78,7 @@
           <ColumnDefinition/>
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <StackPanel Orientation="Vertical" Grid.Column="0">
           
           <StackPanel Orientation="Horizontal" Width="700" Height="80" Margin="225,20,0,6">
@@ -146,6 +154,12 @@
             <TextBlock x:Name="tbA10" Style="{StaticResource tbAnswerStyle}"/>
           </StackPanel>
         </StackPanel>
+
+        <Border x:Name="WrongAnswer1" Grid.RowSpan="4" Grid.ColumnSpan="4" Width="420" Height="420" Opacity="0" IsHitTestVisible="False">
+          <Border.Background>
+            <ImageBrush ImageSource="/FamilyFeud;component/Images/family-feud-X.png"/>
+          </Border.Background>
+        </Border>
       </Grid>
 
       <Grid x:Name="ButtonGrid" Grid.Row="2">
