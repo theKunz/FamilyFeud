@@ -204,7 +204,7 @@ namespace FamilyFeud
         gameWindow.Closed -= onClosed;
         gameWindow.PropertyChanged -= OnPropertyChanged;
         ChangeButtonState(ButtonState.NoGame);
-
+        CurrentRoundAnswers = new ObservableCollection<Answer>();
         currentGame = null;
       };
       gameWindow = new GameWindow(currentGame);
