@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:FamilyFeud"
         xmlns:LocalControls="clr-namespace:FamilyFeud.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920"
+        Title="Family Feud" Height="1080" Width="1920"
         Closed="MainMenu_Closed"
-        x:Name="ElementRoot">
+        x:Name="ElementRoot"
+        Icon="pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png">
 
   <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Focusable="False">
     <Border Background="#000123" Width="1920" Height="1050" x:Name="BackgroundRoot">
@@ -114,7 +115,7 @@
             </Grid.RowDefinitions>
             <Button Grid.Column="0" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginCustomGame_Click" Content="Start Custom Game" FontSize="19"/>
             <Button Grid.Column="1" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginRandomGame_Click" Content="Start Random Game" FontSize="18"/>
-            <Button Grid.Column="1" Grid.Row="1" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnDebug_Click" Content="Debug" FontSize="18"/>
+            <Button x:Name="btnHotkeys" Grid.Column="0" Grid.Row="1" Height="40" Width="200" Grid.ColumnSpan="2" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnHotkeys_Click" Content="Hotkeys" FontSize="18"/>
           </Grid>
         </StackPanel>
 

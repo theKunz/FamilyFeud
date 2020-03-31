@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              SizeToContent="WidthAndHeight"
-             ResizeMode="CanMinimize">
+             ResizeMode="CanMinimize"
+             Icon="pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png">
   <Window.Resources>
     <Style x:Key="AnswerTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FamilyFeudTextBoxStyle}">
       <Setter Property="Height" Value="30"/>

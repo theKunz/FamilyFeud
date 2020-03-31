@@ -74,6 +74,9 @@
     <Compile Include="Controls\GameBuilder.xaml.cs">
       <DependentUpon>GameBuilder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HotkeyListControl.xaml.cs">
+      <DependentUpon>HotkeyListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Interfaces\IRoundControl.cs" />
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
@@ -120,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GameBuilder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HotkeyListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,6 +246,7 @@
     <Resource Include="Images\BonusQuestionBackground.png" />
     <Resource Include="Images\family-feud-X2.png" />
     <Resource Include="Images\family-feud-X3.png" />
+    <Resource Include="Images\FamilyFeudIcon.png" />
     <Content Include="Sounds\Bing-sound.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

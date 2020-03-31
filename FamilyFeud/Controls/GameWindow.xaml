@@ -7,12 +7,13 @@
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:localControls="clr-namespace:FamilyFeud.Controls"
         mc:Ignorable="d"
-        Title="GameWindow" Height="600" Width="800"
+        Title="Family Feud" Height="600" Width="800"
         StateChanged="GameWindow_StateChanged"
         SizeChanged="GameWindow_SizeChanged"
         KeyDown="GameWindow_KeyDown"
         ContentRendered="GameWindow_ContentRendered"
-        Closing="GameWindow_Closing">
+        Closing="GameWindow_Closing"
+        Icon="pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png">
   <Grid x:Name="gParentGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1920" />

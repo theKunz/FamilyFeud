@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Windows.Media.Imaging;
 
 namespace FamilyFeud
 {
@@ -143,14 +144,6 @@ namespace FamilyFeud
       }
 
       StartGame(selectedRounds, null, false, false);
-    }
-
-    private void btnDebug_Click(object sender, RoutedEventArgs e)
-    {
-      Window window = new Window();
-      window.Content = new TitleScreen();
-      window.WindowState = WindowState.Maximized;
-      window.Show();
     }
 
     private void btnBeginCustomGame_Click(object sender, RoutedEventArgs e)
@@ -627,6 +620,28 @@ namespace FamilyFeud
       }
 
       IsActiveQuestionShown = !IsActiveQuestionShown;
+    }
+
+    Window mHotkeyWindow;
+    private void btnHotkeys_Click(object sender, RoutedEventArgs e)
+    {
+      if(mHotkeyWindow != null)
+      {
+        mHotkeyWindow.Activate();
+        return;
+      }
+
+      mHotkeyWindow = new Window();
+      mHotkeyWindow.Content = new HotkeyListControl();
+      mHotkeyWindow.SizeToContent = SizeToContent.WidthAndHeight;
+      mHotkeyWindow.ResizeMode = ResizeMode.NoResize;
+      mHotkeyWindow.Icon = new BitmapImage(new Uri(@"pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png", UriKind.RelativeOrAbsolute));
+      mHotkeyWindow.Title = "Family Feud";
+      mHotkeyWindow.Closed += (send, args) =>
+      {
+        mHotkeyWindow = null;
+      };
+      mHotkeyWindow.Show();
     }
   }
 }

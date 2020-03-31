@@ -1,10 +1,9 @@
 ﻿<Window x:Class="FamilyFeud.Controls.GameBuilder"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:FamilyFeud.Controls"
-        ResizeMode="NoResize" Height="675" Width="800">
+        ResizeMode="NoResize" Height="675" Width="800"
+        Icon="pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png"
+        Title="Family Feud">
   <Window.Resources>
     <Style x:Key="ListViewStyle" TargetType="ListView">
       <Setter Property="Background" Value="{StaticResource FF_Foreground}"/>
