@@ -112,15 +112,15 @@ namespace FamilyFeud.Controls
         return;
       }
 
-      if(ShownAnswers[answerIndex])
+      int controlIndex = answerIndex == 0 ? 10 : answerIndex;
+      int dataIndex = answerIndex == 0 ? 9 : answerIndex - 1;
+
+      if(ShownAnswers[dataIndex])
       {
         return;
       }
 
-      ShownAnswers[answerIndex] = true;
-
-      int controlIndex = answerIndex == 0 ? 10 : answerIndex;
-      int dataIndex = answerIndex == 0 ? 9 : answerIndex - 1;
+      ShownAnswers[dataIndex] = true;
 
       TextBlock answerTb = (FindName("tbQ" + controlIndex) as TextBlock);
       TextBlock valueTb = (FindName("tbA" + controlIndex) as TextBlock);

@@ -14,6 +14,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
+using FamilyFeud.Helpers;
+using System.Collections.Specialized;
 
 namespace FamilyFeud
 {
@@ -23,7 +25,6 @@ namespace FamilyFeud
   public partial class MainWindow : Window, INotifyPropertyChanged
   {
     private GameWindow gameWindow;
-    private XmlSerializer mSerializer;
     private ObservableCollection<IQuestioner> mQuestions;
     private ObservableCollection<IQuestioner> mBonusQuestions;
     private const int MaxRandomGameSize = 10;
@@ -52,69 +53,18 @@ namespace FamilyFeud
 
       this.KeyUp += KeyPressed;
 
-      mQuestions = new ObservableCollection<IQuestioner>()
-      {
-        new Round("Who am I?", new ObservableCollection<Answer>()
-        {
-          new Answer("(1) I am one", 10),
-          new Answer("(1) I am two", 20),
-          new Answer("(1) I am three", 30),
-          new Answer("(1) I am four", 40),
-          new Answer("(1) I am five", 50),
-          new Answer("(1) I am six", 60),
-          new Answer("(1) I am sevent", 70)
-        }),
-        new Round("Who are you?", new ObservableCollection<Answer>()
-        {
-          new Answer("(2) You are six", 60),
-          new Answer("(2) You are five", 50),
-          new Answer("(2) You are four", 40),
-          new Answer("(2) You are three", 30),
-          new Answer("(2) You are two", 20),
-          new Answer("(2) You are one", 10),
-        }),
-        new Round("Who are they?", new ObservableCollection<Answer>()
-        {
-          new Answer("(3) They are six", 60),
-          new Answer("(3) They are five", 50),
-          new Answer("(3) They are four", 40),
-          new Answer("(3) They are three", 30),
-          new Answer("(3) They are two", 20),
-          new Answer("(3) They are one", 10),
-          new Answer("(3) They are sevent", 70),
-          new Answer("(3) They are eight", 80)
-        }),
-        new Round("Who are us?", new ObservableCollection<Answer>()
-        {
-          new Answer("(4) Us are six", 60),
-          new Answer("(4) Us are five", 50),
-          new Answer("(4) Us are four", 40),
-          new Answer("(4) Us are three", 30),
-          new Answer("(4) Us are two", 20),
-          new Answer("(4) Us are one", 10)
-        })
-      };
-
-      mBonusQuestions = new ObservableCollection<IQuestioner>()
-      {
-        new BonusQuestion("BQ1", "BQA1", 10),
-        new BonusQuestion("BQ2", "BQA2", 10),
-        new BonusQuestion("BQ3", "BQA3", 10),
-        new BonusQuestion("BQ4", "BQA4", 10),
-        new BonusQuestion("BQ5", "BQA5", 10),
-        new BonusQuestion("BQ6", "BQA6", 10),
-        new BonusQuestion("BQ7", "BQA7", 10),
-        new BonusQuestion("BQ8", "BQA8", 10),
-        new BonusQuestion("BQ9", "BQA9", 10),
-        new BonusQuestion("BQ10", "BQA10", 10),
-        new BonusQuestion("BQ11", "BQA11", 10),
-        new BonusQuestion("BQ12", "BQA12", 10),
-        new BonusQuestion("BQ13", "BQA13", 10)
-      };
-
       LoadSaveData();
+      mBonusQuestions.CollectionChanged += (sender, args) =>
+      {
+        SaveFileHelpers.UpdateBonusRoundSaveData(mBonusQuestions);
+      };
+      mQuestions.CollectionChanged += (sender, args) =>
+      {
+        SaveFileHelpers.UpdateRoundSaveData(mQuestions);
+      };
       QuestionList.ItemSource = mQuestions;
       BonusQuestionList.ItemSource = mBonusQuestions;
+
       this.DataContext = this;
     }
 
@@ -172,11 +122,21 @@ namespace FamilyFeud
 
       foreach(Round round in args.NewRounds)
       {
+        var matchingQuestion = mQuestions.FirstOrDefault(b => b.Question.Equals(round.Question));
+        if(matchingQuestion != null)
+        {
+          mQuestions.Remove(matchingQuestion);
+        }
         mQuestions.Insert(0, round.Copy());
       }
 
       foreach(BonusQuestion bonusQuestion in args.NewBonusQuestions)
       {
+        var matchingQuestion = mBonusQuestions.FirstOrDefault(b => b.Question.Equals(bonusQuestion.Question));
+        if(matchingQuestion != null)
+        {
+          mBonusQuestions.Remove(matchingQuestion);
+        }
         mBonusQuestions.Insert(0, bonusQuestion.Copy());
       }
 
@@ -266,69 +226,8 @@ namespace FamilyFeud
 
     public void LoadSaveData()
     {
-      string exePath;
-      string filePathRound;
-      string filePathBonus;
-
-      exePath = System.AppDomain.CurrentDomain.BaseDirectory;
-      filePathRound = exePath + "GameDataRounds.xml";
-      filePathBonus = exePath + "GameDataBonus.xml";
-
-      mSerializer = new XmlSerializer(typeof(List<object>),
-                                      new Type[]
-                                      {
-                                        typeof(Game),
-                                        typeof(Round),
-                                        typeof(BonusRound),
-                                        typeof(Question),
-                                        typeof(Answer)
-                                      });
-
-      // Ensures that the file exists
-      /*using(StreamWriter stream = new StreamWriter(filePathRound, true))
-      {
-        stream.Write("");
-      }
-
-      using (StreamWriter stream = new StreamWriter(filePathBonus, true))
-      {
-        stream.Write("");
-      }
-
-      // -------------Temporary-------------------------
-      using (StreamWriter stream = new StreamWriter(filePathRound, false))
-      {
-        mSerializer.Serialize(stream, new List<object>(dummyDataQ));
-      }
-      using(StreamWriter stream = new StreamWriter(filePathBonus, false))
-      {
-        mSerializer.Serialize(stream, new List<object>(dummyDataB));
-      }
-      //------------------------------------------------
-
-      using (StreamReader stream = new StreamReader(filePathRound, Encoding.Default))
-      {
-        Window popup = new Window();
-        List<object> res = mSerializer.Deserialize(stream) as List<object>;
-        string returnStr = "";
-
-        res.ForEach((object o) => returnStr += (o as Round).ToString());
-
-        popup.Content = returnStr;
-        popup.Show();
-      }
-
-      using (StreamReader stream = new StreamReader(filePathBonus, Encoding.Default))
-      {
-        Window popup = new Window();
-        List<object> res = mSerializer.Deserialize(stream) as List<object>;
-        string returnStr = "";
-
-        res.ForEach((object o) => returnStr += (o as BonusQuestion).ToString());
-        
-        popup.Content = returnStr;
-        popup.Show();
-      }*/
+      mQuestions = new ObservableCollection<IQuestioner>(SaveFileHelpers.LoadRoundSaveData());
+      mBonusQuestions = new ObservableCollection<IQuestioner>(SaveFileHelpers.LoadBonusRoundSaveData());
     }
 
     private void ChangeButtonState(ButtonState newState)
@@ -357,6 +256,7 @@ namespace FamilyFeud
       else if(newState == ButtonState.NewGame)
       {
         StartIntro.Visibility = Visibility.Visible;
+        StartIntro.IsEnabled = true;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Collapsed;
         GoToFirstQuestion.Visibility = Visibility.Visible;
         GoToFirstQuestion.IsEnabled = false;
@@ -434,10 +334,17 @@ namespace FamilyFeud
       {
         qb.BonusQuestionComplete -= bqComplete;
 
-        // TODO: Add duplicate warning popup
-        if(!mBonusQuestions.Any(b => args.Data.Equals(b)))
+        if(mBonusQuestions.Any(b => args.Data.Question.Equals(b.Question)))
         {
-          mBonusQuestions.Add(args.Data);
+          if(MessageBox.Show("This question already exists. Overwrite?", "Question Already Exists ", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            mBonusQuestions.Remove(mBonusQuestions.First(b => args.Data.Question.Equals(b.Question)));
+            mBonusQuestions.Insert(0, args.Data);
+          }
+        }
+        else
+        {
+          mBonusQuestions.Insert(0, args.Data);
         }
 
       };
@@ -467,12 +374,19 @@ namespace FamilyFeud
       {
         qb.QuestionComplete -= qComplete;
 
-        // TODO: Add duplicate warning popup
-        if (!mQuestions.Any(b => args.Data.Equals(b)))
+        
+        if (mQuestions.Any(existing => args.Data.Question.Equals(existing.Question)))
         {
-          mQuestions.Add(args.Data);
+          if(MessageBox.Show("This question already exists. Overwrite?", "Question Already Exists", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            mQuestions.Remove(mQuestions.First(b => args.Data.Question.Equals(b.Question)));
+            mQuestions.Insert(0, args.Data);
+          }
         }
-
+        else
+        {
+          mQuestions.Insert(0, args.Data);
+        }
       };
 
       bqClosed = null;

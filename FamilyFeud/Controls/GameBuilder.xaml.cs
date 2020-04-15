@@ -7,6 +7,7 @@ using System.Windows;
 using FamilyFeud.CustomEventArgs;
 using System;
 using CommonLib.CustomEventArgs;
+using System.Linq;
 
 namespace FamilyFeud.Controls
 {
@@ -247,9 +248,34 @@ namespace FamilyFeud.Controls
       questionComplete = (s, e) =>
       {
         mQuickQuestion.QuestionComplete -= questionComplete;
+        Func<Round, bool> predicate = (b) => { return e.Data.Question.Equals(b.Question); };
 
-        mNewRounds.Insert(0, e.Data.Copy());
-        AvailableRounds.Insert(0, e.Data.Copy());
+        if(AvailableRounds.Any(predicate))
+        {
+          if(MessageBox.Show("This question already exists. Overwrite?", "Question Already Exists ", 
+                             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            AvailableRounds.Remove(AvailableRounds.First(predicate));
+            AvailableRounds.Insert(0, e.Data.Copy());
+            mNewRounds.Insert(0, e.Data.Copy());
+          }
+        }
+        else if(ChosenRounds.Any(predicate))
+        {
+          if(MessageBox.Show("This question already exists. Overwrite?", "Question Already Exists ",
+                             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            int i = ChosenRounds.IndexOf(ChosenRounds.First(predicate));
+            ChosenRounds.Remove(ChosenRounds.First(predicate));
+            ChosenRounds.Insert(i, e.Data.Copy());
+            mNewRounds.Insert(0, e.Data.Copy());
+          }
+        }
+        else
+        {
+          AvailableRounds.Insert(0, e.Data.Copy());
+          mNewRounds.Insert(0, e.Data.Copy());
+        }
       };
 
       closed = null;
@@ -282,9 +308,35 @@ namespace FamilyFeud.Controls
       bonusQuestionComplete = (s, e) =>
       {
         mQuickQuestion.BonusQuestionComplete -= bonusQuestionComplete;
+        Func<BonusQuestion, bool> predicate = (b) => { return e.Data.Question.Equals(b.Question); };
 
-        mNewBonusQuestions.Insert(0, e.Data.Copy());
-        AvailableBonusQuestions.Insert(0, e.Data.Copy());
+        if(AvailableBonusQuestions.Any(predicate))
+        {
+          if(MessageBox.Show("This bonus question already exists. Overwrite?", "Question Already Exists ",
+                             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            AvailableBonusQuestions.Remove(AvailableBonusQuestions.First(predicate));
+            AvailableBonusQuestions.Insert(0, e.Data.Copy());
+            mNewBonusQuestions.Insert(0, e.Data.Copy());
+          }
+        }
+        else if(ChosenBonusQuestions.Any(predicate))
+        {
+          if(MessageBox.Show("This bonus question already exists. Overwrite?", "Question Already Exists ",
+                             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+          {
+            int i = ChosenBonusQuestions.IndexOf(ChosenBonusQuestions.First(predicate));
+            ChosenBonusQuestions.Remove(ChosenBonusQuestions.First(predicate));
+            ChosenBonusQuestions.Insert(i, e.Data.Copy());
+            mNewBonusQuestions.Insert(0, e.Data.Copy());
+          }
+        }
+        else
+        {
+          mNewBonusQuestions.Insert(0, e.Data.Copy());
+          AvailableBonusQuestions.Insert(0, e.Data.Copy());
+        }
+
       };
 
       closed = null;

@@ -175,6 +175,7 @@
     <Compile Include="CustomEventArgs\ArithmeticEventArgs.cs" />
     <Compile Include="DataObjects\ScoreTracking\PointVal.cs" />
     <Compile Include="DataObjects\ScoreTracking\ScoreRow.cs" />
+    <Compile Include="Helpers\SaveFileHelpers.cs" />
     <Compile Include="Helpers\VisualHelpers.cs" />
     <Compile Include="Controls\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
