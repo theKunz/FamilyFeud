@@ -171,6 +171,7 @@ namespace FamilyFeud
         SetActiveTransform(mActiveQuestion);
         SetNextTransform(mNextQuestion);
 
+        AttachQuestionShownEvents();
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
 
@@ -322,6 +323,7 @@ namespace FamilyFeud
         SetActiveTransform(mActiveQuestion);
         SetNextTransform(mNextQuestion);
 
+        AttachQuestionShownEvents();
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
 
@@ -373,6 +375,7 @@ namespace FamilyFeud
         SetPrevTransform(mPreviousQuestion);
         SetNextTransform(mNextQuestion);
 
+        AttachQuestionShownEvents();
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
       };
 
@@ -387,6 +390,36 @@ namespace FamilyFeud
 
       mActiveQuestion.NextClickEvent -= NextClick;
       mActiveQuestion.NextClickEvent += NextClick;
+    }
+
+    private void AttachQuestionShownEvents()
+    {
+      if(mNextQuestion is SingleQuestionControl)
+      {
+        ((SingleQuestionControl)mNextQuestion).PropertyChanged -= BubbleQuestionShown;
+      }
+
+      if(mPreviousQuestion is SingleQuestionControl)
+      {
+        ((SingleQuestionControl)mPreviousQuestion).PropertyChanged -= BubbleQuestionShown;
+      }
+
+      if(mActiveQuestion is SingleQuestionControl)
+      {
+        ((SingleQuestionControl)mActiveQuestion).PropertyChanged -= BubbleQuestionShown;
+        ((SingleQuestionControl)mActiveQuestion).PropertyChanged += BubbleQuestionShown;
+      }
+    }
+
+    private void BubbleQuestionShown(object sender, PropertyChangedEventArgs args)
+    {
+      if(args.PropertyName == nameof(SingleQuestionControl.IsQuestionShown) && object.ReferenceEquals(sender, mActiveQuestion))
+      {
+        if(mActiveQuestion is SingleQuestionControl)
+        {
+          this.IsQuestionShown = ((SingleQuestionControl)mActiveQuestion).IsQuestionShown;
+        }
+      }
     }
 
     private void NextClick(object sender, EventArgs args)
@@ -501,6 +534,25 @@ namespace FamilyFeud
     private TitleScreen titleScreen { get; set; }
 
     public IRoundControl CurrentRound { get { return mActiveQuestion; } set { return; } }
+
+    public BonusRound BonusRound { get { return mGame.BonusRound; } }
+
+    private bool mIsQuestionShown;
+    public bool IsQuestionShown
+    {
+      get 
+      {
+        return mIsQuestionShown;
+      }
+      set
+      {
+        if(value != mIsQuestionShown)
+        {
+          mIsQuestionShown = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionShown)));
+        }
+      }
+    }
 
     #endregion
   }

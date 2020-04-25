@@ -175,6 +175,7 @@
     <Compile Include="CustomEventArgs\ArithmeticEventArgs.cs" />
     <Compile Include="DataObjects\ScoreTracking\PointVal.cs" />
     <Compile Include="DataObjects\ScoreTracking\ScoreRow.cs" />
+    <Compile Include="Helpers\ImagePrinter.cs" />
     <Compile Include="Helpers\SaveFileHelpers.cs" />
     <Compile Include="Helpers\VisualHelpers.cs" />
     <Compile Include="Controls\GameWindow.xaml.cs">
@@ -226,28 +227,51 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\AnswerBackground.PNG" />
+    <Content Include="Images\AnswerBackground.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\HiddenAnswer.png" />
-    <Resource Include="Images\ReferenceImage.PNG" />
+    <Content Include="Images\HiddenAnswer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ReferenceImage.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\TestGif.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\QuestionBackground.png" />
+    <Content Include="Images\QuestionBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Resource Include="Images\FamilFeudLogo.png" />
-    <Resource Include="Images\family-feud-X.png" />
+    <Content Include="Images\FamilFeudLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\family-feud-X.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BonusQuestionBackground.png" />
-    <Resource Include="Images\family-feud-X2.png" />
-    <Resource Include="Images\family-feud-X3.png" />
-    <Resource Include="Images\FamilyFeudIcon.png" />
+    <Content Include="Images\BonusQuestionBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\family-feud-X2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\family-feud-X3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FamilyFeudIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\BonusQuestionPrintout.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\Bing-sound.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -171,6 +171,16 @@ namespace FamilyFeud
       gameWindow.PropertyChanged += OnPropertyChanged;
       gameWindow.Closed += onClosed;
       ChangeButtonState(ButtonState.NewGame);
+      gameWindow.PropertyChanged += (sender, args) =>
+      {
+        if(args.PropertyName == nameof(GameWindow.IsQuestionShown))
+        {
+          if(gameWindow.IsQuestionShown != IsActiveQuestionShown)
+          {
+            ShowCurrentQuestionOverlay_Click(null, null);
+          }
+        }
+      };
 
       gameWindow.Show();
     }
@@ -232,6 +242,8 @@ namespace FamilyFeud
 
     private void ChangeButtonState(ButtonState newState)
     {
+      bool bonusExists = currentGame != null ? currentGame.BonusRoundLocation != BonusRoundLocation.None : false;
+
       if(newState == ButtonState.NoGame)
       {
         StartIntro.Visibility = Visibility.Collapsed;
@@ -252,6 +264,8 @@ namespace FamilyFeud
         WrongAnswer.Visibility = Visibility.Collapsed;
         EndGame.Visibility = Visibility.Collapsed;
         StartBonusTimer.Visibility = Visibility.Collapsed;
+        btnGetBonusSheet.Visibility = Visibility.Collapsed;
+        
       }
       else if(newState == ButtonState.NewGame)
       {
@@ -274,7 +288,13 @@ namespace FamilyFeud
         btnShow9.Visibility = Visibility.Collapsed;
         WrongAnswer.Visibility = Visibility.Collapsed;
         EndGame.Visibility = Visibility.Visible;
+        Grid.SetColumn(EndGame, 0);
+        Grid.SetColumnSpan(EndGame, 2);
         StartBonusTimer.Visibility = Visibility.Collapsed;
+        btnGetBonusSheet.Visibility = Visibility.Visible;
+        Grid.SetRow(btnGetBonusSheet, 7);
+        Grid.SetColumnSpan(btnGetBonusSheet, 2);
+        btnGetBonusSheet.IsEnabled = bonusExists;
       }
       else if(newState == ButtonState.Questions)
       {
@@ -296,7 +316,13 @@ namespace FamilyFeud
         WrongAnswer.Visibility = Visibility.Visible;
         Grid.SetRow(WrongAnswer, 9);
         EndGame.Visibility = Visibility.Visible;
+        Grid.SetColumn(EndGame, 1);
+        Grid.SetColumnSpan(EndGame, 1);
         StartBonusTimer.Visibility = Visibility.Collapsed;
+        btnGetBonusSheet.Visibility = Visibility.Visible;
+        Grid.SetRow(btnGetBonusSheet, 13);
+        Grid.SetColumnSpan(btnGetBonusSheet, 1);
+        btnGetBonusSheet.IsEnabled = bonusExists;
       }
       else if(newState == ButtonState.BonusRound)
       {
@@ -319,7 +345,13 @@ namespace FamilyFeud
         WrongAnswer.Visibility = Visibility.Visible;
         Grid.SetRow(WrongAnswer, 11);
         EndGame.Visibility = Visibility.Visible;
+        Grid.SetColumn(EndGame, 1);
+        Grid.SetColumnSpan(EndGame, 1);
         StartBonusTimer.Visibility = Visibility.Visible;
+        btnGetBonusSheet.Visibility = Visibility.Visible;
+        Grid.SetRow(btnGetBonusSheet, 13);
+        Grid.SetColumnSpan(btnGetBonusSheet, 1);
+        btnGetBonusSheet.IsEnabled = bonusExists;
       }
     }
 
@@ -536,7 +568,7 @@ namespace FamilyFeud
       IsActiveQuestionShown = !IsActiveQuestionShown;
     }
 
-    Window mHotkeyWindow;
+    private Window mHotkeyWindow;
     private void btnHotkeys_Click(object sender, RoutedEventArgs e)
     {
       if(mHotkeyWindow != null)
@@ -556,6 +588,14 @@ namespace FamilyFeud
         mHotkeyWindow = null;
       };
       mHotkeyWindow.Show();
+    }
+
+    private void btnGetBonusSheet_Click(object sender, RoutedEventArgs e)
+    {
+      if(currentGame != null)
+      {
+        ImagePrinter.DownloadBonusRoundImage(currentGame.BonusRound);
+      }
     }
   }
 }

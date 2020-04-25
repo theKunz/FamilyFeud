@@ -82,13 +82,12 @@ namespace FamilyFeud.Controls
       showQuestionStory = Resources["sbQuestionOpacityStory"] as Storyboard;
       showQuestionStory.Completed += (object storySender, EventArgs storyArgs) =>
       {
-        mIsQuestionShown = !mIsQuestionShown;
-        if(!mIsQuestionShown)
+        IsQuestionShown = !IsQuestionShown;
+        if(!IsQuestionShown)
         {
           bdrQuestionForeground.Visibility = Visibility.Collapsed;
           bdrQuestionBackground.Visibility = Visibility.Collapsed;
         }
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionShown)));
       };
 
       showXStory = Resources["sbShowX"] as Storyboard;
@@ -213,6 +212,14 @@ namespace FamilyFeud.Controls
       get
       {
         return mIsQuestionShown;
+      }
+      set
+      {
+        if(mIsQuestionShown != value)
+        {
+          mIsQuestionShown = value;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsQuestionShown)));
+        }
       }
     }
 
