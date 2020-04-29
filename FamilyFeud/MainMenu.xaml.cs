@@ -80,6 +80,17 @@ namespace FamilyFeud
       Round currRound;
       int numRounds;
 
+      if(mQuestions.Count < MinRandomGameSize)
+      {
+        MessageBox.Show(
+          "A minimum of " + MinRandomGameSize + " questions are required to generate a random game.", 
+          "Not Enough Questions", 
+          MessageBoxButton.OK, 
+          MessageBoxImage.Information);
+
+        return;
+      }
+
       selectedRounds = new ObservableCollection<Round>();
       numRounds = mQuestions.Count < MaxRandomGameSize ? mQuestions.Count : MaxRandomGameSize;
 

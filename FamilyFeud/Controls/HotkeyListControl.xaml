@@ -10,6 +10,7 @@
     <ResourceDictionary>
       <Style TargetType="TextBlock" BasedOn="{StaticResource FamilyFeudTextBlockStyle}">
         <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="Silver"/>
       </Style>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -31,6 +32,7 @@
         <RowDefinition/>
       </Grid.RowDefinitions>
 
+      <Border Background="{StaticResource FF_Foreground_ExtraDark}" BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="3"/>
       <TextBlock Grid.Row="0" Grid.Column="0" Text="0-9"/>
       <TextBlock Grid.Row="0" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="0" Grid.Column="2" Text="Reveal Respective Answer" HorizontalAlignment="Left"/>
@@ -39,6 +41,7 @@
       <TextBlock Grid.Row="1" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="1" Grid.Column="21" Text="Next Question" HorizontalAlignment="Left"/>
 
+      <Border Background="{StaticResource FF_Foreground_ExtraDark}" BorderThickness="0" Grid.Row="2" Grid.ColumnSpan="3"/>
       <TextBlock Grid.Row="2" Grid.Column="0" Text="←" FontSize="30"/>
       <TextBlock Grid.Row="2" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="2" Grid.Column="2" Text="Previous Question" HorizontalAlignment="Left"/>
@@ -47,6 +50,7 @@
       <TextBlock Grid.Row="3" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="3" Grid.Column="2" Text="Wrong Answer Buzzer" HorizontalAlignment="Left"/>
 
+      <Border Background="{StaticResource FF_Foreground_ExtraDark}" BorderThickness="0" Grid.Row="4" Grid.ColumnSpan="3"/>
       <TextBlock Grid.Row="4" Grid.Column="0" Text="S"/>
       <TextBlock Grid.Row="4" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="4" Grid.Column="2" Text="Show Current Question" HorizontalAlignment="Left"/>
@@ -55,6 +59,7 @@
       <TextBlock Grid.Row="5" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="5" Grid.Column="2" Text="Hide Current Question" HorizontalAlignment="Left"/>
 
+      <Border Background="{StaticResource FF_Foreground_ExtraDark}" BorderThickness="0" Grid.Row="6" Grid.ColumnSpan="3"/>
       <TextBlock Grid.Row="6" Grid.Column="0" Text="F11"/>
       <TextBlock Grid.Row="6" Grid.Column="1" Text=":"/>
       <TextBlock Grid.Row="6" Grid.Column="2" Text="Enter/Exit Fullscreen" HorizontalAlignment="Left"/>

@@ -40,8 +40,8 @@
       <RowDefinition Height="25"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
-    <Border BorderBrush="White" BorderThickness="4" Grid.Row="1">
-    <DataGrid x:Name="ScoreDataGrid" 
+    <Border BorderBrush="White" BorderThickness="4" Grid.Row="1" Background="Navy">
+      <DataGrid x:Name="ScoreDataGrid" 
                 FrozenColumnCount="2" 
                 RowHeight="50" 
                 AutoGenerateColumns="False" 
@@ -59,16 +59,26 @@
                 HeadersVisibility="Column"
                 LoadingRow="ScoreDataGrid_LoadingRow"
                 CanUserReorderColumns="False">
-      <DataGrid.Columns>
-        <DataGridTemplateColumn x:Name="NameColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="400" >
-          <DataGridTemplateColumn.Header>
-            <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Team Name" Background="Transparent"/>
-          </DataGridTemplateColumn.Header>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <Border Background="Navy" Width="400" Height="50" BorderBrush="Transparent" MouseUp="TeamNameBorder_MouseUp">
-                <Viewbox StretchDirection="DownOnly" Stretch="Uniform" Width="400" Height="50">
-                  <TextBox x:Name="tbTeamName" 
+        <DataGrid.Columns>
+          <DataGridTemplateColumn x:Name="NameColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="400" >
+            <DataGridTemplateColumn.Header>
+              <Grid ToolTip="Click any cell in this column to add a name.">
+                <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Team Name" Background="Transparent" Margin="-130,0,0,0"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="250,0,0,0">
+                  <Button HorizontalAlignment="Left" Height="25" Width="60" Style="{StaticResource FamilyFuedButtonStyle}" Click="AddRow_Click">
+                    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Add Row" FontSize="10" Background="Transparent"/>
+                  </Button>
+                  <Button HorizontalAlignment="Left" Height="25" Width="60" Style="{StaticResource FamilyFuedButtonStyle}" Click="Reset_Click">
+                    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Reset" FontSize="10" Background="Transparent"/>
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Border Background="Navy" Width="400" Height="50" BorderBrush="Transparent" MouseUp="TeamNameBorder_MouseUp">
+                  <Viewbox StretchDirection="DownOnly" Stretch="Uniform" Width="400" Height="50">
+                    <TextBox x:Name="tbTeamName" 
                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            VerticalContentAlignment="Center"
                            HorizontalContentAlignment="Center"
@@ -81,38 +91,30 @@
                            FontSize="25" 
                            BorderBrush="Transparent"
                            CaretBrush="White"/>
-                </Viewbox>
-              </Border>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        <DataGridTemplateColumn x:Name="ScoreColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="100">
-          <DataGridTemplateColumn.Header>
-            <Button Click="ScoreHeader_Click">
-              <Button.Template>
-                <ControlTemplate>
-                  <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Score" Background="Transparent"/>
-                </ControlTemplate>
-              </Button.Template>
-            </Button>
-          </DataGridTemplateColumn.Header>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Background="DarkBlue" Text="{Binding ScoreTotal}" FontSize="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="{StaticResource ScoreColumnDropShadow}"/>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-      </DataGrid.Columns>
-    </DataGrid>
+                  </Viewbox>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn x:Name="ScoreColumn" HeaderStyle="{StaticResource SpecialColumnHeaderStyle}" Width="100">
+            <DataGridTemplateColumn.Header>
+              <Button Click="ScoreHeader_Click">
+                <Button.Template>
+                  <ControlTemplate>
+                    <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Score" Background="Transparent"/>
+                  </ControlTemplate>
+                </Button.Template>
+              </Button>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Background="DarkBlue" Text="{Binding ScoreTotal}" FontSize="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="{StaticResource ScoreColumnDropShadow}"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
     </Border>
-    <StackPanel Orientation="Horizontal" Grid.Row="0">
-      <Button HorizontalAlignment="Left" Height="25" Width="60" Style="{StaticResource FamilyFuedButtonStyle}" Click="AddRow_Click">
-        <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Add Team" FontSize="10" Background="Transparent"/>
-      </Button>
-      <Button HorizontalAlignment="Left" Height="25" Width="60" Style="{StaticResource FamilyFuedButtonStyle}" Click="Reset_Click">
-        <TextBlock Style="{StaticResource FamilyFeudTextBlockStyle}" Text="Reset" FontSize="10" Background="Transparent"/>
-      </Button>
-    </StackPanel>
   </Grid>
 
 </UserControl>
