@@ -72,7 +72,7 @@ namespace FamilyFeud.Controls
         mXMediaPlayer.Stop();
         mXMediaPlayer.Position = new TimeSpan(0);
       };
-      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
+      mXMediaPlayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
     }
 
     private void SQC_Loaded(object sender, RoutedEventArgs args)

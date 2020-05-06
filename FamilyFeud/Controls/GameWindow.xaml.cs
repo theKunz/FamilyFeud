@@ -24,7 +24,7 @@ namespace FamilyFeud
 
     private const double TRANSFORM_DISTANCE = 1920.0;
 
-    private Border introPlaceholderBorder;
+    private Border IntroPlaceholderBorder;
 
     private Size originalNonMaximizedSize;
     private List<Key> mAttachedKeys;
@@ -37,6 +37,8 @@ namespace FamilyFeud
     private IRoundControl mPreviousQuestion;
     private IRoundControl mActiveQuestion;
     private IRoundControl mNextQuestion;
+
+    private EventHandler oldStyleCompleted;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -87,12 +89,17 @@ namespace FamilyFeud
         (ExistingQuestions[i] as UIElement).CacheMode = new BitmapCache() { EnableClearType = false, RenderAtScale = 1, SnapsToDevicePixels = false };
       }
 
-      introPlaceholderBorder = new Border() { Background = new SolidColorBrush(Color.FromRgb(0, 0, 0)) };
+      IntroPlaceholderBorder = new Border() { Background = new SolidColorBrush(Color.FromRgb(0, 0, 0)) };
 
-      gParentGrid.Children.Add(introPlaceholderBorder);
-      
+      gParentGrid.Children.Add(IntroPlaceholderBorder);
+
+      mNextQuestion = ExistingQuestions[0];
+      SetNextTransform(mNextQuestion);
+      gParentGrid.Children.Add(mNextQuestion as Control);
+
       mMediaPlayerQuestion = new MediaPlayer();
-      mMediaPlayerQuestion.Open(new Uri(@"../../Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
+      
+      mMediaPlayerQuestion.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Sounds/Next_Question.wav", UriKind.RelativeOrAbsolute));
       mMediaPlayerQuestion.IsMuted = true;
 
       this.Closed += GameWindow_Closed;
@@ -106,27 +113,26 @@ namespace FamilyFeud
 
     public void BeginIntro()
     {
-      oldStyleCountdown = new OldStyleCountdownControl();
+      OldStyleCountdown = new OldStyleCountdownControl();
 
-      oldStyleCountdown.OnCountdownCompleted += (obj, args) =>
+      oldStyleCompleted = null;
+      oldStyleCompleted = (obj, args) =>
       {
+        OldStyleCountdown.OnCountdownCompleted -= oldStyleCompleted;
         this.Dispatcher.Invoke(() =>
         {
-          titleScreen = new TitleScreen();
-          gParentGrid.Children.Remove(oldStyleCountdown);
-          gParentGrid.Children.Add(titleScreen);
-          mNextQuestion = ExistingQuestions[0];
-          SetNextTransform(mNextQuestion);
-          // Note, this needs to be added after the titleScreen in order for the first question to be visible
-          // when transitioning to it.
-          gParentGrid.Children.Add(mNextQuestion as Control);
+          TitleScreen = new TitleScreen();
+          gParentGrid.Children.Remove(OldStyleCountdown);
+          gParentGrid.Children.Insert(0, TitleScreen);
         });
       };
 
+      OldStyleCountdown.OnCountdownCompleted += oldStyleCompleted;
+
       this.Dispatcher.Invoke(() =>
       {
-        gParentGrid.Children.Remove(introPlaceholderBorder);
-        gParentGrid.Children.Add(oldStyleCountdown);
+        gParentGrid.Children.Remove(IntroPlaceholderBorder);
+        gParentGrid.Children.Insert(0, OldStyleCountdown);
         mSoundPlayerIntro.Play();
       });
     }
@@ -136,6 +142,12 @@ namespace FamilyFeud
       Duration duration = new Duration(new TimeSpan(0, 0, 1));
       DoubleAnimation nextToCurrent = new DoubleAnimation(TRANSFORM_DISTANCE, 0, duration);
       DoubleAnimation currentToPrev = new DoubleAnimation(0, TRANSFORM_DISTANCE * -1, duration);
+
+      if(OldStyleCountdown != null)
+      {
+        OldStyleCountdown.OnCountdownCompleted -= oldStyleCompleted;
+        mSoundPlayerIntro.Stop();
+      }
 
       currentToPrev.AccelerationRatio = 0.5;
       nextToCurrent.AccelerationRatio = 0.5;
@@ -150,7 +162,18 @@ namespace FamilyFeud
         mPreviousQuestion = null;
         mActiveQuestion = mNextQuestion;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentRound)));
-        gParentGrid.Children.Remove(titleScreen);
+        if(gParentGrid.Children.Contains(TitleScreen))
+        {
+          gParentGrid.Children.Remove(TitleScreen);
+        }
+        if(gParentGrid.Children.Contains(OldStyleCountdown))
+        {
+          gParentGrid.Children.Remove(OldStyleCountdown);
+        }
+        if(gParentGrid.Children.Contains(IntroPlaceholderBorder))
+        {
+          gParentGrid.Children.Remove(IntroPlaceholderBorder);
+        }
 
         currentQuestion = 0;
 
@@ -177,10 +200,6 @@ namespace FamilyFeud
 
       (mNextQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
       //titleScreen.RenderTransform.BeginAnimation(TranslateTransform.XProperty, currentToPrev);
-
-
-      // In case the opening theme is still playing.
-      mSoundPlayerIntro.Stop();
 
       mMediaPlayerQuestion.Position = new TimeSpan(0, 0, 0);
       mMediaPlayerQuestion.IsMuted = false;
@@ -530,8 +549,8 @@ namespace FamilyFeud
     #region Properties ------------------------------------------------------------
 
     private IRoundControl[] ExistingQuestions { get; set; }
-    private OldStyleCountdownControl oldStyleCountdown { get; set; }
-    private TitleScreen titleScreen { get; set; }
+    private OldStyleCountdownControl OldStyleCountdown { get; set; }
+    private TitleScreen TitleScreen { get; set; }
 
     public IRoundControl CurrentRound { get { return mActiveQuestion; } set { return; } }
 

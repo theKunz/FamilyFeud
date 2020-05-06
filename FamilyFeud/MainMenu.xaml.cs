@@ -284,7 +284,6 @@ namespace FamilyFeud
         StartIntro.IsEnabled = true;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Collapsed;
         GoToFirstQuestion.Visibility = Visibility.Visible;
-        GoToFirstQuestion.IsEnabled = false;
         GoToNextQuestion.Visibility = Visibility.Collapsed;
         GoToPreviousQuestion.Visibility = Visibility.Collapsed;
         btnShow0.Visibility = Visibility.Collapsed;
@@ -554,7 +553,6 @@ namespace FamilyFeud
     {
       gameWindow?.BeginIntro();
       StartIntro.IsEnabled = false;
-      GoToFirstQuestion.IsEnabled = true;
     }
 
     private void EndGame_Click(object sender, RoutedEventArgs e)
@@ -592,7 +590,7 @@ namespace FamilyFeud
       mHotkeyWindow.Content = new HotkeyListControl();
       mHotkeyWindow.SizeToContent = SizeToContent.WidthAndHeight;
       mHotkeyWindow.ResizeMode = ResizeMode.NoResize;
-      mHotkeyWindow.Icon = new BitmapImage(new Uri(@"pack://application:,,,/FamilyFeud;component/Images/FamilyFeudIcon.png", UriKind.RelativeOrAbsolute));
+      mHotkeyWindow.Icon = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/ Images/FamilyFeudIcon.png", UriKind.RelativeOrAbsolute));
       mHotkeyWindow.Title = "Family Feud";
       mHotkeyWindow.Closed += (send, args) =>
       {

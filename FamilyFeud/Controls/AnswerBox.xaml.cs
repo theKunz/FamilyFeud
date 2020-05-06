@@ -30,7 +30,7 @@ namespace FamilyFeud.Controls
       MouseLeftButtonUp += ShowAnswerMouse;
       mMediaplayer = new MediaPlayer();
       mMediaplayer.IsMuted = true;
-      mMediaplayer.Open(new Uri(@"../../Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
+      mMediaplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
     }
 
     private void ShowAnswerMouse(object sender, MouseButtonEventArgs args)

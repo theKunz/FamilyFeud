@@ -63,7 +63,7 @@ namespace FamilyFeud.Controls
 
       mDingMediaPlayer = new MediaPlayer();
       mDingMediaPlayer.IsMuted = true;
-      mDingMediaPlayer.Open(new Uri(@"../../Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
+      mDingMediaPlayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Sounds/Bing-sound.mp3", UriKind.RelativeOrAbsolute));
       mDingMediaPlayer.MediaEnded += (obj, e) =>
       {
         mDingMediaPlayer.Position = new TimeSpan(0, 0, 0);
@@ -72,7 +72,7 @@ namespace FamilyFeud.Controls
 
       mXMediaPlayer = new MediaPlayer();
       mXMediaPlayer.IsMuted = true;
-      mXMediaPlayer.Open(new Uri(@"../../Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
+      mXMediaPlayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Sounds/Wrong_Buzzer.wav", UriKind.RelativeOrAbsolute));
       mXMediaPlayer.MediaEnded += (obj, e) =>
       {
         mXMediaPlayer.Position = new TimeSpan(0, 0, 0);
