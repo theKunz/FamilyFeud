@@ -120,7 +120,7 @@
           </Grid>
         </StackPanel>
 
-        <LocalControls:TeamScoreTracker x:Name="TeamScoreTracker" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5"/>
+        <LocalControls:TeamScoreTracker x:Name="TeamScoreTracker" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
       </Grid>
     </Border>
   </ScrollViewer>

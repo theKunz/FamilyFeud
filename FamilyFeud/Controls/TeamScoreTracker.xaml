@@ -40,7 +40,7 @@
       <RowDefinition Height="25"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
-    <Border BorderBrush="White" BorderThickness="4" Grid.Row="1" Background="Navy">
+    <Border BorderBrush="White" BorderThickness="4,4,4,0" Grid.Row="1" Background="Navy">
       <DataGrid x:Name="ScoreDataGrid" 
                 FrozenColumnCount="2" 
                 RowHeight="50" 

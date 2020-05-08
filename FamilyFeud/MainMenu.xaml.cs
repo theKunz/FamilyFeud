@@ -590,7 +590,7 @@ namespace FamilyFeud
       mHotkeyWindow.Content = new HotkeyListControl();
       mHotkeyWindow.SizeToContent = SizeToContent.WidthAndHeight;
       mHotkeyWindow.ResizeMode = ResizeMode.NoResize;
-      mHotkeyWindow.Icon = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/ Images/FamilyFeudIcon.png", UriKind.RelativeOrAbsolute));
+      mHotkeyWindow.Icon = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"/Images/FamilyFeudIcon.png", UriKind.RelativeOrAbsolute));
       mHotkeyWindow.Title = "Family Feud";
       mHotkeyWindow.Closed += (send, args) =>
       {
