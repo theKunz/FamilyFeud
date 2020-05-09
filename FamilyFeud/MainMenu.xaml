@@ -114,8 +114,8 @@
               <RowDefinition/>
               <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <Button Grid.Column="0" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginCustomGame_Click" Content="Start Custom Game" FontSize="19"/>
-            <Button Grid.Column="1" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginRandomGame_Click" Content="Start Random Game" FontSize="18"/>
+            <Button x:Name="btnStartCustomGame" Grid.Column="0" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginCustomGame_Click" Content="Start Custom Game" FontSize="19"/>
+            <Button x:Name="btnStartRandomGame" Grid.Column="1" Grid.Row="0" Height="40" Width="200" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnBeginRandomGame_Click" Content="Start Random Game" FontSize="18"/>
             <Button x:Name="btnHotkeys" Grid.Column="0" Grid.Row="0" Margin="0,0,0,90" Height="20" Width="80" Grid.ColumnSpan="2" Style="{StaticResource FamilyFuedButtonStyle}" Click="btnHotkeys_Click" Content="Hotkeys" FontSize="12"/>
           </Grid>
         </StackPanel>

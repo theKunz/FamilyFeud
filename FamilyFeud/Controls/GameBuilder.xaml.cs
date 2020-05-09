@@ -189,11 +189,13 @@ namespace FamilyFeud.Controls
 
     private void btnDone_Click(object sender, RoutedEventArgs e)
     {
+      bool hasBonusRound = !rbNone.IsChecked.Value && ChosenBonusQuestions.Count > 0;
+
       GameBuildingCompleted?.Invoke(this, new GameBuildingCompletedEventArgs(ChosenRounds, 
                                                                              ChosenBonusQuestions,
                                                                              mNewRounds,
                                                                              mNewBonusQuestions,
-                                                                             !rbNone.IsChecked.Value, 
+                                                                             hasBonusRound, 
                                                                              rbEnd.IsChecked.Value));
       Close();
     }

@@ -192,6 +192,16 @@ namespace FamilyFeud
           }
         }
       };
+      if(includeBonusRound)
+      {
+        StartBonusTimer.IsEnabled = true;
+        StartBonusTimer.Content = "Start Countdown";
+        bonusTimerCounting = false;
+        gameWindow.OnTimerFinished += (sender, args) =>
+        {
+          this.Dispatcher.Invoke(() => { StartBonusTimer.IsEnabled = false; });
+        };
+      }
 
       gameWindow.Show();
     }
@@ -220,7 +230,7 @@ namespace FamilyFeud
         if(gameWindow.CurrentRound is SingleQuestionControl)
         {
           IsActiveQuestionShown = true;
-          ShowCurrentQuestionOverlay.Content = "Hide Current Question";
+          ShowCurrentQuestionOverlay.Content = "Hide Question";
           ChangeButtonState(ButtonState.Questions);
           CurrentRoundAnswers = new ObservableCollection<Answer>((gameWindow.CurrentRound as SingleQuestionControl).ItemSource.Answers);
           GoToPreviousQuestion.IsEnabled = gameWindow.CurrentRound.PreviousEnabled;
@@ -257,6 +267,8 @@ namespace FamilyFeud
 
       if(newState == ButtonState.NoGame)
       {
+        btnStartCustomGame.Visibility = Visibility.Visible;
+        btnStartRandomGame.Visibility = Visibility.Visible;
         StartIntro.Visibility = Visibility.Collapsed;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Collapsed;
         GoToFirstQuestion.Visibility = Visibility.Collapsed;
@@ -280,6 +292,8 @@ namespace FamilyFeud
       }
       else if(newState == ButtonState.NewGame)
       {
+        btnStartCustomGame.Visibility = Visibility.Collapsed;
+        btnStartRandomGame.Visibility = Visibility.Collapsed;
         StartIntro.Visibility = Visibility.Visible;
         StartIntro.IsEnabled = true;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Collapsed;
@@ -308,6 +322,8 @@ namespace FamilyFeud
       }
       else if(newState == ButtonState.Questions)
       {
+        btnStartCustomGame.Visibility = Visibility.Collapsed;
+        btnStartRandomGame.Visibility = Visibility.Collapsed;
         StartIntro.Visibility = Visibility.Collapsed;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Visible;
         GoToFirstQuestion.Visibility = Visibility.Collapsed;
@@ -336,6 +352,8 @@ namespace FamilyFeud
       }
       else if(newState == ButtonState.BonusRound)
       {
+        btnStartCustomGame.Visibility = Visibility.Collapsed;
+        btnStartRandomGame.Visibility = Visibility.Collapsed;
         StartIntro.Visibility = Visibility.Collapsed;
         ShowCurrentQuestionOverlay.Visibility = Visibility.Collapsed;
         GoToFirstQuestion.Visibility = Visibility.Collapsed;
@@ -566,12 +584,12 @@ namespace FamilyFeud
       if(IsActiveQuestionShown)
       {
         gameWindow?.HideCurrentQuestionOverlay();
-        ShowCurrentQuestionOverlay.Content = "Show Current Question";
+        ShowCurrentQuestionOverlay.Content = "Show Question";
       }
       else
       {
         gameWindow?.ShowCurrentQuestionOverlay();
-        ShowCurrentQuestionOverlay.Content = "Hide Current Question";
+        ShowCurrentQuestionOverlay.Content = "Hide Question";
       }
 
       IsActiveQuestionShown = !IsActiveQuestionShown;

@@ -41,6 +41,7 @@ namespace FamilyFeud
     private EventHandler oldStyleCompleted;
 
     public event PropertyChangedEventHandler PropertyChanged;
+    public event EventHandler OnTimerFinished;
 
     public GameWindow(Game game)
     {
@@ -78,7 +79,12 @@ namespace FamilyFeud
       {
         if(i == mBonusRoundIndex)
         {
-          ExistingQuestions[i] = new BonusRoundControl(game.BonusRound);
+          var bonusRound = new BonusRoundControl(game.BonusRound);
+          bonusRound.OnTimerFinished += (sender, args) =>
+          {
+            OnTimerFinished?.Invoke(sender, args);
+          };
+          ExistingQuestions[i] = bonusRound;
         }
         else
         {

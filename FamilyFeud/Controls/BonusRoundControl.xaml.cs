@@ -193,8 +193,8 @@ namespace FamilyFeud.Controls
       Dispatcher.Invoke(() => { tbTimer.Text = string.Format("{0}:{1}", (currTick / 60).ToString(), (currTick % 60).ToString("D2")); });
       if(currTick == 0)
       {
-        OnTimerFinished?.Invoke(this, new EventArgs());
         countDownTimer.Stop();
+        OnTimerFinished?.Invoke(this, new EventArgs());
       }
     }
 
