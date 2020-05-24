@@ -35,6 +35,7 @@ namespace FamilyFeud.Controls
     private const int RoundMinScore = 0;
     private ObservableCollection<ScoreRow> mItemsSource;
     public event PropertyChangedEventHandler PropertyChanged;
+    private BonusRoundLocation bonusRoundLocation = BonusRoundLocation.None;
 
     #endregion
 
@@ -47,34 +48,6 @@ namespace FamilyFeud.Controls
       numTotalQuestions = 13;
 
       Reset();
-
-      Loaded += (s, e) =>
-      {
-        ScoreDataGrid.ItemsSource = ItemsSource;
-
-        DataGridColumn newCol;
-        TextBlock tb;
-
-        for(int i = 0; i < numTotalQuestions; i++)
-        {
-          tb = new TextBlock();
-          tb.Text = "Round " + i.ToString();
-          tb.Style = App.Current.Resources["FamilyFeudTextBlockStyle"] as Style;
-          tb.Background = new SolidColorBrush(Colors.Transparent);
-
-          newCol = new DataGridTemplateColumn()
-          {
-            Header = tb,
-            Width = 125,
-            HeaderStyle = App.Current.Resources["FamilyFeudGridHeaderStyle"] as Style,
-            CellTemplate = Resources["StandardDataGridCellTemplate"] as DataTemplate,
-          };
-
-          ScoreDataGrid.Columns.Add(newCol);
-        }
-
-        ScoreDataGrid.Height = (ItemsSource.Count * 50) + 100;
-      };
     }
 
     #endregion
@@ -84,12 +57,21 @@ namespace FamilyFeud.Controls
     /// <summary>
     /// Sets the number of columns in this team score tracker control. This will reset any data currently held.
     /// </summary>
-    /// <param name="numColumns">
+    /// <param name="numQuestions">
     /// Number of columns for the control.
     /// </param>
-    public void SetColumnCount(int numColumns)
+    public void SetColumnCount(int numQuestions, BonusRoundLocation bonusRoundLoc)
     {
-      numTotalQuestions = numColumns < 1 ? 1 : numColumns > 100 ? 100 : numColumns;
+      if(numQuestions <= 0)
+      {
+        numQuestions = 12;
+      }
+      numTotalQuestions = numQuestions;
+      bonusRoundLocation = bonusRoundLoc;
+      if(bonusRoundLoc != BonusRoundLocation.None)
+      {
+        numTotalQuestions++;
+      }
       Reset();
     }
 
@@ -111,6 +93,43 @@ namespace FamilyFeud.Controls
       {
         ScoreDataGrid.ItemsSource = ItemsSource;
         ScoreDataGrid.Height = (ItemsSource.Count * 50) + 100;
+      }
+
+      // Make sure to not remove the team name and total score columns
+      while(ScoreDataGrid.Columns.Count > 2)
+      {
+        ScoreDataGrid.Columns.RemoveAt(ScoreDataGrid.Columns.Count - 1);
+      }
+
+      TextBlock tb;
+      DataGridColumn newCol;
+      int questionNum = 0;
+      for(int i = 0; i < numTotalQuestions; i++)
+      {
+        tb = new TextBlock();
+        tb.Style = App.Current.Resources["FamilyFeudTextBlockStyle"] as Style;
+        tb.Background = new SolidColorBrush(Colors.Transparent);
+
+        if((i == (numTotalQuestions - 1) / 2 && bonusRoundLocation == BonusRoundLocation.Middle) ||
+           (i == numTotalQuestions - 1 && bonusRoundLocation == BonusRoundLocation.End))
+        {
+          tb.Text = "Bonus Round";
+        }
+        else
+        {
+          questionNum++;
+          tb.Text = "Round " + questionNum.ToString();
+        }
+
+        newCol = new DataGridTemplateColumn()
+        {
+          Header = tb,
+          Width = 125,
+          HeaderStyle = App.Current.Resources["FamilyFeudGridHeaderStyle"] as Style,
+          CellTemplate = Resources["StandardDataGridCellTemplate"] as DataTemplate,
+        };
+
+        ScoreDataGrid.Columns.Add(newCol);
       }
     }
 

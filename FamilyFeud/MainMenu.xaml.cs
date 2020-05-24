@@ -203,6 +203,7 @@ namespace FamilyFeud
         };
       }
 
+      TeamScoreTracker.SetColumnCount((int)currentGame.NumRounds, currentGame.BonusRoundLocation);
       gameWindow.Show();
     }
 
@@ -217,7 +218,24 @@ namespace FamilyFeud
       {
         if(value != mCurrentRoundAnswers)
         {
-          mCurrentRoundAnswers = value;
+          ObservableCollection<Answer> newList;
+          if(value == null)
+          {
+            newList = new ObservableCollection<Answer>();
+            while(newList.Count < 10)
+            {
+              newList.Add(new Answer("", 0));
+            }
+          }
+          else
+          {
+            newList = new ObservableCollection<Answer>(value);
+            while(newList.Count < 10)
+            {
+              newList.Add(new Answer("", 0));
+            }
+          }
+          mCurrentRoundAnswers = newList;
           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentRoundAnswers)));
         }
       }
@@ -250,7 +268,7 @@ namespace FamilyFeud
 
         for(int i = 0; i < 10; i++)
         {
-          (this.FindName("btnShow" + i) as Button).IsEnabled = i < CurrentRoundAnswers.Count;
+          (this.FindName("btnShow" + i) as Button).IsEnabled = !string.IsNullOrEmpty(CurrentRoundAnswers.ElementAt(i).AnswerText);
         }
       }
     }
@@ -481,17 +499,17 @@ namespace FamilyFeud
 
     private void KeyPressed(object sender, KeyEventArgs args)
     {
-      Key[] numKeys = { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
+      //Key[] numKeys = { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
 
-      if(numKeys.Contains(args.Key))
+      /*else if(numKeys.Contains(args.Key))
       {
         ShowAnswer(args.Key - Key.D0);
-      }
-      else if(args.Key == Key.X)
+      }*/
+      /*if(args.Key == Key.X)
       {
         ShowX();
-      }
-      else if(args.Key == Key.Right)
+      }*/
+      if(args.Key == Key.Right)
       {
         TransitionNextQuestion();
       }
@@ -499,14 +517,10 @@ namespace FamilyFeud
       {
         TransitionPreviousQuestion();
       }
-      else if(args.Key == Key.H && IsActiveQuestionShown)
+      /*else if(args.Key == Key.Q)
       {
         ShowCurrentQuestionOverlay_Click(this, new RoutedEventArgs());
-      }
-      else if(args.Key == Key.S && !IsActiveQuestionShown)
-      {
-        ShowCurrentQuestionOverlay_Click(this, new RoutedEventArgs());
-      }
+      }*/
     }
 
     private void ShowAnswer(int answerIndex)
