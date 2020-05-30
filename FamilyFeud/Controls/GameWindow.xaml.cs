@@ -308,8 +308,18 @@ namespace FamilyFeud
       }
     }
 
+    private static object lockObject = new object();
+    private bool isTransitioning = false;
     private void TransformToNextQuestion()
     {
+      lock(lockObject)
+      {
+        if(isTransitioning)
+        {
+          return;
+        }
+        isTransitioning = true;
+      }
       gParentGrid.Children.Remove(mPreviousQuestion as Control);
       mPreviousQuestion = null;
 
@@ -350,6 +360,10 @@ namespace FamilyFeud
 
         AttachQuestionShownEvents();
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
+        lock(lockObject)
+        {
+          isTransitioning = false;
+        }
       };
 
       (mNextQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, nextToCurrent);
@@ -362,6 +376,14 @@ namespace FamilyFeud
 
     private void TransformToPreviousQuestion()
     {
+      lock(lockObject)
+      {
+        if(isTransitioning)
+        {
+          return;
+        }
+        isTransitioning = true;
+      }
       gParentGrid.Children.Remove(mNextQuestion as Control);
       mNextQuestion = null;
 
@@ -402,6 +424,10 @@ namespace FamilyFeud
 
         AttachQuestionShownEvents();
         (mActiveQuestion as SingleQuestionControl)?.ShowQuestion();
+        lock(lockObject)
+        {
+          isTransitioning = false;
+        }
       };
 
       (mPreviousQuestion as Control).RenderTransform.BeginAnimation(TranslateTransform.XProperty, prevToCurrent);

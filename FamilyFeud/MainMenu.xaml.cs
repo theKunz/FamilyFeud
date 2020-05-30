@@ -51,7 +51,7 @@ namespace FamilyFeud
         ChangeButtonState(ButtonState.NoGame);
       };
 
-      this.KeyUp += KeyPressed;
+      //this.KeyUp += KeyPressed;
 
       LoadSaveData();
       mBonusQuestions.CollectionChanged += (sender, args) =>
@@ -497,18 +497,18 @@ namespace FamilyFeud
       ShowAnswer(answerToShow);
     }
 
-    private void KeyPressed(object sender, KeyEventArgs args)
+    /*private void KeyPressed(object sender, KeyEventArgs args)
     {
       //Key[] numKeys = { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
 
       /*else if(numKeys.Contains(args.Key))
       {
         ShowAnswer(args.Key - Key.D0);
-      }*/
+      }
       /*if(args.Key == Key.X)
       {
         ShowX();
-      }*/
+      }*
       if(args.Key == Key.Right)
       {
         TransitionNextQuestion();
@@ -517,11 +517,11 @@ namespace FamilyFeud
       {
         TransitionPreviousQuestion();
       }
-      /*else if(args.Key == Key.Q)
+      else if(args.Key == Key.Q)
       {
         ShowCurrentQuestionOverlay_Click(this, new RoutedEventArgs());
-      }*/
-    }
+      }
+    }*/
 
     private void ShowAnswer(int answerIndex)
     {
@@ -609,7 +609,7 @@ namespace FamilyFeud
       IsActiveQuestionShown = !IsActiveQuestionShown;
     }
 
-    private Window mHotkeyWindow;
+    /*private Window mHotkeyWindow;
     private void btnHotkeys_Click(object sender, RoutedEventArgs e)
     {
       if(mHotkeyWindow != null)
@@ -629,7 +629,7 @@ namespace FamilyFeud
         mHotkeyWindow = null;
       };
       mHotkeyWindow.Show();
-    }
+    }*/
 
     private void btnGetBonusSheet_Click(object sender, RoutedEventArgs e)
     {
